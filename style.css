@@ -483,34 +483,30 @@ a:hover {
   display: block;
 }
 
-/* info line under each cover: [bc player] title links */
+/* info line under each cover: [Bandcamp small player] title links */
 .release-strip {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: 190px minmax(0, 1fr) auto;
   align-items: center;
-  column-gap: 18px;
+  column-gap: 12px;
   margin-top: 10px;
-  font-size: clamp(18px, 2.05vw, 33px);
+  font-size: clamp(14px, 1.25vw, 22px);
   line-height: 1;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.035em;
   white-space: nowrap;
 }
 
-.bc-mini-player {
-  display: inline-flex;
-  align-items: center;
-  height: 38px;
-  padding: 0 10px;
-  background: #000;
-  color: #fff;
-  font-size: 0.86em;
-  letter-spacing: 0.03em;
-  text-decoration: none;
-  text-transform: lowercase;
+.bc-embed-small {
+  width: 190px;
+  height: 42px;
+  overflow: hidden;
 }
 
-.bc-mini-player:hover {
-  text-decoration: none;
+.bc-embed-small iframe {
+  display: block;
+  width: 100%;
+  height: 42px;
+  border: 0;
 }
 
 .release-title-line {
@@ -521,7 +517,7 @@ a:hover {
 
 .release-platform-links {
   display: flex;
-  gap: 18px;
+  gap: 12px;
   justify-content: flex-end;
   white-space: nowrap;
 }
@@ -530,27 +526,12 @@ a:hover {
   color: inherit;
   text-decoration: none;
   font-size: 1em;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.035em;
   text-transform: lowercase;
 }
 
 .release-platform-links a:hover {
   text-decoration: underline;
-}
-
-/* Bandcamp iframe player slot — use this if catalogue.html gets real Bandcamp embed iframes */
-.bc-embed-player {
-  width: 100%;
-  height: 120px;
-  margin-top: 10px;
-  overflow: hidden;
-  background: #000;
-}
-
-.bc-embed-player iframe {
-  display: block;
-  width: 100%;
-  height: 120px;
 }
 
 @media (max-width: 920px) {
@@ -560,7 +541,7 @@ a:hover {
   }
 
   .release-strip {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 190px 1fr;
     row-gap: 8px;
     column-gap: 12px;
     font-size: 19px;
@@ -575,12 +556,6 @@ a:hover {
     grid-column: 1 / -1;
     justify-content: flex-start;
     gap: 14px;
-    padding-left: 0;
-  }
-
-  .bc-mini-player {
-    height: 30px;
-    padding: 0 8px;
   }
 }
 
@@ -595,7 +570,17 @@ a:hover {
   }
 
   .release-strip {
+    grid-template-columns: 1fr;
     font-size: 16px;
+  }
+
+  .bc-embed-small {
+    width: 100%;
+  }
+
+  .release-title-line,
+  .release-platform-links {
+    grid-column: auto;
   }
 
   .release-platform-links a {
