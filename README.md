@@ -1,53 +1,45 @@
-# Crap Productions — GitHub Pages starter
+# Crap Productions GitHub Pages — layout v2
 
-This version includes:
+This is the cleaner left-navigation version based on the supplied mockups.
 
-- Front page with large CRAP PRODUCTIONS header
-- LATEST / NEWS featured image block
-- Three large main menus: Catalog, Events / Notices, Contact
-- Catalog page with two-column album covers
-- Each cover links to Bandcamp
-- Latest feature links directly to `catalog.html#crap009`
-- Placeholder streaming buttons
+## Pages
 
-## Upload to GitHub Pages
+- `index.html` — home page with one large latest/news image. It links to `catalogue.html#crap009`.
+- `catalogue.html` — large two-column album covers. Small links under each cover.
+- `report.html` — Instagram-like visual report grid. Current layout uses 4:3 images, 3 per row on desktop.
+- `contact.html` — contact links.
+- `style.css` — all styling.
 
-1. Create a new GitHub repository, for example `crap-productions`.
-2. Upload all files in this folder to the repository root.
-3. Go to `Settings > Pages`.
-4. Set Source to `Deploy from a branch`.
-5. Select `main` branch and `/root`.
-6. Save.
-7. The site will appear at:
-   `https://YOUR-GITHUB-USERNAME.github.io/crap-productions/`
+## Upload
 
-## Updating the latest image
+Upload the files directly to the root of the GitHub repository:
 
-In `index.html`, edit this part:
+- index.html
+- catalogue.html
+- report.html
+- contact.html
+- style.css
+- assets/
 
-```html
-<a class="latest-card" href="catalog.html#crap009">
-  <img src="https://f4.bcbits.com/img/a2974466671_10.jpg" alt="Wholesome — Coil Breaks cover">
-```
+Do not upload the zip itself.
 
-To feature another release:
+## Report images
 
-1. Change the `href` to the release ID in `catalog.html`.
-2. Change the image URL.
-3. Change the title text.
+Replace these files with your own iPhone 4:3 photos:
 
-## Adding streaming links
+assets/reports/report-001.jpg
+assets/reports/report-002.jpg
+...
 
-In `catalog.html`, find:
+Keep the same filenames if you do not want to edit HTML.
 
-```html
-<a href="#" class="disabled" aria-disabled="true">Streaming</a>
-```
+## Catalogue links
 
-Replace it with:
+The `LISTEN` buttons are placeholders. You can use them for:
 
-```html
-<a href="YOUR_STREAMING_LINK" target="_blank" rel="noopener">Streaming</a>
-```
+1. Bandcamp album page
+2. Spotify / Apple Music
+3. A separate listen page
+4. A Bandcamp embed block below the cover
 
-and remove `class="disabled" aria-disabled="true"`.
+For now the page stays visually clean.
