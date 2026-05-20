@@ -115,7 +115,12 @@ a:hover {
   display: block;
   object-fit: cover;
 }
-
+.feature-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
 /* CATALOGUE */
 .catalogue-grid {
   display: grid;
