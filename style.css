@@ -48,15 +48,15 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 320px;
+  width: 350px;
   overflow: visible;
   text-align: center;
   line-height: 0;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .site-logo {
-  width: 320px;
+  width: 350px;
   height: auto;
   display: block;
   transform: none;
