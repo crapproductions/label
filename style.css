@@ -819,3 +819,112 @@ a:hover {
     font-size: 18px;
   }
 }
+/* CONTACT PAGE CUSTOM FINAL */
+/* Paste this at the very bottom of style.css */
+
+.contact-main {
+  display: block;
+  padding-top: 34px;
+}
+
+.contact-page {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: cover;
+  margin: 0 auto 34px;
+}
+
+.contact-block h1,
+.shop-us-link {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.contact-block h1 {
+  margin: 0 0 18px;
+  font-size: clamp(42px, 5vw, 72px);
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+.contact-links a,
+.shop-links a {
+  color: #000;
+  text-decoration: none;
+}
+
+.contact-links a:hover,
+.shop-links a:hover {
+  text-decoration: underline;
+}
+
+.shop-us-link {
+  display: inline-block;
+  margin: 26px 0 12px;
+  font-size: clamp(28px, 3.4vw, 48px);
+  color: #000;
+  text-decoration: none;
+  cursor: default;
+}
+
+.shop-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 680px) {
+  .contact-main {
+    padding-top: 24px;
+  }
+
+  .contact-page {
+    width: 100%;
+  }
+
+  .contact-hero {
+    max-height: none;
+    margin-bottom: 28px;
+  }
+
+  .contact-block h1 {
+    font-size: 38px;
+    letter-spacing: 0.16em;
+  }
+
+  .contact-links {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+
+  .shop-us-link {
+    font-size: 26px;
+    letter-spacing: 0.16em;
+  }
+
+  .shop-links {
+    font-size: 18px;
+  }
+}
