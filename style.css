@@ -289,36 +289,36 @@ a:hover {
 
   .logo-link,
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .image-nav {
-  margin-top: 125px;
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-}
+    margin-top: 125px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+  }
 
   .image-nav img {
-  display: block;
-  width: 210px;
-  height: auto;
-}
+    display: block;
+    width: 210px;
+    height: auto;
+  }
 
   .main {
     padding: 28px 26px 70px;
@@ -339,36 +339,36 @@ a:hover {
 
   .logo-link,
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .image-nav {
-  margin-top: 125px;
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-}
+    margin-top: 125px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+  }
 
   .image-nav img {
-  display: block;
-  width: 210px;
-  height: auto;
-}
+    display: block;
+    width: 210px;
+    height: auto;
+  }
 
   .main {
     padding: 28px 20px 60px;
@@ -400,36 +400,36 @@ a:hover {
 
   .logo-link,
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .site-logo {
-  width: 275px;
-  height: auto;
-  display: block;
-  transform: none;
-  transform-origin: top center;
-}
+    width: 275px;
+    height: auto;
+    display: block;
+    transform: none;
+    transform-origin: top center;
+  }
 
   .image-nav {
-  margin-top: 125px;
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-}
+    margin-top: 125px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+  }
 
   .image-nav img {
-  display: block;
-  width: 210px;
-  height: auto;
-}
+    display: block;
+    width: 210px;
+    height: auto;
+  }
 
   .main {
     margin-left: 0;
@@ -448,16 +448,17 @@ a:hover {
     grid-template-columns: 1fr;
   }
 }
+
 /* CATALOGUE INFO-BAR LAYOUT */
 .catalogue-main {
   padding-top: 34px;
 }
 
 .catalogue-list {
-  display: flex;
-  flex-direction: column;
-  gap: 54px;
-  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 54px 32px;
+  width: 100%;
 }
 
 .catalogue-release {
@@ -537,8 +538,24 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Bandcamp iframe player slot — use this if catalogue.html gets real Bandcamp embed iframes */
+.bc-embed-player {
+  width: 100%;
+  height: 120px;
+  margin-top: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.bc-embed-player iframe {
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+
 @media (max-width: 920px) {
   .catalogue-list {
+    grid-template-columns: 1fr;
     gap: 44px;
   }
 
@@ -573,6 +590,7 @@ a:hover {
   }
 
   .catalogue-list {
+    grid-template-columns: 1fr;
     gap: 36px;
   }
 
