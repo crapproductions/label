@@ -64,12 +64,12 @@ a:hover {
 
 /* IMAGE MENU */
 .image-nav {
-  margin-top: 190px;
-  width: 320px;
+  margin-top: 150px;
+  width: 220px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   padding: 0;
 }
 
@@ -81,7 +81,7 @@ a:hover {
 
 .image-nav img {
   display: block;
-  width: 300px;
+  width: 180px;
   height: auto;
 }
 
@@ -296,13 +296,13 @@ a:hover {
   }
 
   .image-nav {
-    margin-top: 155px;
-    width: 300px;
-    gap: 14px;
+    margin-top: 125px;
+    width: 200px;
+    gap: 7px;
   }
 
   .image-nav img {
-    width: 270px;
+    width: 165px;
   }
 
   .main {
@@ -332,13 +332,13 @@ a:hover {
   }
 
   .image-nav {
-    width: 240px;
-    margin-top: 112px;
-    gap: 10px;
+    width: 180px;
+    margin-top: 95px;
+    gap: 6px;
   }
 
   .image-nav img {
-    width: 220px;
+    width: 150px;
   }
 
   .main {
@@ -383,12 +383,14 @@ a:hover {
     padding-left: 0;
     margin-top: 32px;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
   }
 
   .image-nav img {
-    width: 220px;
-  }
+  display: block;
+  width: 180px;
+  height: auto;
+}
 
   .main {
     margin-left: 0;
