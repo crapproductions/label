@@ -694,3 +694,25 @@ a:hover {
     font-size: 16px;
   }
 }
+/* MOBILE ONLY FIXES */
+
+/* 1. 모바일에서 하단 메뉴 이미지 4개만 작게 */
+@media (max-width: 680px) {
+  .image-nav {
+    margin-top: 32px;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .image-nav img {
+    width: 75px;
+    height: auto;
+  }
+}
+
+/* 2. 모바일 REPORT 사진을 한 줄 2장으로 */
+@media (max-width: 680px) {
+  .report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
