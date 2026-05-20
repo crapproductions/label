@@ -1,26 +1,25 @@
-<svg width="340" height="210" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
-  <rect width="340" height="210" fill="white"/>
-  <g fill="none" stroke="black" stroke-width="3" stroke-linecap="square">
-    <path d="M40 115 L120 80 L205 85 L286 58"/>
-    <path d="M90 126 L150 120 L230 140"/>
-    <path d="M116 72 L160 42 L220 52"/>
-    <path d="M80 153 L118 140 L148 163"/>
-    <path d="M235 92 L290 112"/>
-    <path d="M252 46 L303 30"/>
+<svg width="390" height="260" viewBox="0 0 390 260" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="260" fill="white"/>
+  <g fill="none" stroke="black" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M28 174 L95 135 L172 114 L250 84 L356 48"/>
+    <path d="M64 198 L150 171 L245 196"/>
+    <path d="M92 118 L170 48 L297 66"/>
+    <path d="M128 74 L212 102 L272 152"/>
+    <path d="M30 150 L8 137"/>
+    <path d="M310 98 L370 118"/>
+    <path d="M210 43 L255 20"/>
   </g>
   <g fill="black">
-    <circle cx="40" cy="115" r="4"/><circle cx="120" cy="80" r="4"/>
-    <circle cx="205" cy="85" r="4"/><circle cx="286" cy="58" r="4"/>
-    <circle cx="90" cy="126" r="4"/><circle cx="150" cy="120" r="4"/>
-    <circle cx="230" cy="140" r="4"/><circle cx="116" cy="72" r="4"/>
-    <circle cx="160" cy="42" r="4"/><circle cx="220" cy="52" r="4"/>
-    <circle cx="80" cy="153" r="4"/><circle cx="118" cy="140" r="4"/>
-    <circle cx="148" cy="163" r="4"/><circle cx="252" cy="46" r="4"/>
-    <circle cx="303" cy="30" r="4"/>
+    <circle cx="28" cy="174" r="5"/><circle cx="95" cy="135" r="5"/><circle cx="172" cy="114" r="5"/>
+    <circle cx="250" cy="84" r="5"/><circle cx="356" cy="48" r="5"/>
+    <circle cx="64" cy="198" r="5"/><circle cx="150" cy="171" r="5"/><circle cx="245" cy="196" r="5"/>
+    <circle cx="92" cy="118" r="5"/><circle cx="170" cy="48" r="5"/><circle cx="297" cy="66" r="5"/>
+    <circle cx="128" cy="74" r="5"/><circle cx="212" cy="102" r="5"/><circle cx="272" cy="152" r="5"/>
+    <circle cx="8" cy="137" r="5"/><circle cx="370" cy="118" r="5"/><circle cx="210" cy="43" r="5"/><circle cx="255" cy="20" r="5"/>
   </g>
-  <g font-family="Courier New, monospace" font-size="10" fill="black">
-    <text x="36" y="100">01</text><text x="130" y="74">02</text>
-    <text x="210" y="78">03</text><text x="286" y="52">04</text>
-    <text x="92" y="142">05</text><text x="225" y="154">06</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="black">
+    <text x="20" y="157">01</text><text x="100" y="126">02</text><text x="178" y="106">03</text>
+    <text x="254" y="77">04</text><text x="354" y="40">05</text>
+    <text x="58" y="217">06</text><text x="146" y="190">07</text><text x="242" y="216">08</text>
   </g>
 </svg>

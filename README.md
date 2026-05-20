@@ -43,3 +43,8 @@ The `LISTEN` buttons are placeholders. You can use them for:
 4. A Bandcamp embed block below the cover
 
 For now the page stays visually clean.
+
+
+## v3 change
+
+Left fixed menu has been enlarged to match the supplied mockup proportions. Upload `style.css` to overwrite the previous layout, or upload the full folder.

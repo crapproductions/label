@@ -29,12 +29,20 @@ a:hover {
   text-decoration: underline;
 }
 
-/* LEFT FIXED AREA — enlarged to match the supplied mockup */
+/*
+  MAIN mockup target, 1600px wide:
+  - logo image starts around x=47, y=120 and appears visually large
+  - CRAP PRODUCTIONS starts around x=47, y=454
+  - menu centered around x=140, y=602
+  - main image begins around x=635
+*/
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: var(--sidebar-w);
-  padding: 92px 42px 54px 46px;
+  padding: 108px 0 54px 47px;
   background: #fff;
   z-index: 20;
   display: flex;
@@ -43,21 +51,22 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 350px;
+  width: 390px;
 }
 
 .mark {
-  width: 330px;
+  width: 355px;
   height: auto;
   display: block;
-  margin: 0 0 34px;
+  margin: 0 0 30px 0;
 }
 
 .logo-link strong {
   display: block;
-  font-size: 35px;
+  font-size: 36px;
+  font-weight: 800;
   letter-spacing: 0.055em;
-  line-height: 1.08;
+  line-height: 1.04;
   white-space: nowrap;
 }
 
@@ -66,13 +75,15 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  width: 330px;
+  gap: 13px;
+  width: 310px;
+  padding-left: 58px;
 }
 
 .side-nav a {
   display: block;
   font-size: 36px;
+  font-weight: 400;
   letter-spacing: 0.14em;
   line-height: 1.02;
 }
@@ -160,7 +171,7 @@ a:hover {
   max-width: 720px;
 }
 
-/* REPORT — default: iPhone 4:3 images, 3 per row */
+/* REPORT */
 .report-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -227,28 +238,33 @@ Alternative report layouts:
   letter-spacing: 0.08em;
 }
 
-/* MEDIUM SCREENS */
+/* Medium screens */
 @media (max-width: 1120px) {
   :root {
     --sidebar-w: 390px;
   }
 
   .sidebar {
-    padding-left: 34px;
-    padding-right: 30px;
+    padding-left: 36px;
+    padding-top: 74px;
   }
 
-  .logo-link,
-  .side-nav {
-    width: 290px;
+  .logo-link {
+    width: 320px;
   }
 
   .mark {
-    width: 285px;
+    width: 300px;
   }
 
   .logo-link strong {
-    font-size: 28px;
+    font-size: 29px;
+  }
+
+  .side-nav {
+    width: 260px;
+    padding-left: 40px;
+    margin-top: 88px;
   }
 
   .side-nav a {
@@ -266,16 +282,16 @@ Alternative report layouts:
   }
 
   .sidebar {
-    padding: 62px 24px 42px;
+    padding-left: 28px;
+    padding-top: 62px;
   }
 
-  .logo-link,
-  .side-nav {
-    width: 240px;
+  .logo-link {
+    width: 250px;
   }
 
   .mark {
-    width: 235px;
+    width: 240px;
   }
 
   .logo-link strong {
@@ -283,7 +299,9 @@ Alternative report layouts:
   }
 
   .side-nav {
-    margin-top: 82px;
+    width: 220px;
+    padding-left: 28px;
+    margin-top: 78px;
   }
 
   .side-nav a {
@@ -303,7 +321,7 @@ Alternative report layouts:
   }
 }
 
-/* PHONE */
+/* Phone */
 @media (max-width: 680px) {
   :root {
     --sidebar-w: 0px;
@@ -334,6 +352,7 @@ Alternative report layouts:
 
   .side-nav {
     width: 100%;
+    padding-left: 0;
     margin-top: 32px;
     align-items: flex-start;
   }
