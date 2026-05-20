@@ -17,7 +17,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.05em;
 }
 
 a {
@@ -29,14 +29,19 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Left fixed area */
+/*
+  LEFT PANEL FINAL
+  - The logo image is treated as one complete block: assets/ui/logo.png
+  - The panel follows the supplied ideal reference:
+    large logo block on top, menu centered under it, plenty of white space.
+*/
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   width: var(--sidebar-w);
-  padding: 138px 0 54px 48px;
+  padding: 122px 0 54px 30px;
   background: #fff;
   z-index: 20;
   display: flex;
@@ -45,45 +50,40 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 475px;
+  width: 520px;
 }
 
 .site-logo {
-  width: 475px;
+  width: 520px;
   height: auto;
   display: block;
 }
 
-/* MENU: smaller and crooked, matching the MAIN mockup feel */
+/* Menu: centered as a block, with naturally uneven left edges like the reference image */
 .side-nav {
-  margin-top: 98px;
+  margin-top: 112px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 320px;
-  padding-left: 0;
-  align-items: flex-start;
+  align-items: center;
+  gap: 18px;
+  width: 420px;
+  padding-left: 22px;
 }
 
 .side-nav a {
   display: block;
   width: fit-content;
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 400;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.08em;
   line-height: 1.02;
 }
-
-.side-nav a:nth-child(1) { margin-left: 96px; }  /* HOME */
-.side-nav a:nth-child(2) { margin-left: 50px; }  /* CATALOGUE */
-.side-nav a:nth-child(3) { margin-left: 82px; }  /* REPORT */
-.side-nav a:nth-child(4) { margin-left: 68px; }  /* CONTACT */
 
 /* Right content area */
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
-  padding: 34px 36px 80px;
+  padding: 34px 34px 80px;
 }
 
 /* Home */
@@ -95,7 +95,7 @@ a:hover {
 
 .feature-news {
   display: block;
-  width: min(920px, 82vh, calc(100vw - var(--sidebar-w) - 110px));
+  width: min(920px, 82vh, calc(100vw - var(--sidebar-w) - 100px));
   aspect-ratio: 1 / 1;
   border: 3px solid var(--ink);
   overflow: hidden;
@@ -165,10 +165,21 @@ a:hover {
   max-width: 720px;
 }
 
-/* REPORT: portrait/longer tiles like the reference */
+/*
+  REPORT FINAL
+  Visual order:
+  12 / 11 / 10
+   9 /  8 /  7
+   6 /  5 /  4
+   3 /  2 /  1
+
+  Three columns.
+  Vertical long frame.
+  In CSS, vertical frame is width / height = 3 / 4.
+*/
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   align-items: start;
 }
@@ -265,75 +276,67 @@ a:hover {
   letter-spacing: 0.08em;
 }
 
+/* Medium */
 @media (max-width: 1320px) {
-  :root { --sidebar-w: 470px; }
+  :root { --sidebar-w: 485px; }
 
   .sidebar {
-    padding-left: 36px;
-    padding-top: 112px;
+    padding-left: 28px;
+    padding-top: 104px;
   }
 
   .logo-link,
   .site-logo {
-    width: 390px;
+    width: 435px;
   }
 
   .side-nav {
-    width: 290px;
-    margin-top: 82px;
+    width: 360px;
+    margin-top: 92px;
+    padding-left: 18px;
+    gap: 16px;
   }
 
   .side-nav a {
-    font-size: 28px;
+    font-size: 30px;
   }
-
-  .side-nav a:nth-child(1) { margin-left: 84px; }
-  .side-nav a:nth-child(2) { margin-left: 40px; }
-  .side-nav a:nth-child(3) { margin-left: 72px; }
-  .side-nav a:nth-child(4) { margin-left: 58px; }
 
   .main {
     padding: 28px 26px 70px;
   }
 
   .feature-news {
-    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 70px));
-  }
-
-  .report-grid {
-    grid-template-columns: repeat(3, 1fr);
+    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 65px));
   }
 }
 
+/* Tablet */
 @media (max-width: 920px) {
-  :root { --sidebar-w: 320px; }
+  :root { --sidebar-w: 330px; }
 
   .sidebar {
-    padding-left: 28px;
-    padding-top: 82px;
+    padding-left: 22px;
+    padding-top: 76px;
   }
 
   .logo-link,
   .site-logo {
-    width: 265px;
+    width: 285px;
   }
 
   .side-nav {
-    width: 230px;
-    margin-top: 66px;
+    width: 245px;
+    margin-top: 72px;
+    padding-left: 10px;
+    gap: 12px;
   }
 
   .side-nav a {
-    font-size: 22px;
+    font-size: 23px;
   }
 
-  .side-nav a:nth-child(1) { margin-left: 58px; }
-  .side-nav a:nth-child(2) { margin-left: 22px; }
-  .side-nav a:nth-child(3) { margin-left: 48px; }
-  .side-nav a:nth-child(4) { margin-left: 34px; }
-
   .main {
-    padding: 28px 22px 60px;
+    padding: 28px 20px 60px;
   }
 
   .catalogue-grid {
@@ -345,6 +348,7 @@ a:hover {
   }
 }
 
+/* Phone */
 @media (max-width: 680px) {
   :root { --sidebar-w: 0px; }
 
@@ -360,7 +364,7 @@ a:hover {
 
   .logo-link,
   .site-logo {
-    width: 260px;
+    width: 270px;
   }
 
   .side-nav {
@@ -368,13 +372,11 @@ a:hover {
     padding-left: 0;
     margin-top: 32px;
     align-items: flex-start;
+    gap: 10px;
   }
 
-  .side-nav a:nth-child(1),
-  .side-nav a:nth-child(2),
-  .side-nav a:nth-child(3),
-  .side-nav a:nth-child(4) {
-    margin-left: 0;
+  .side-nav a {
+    font-size: 22px;
   }
 
   .main {
@@ -391,6 +393,6 @@ a:hover {
   }
 
   .report-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 }

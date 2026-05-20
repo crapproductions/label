@@ -81,3 +81,43 @@ This package combines:
 - Report page now has click-to-enlarge lightbox without leaving the page.
 - Left navigation made smaller and more crooked like the original MAIN mockup.
 - Logo display size increased again.
+
+
+## v11 final tweak
+- Report grid: 3 columns, 4:3 landscape tiles.
+- Side menu: smaller and crooked to match the MAIN reference more closely.
+- Logo display size increased again.
+- Report lightbox kept intact.
+
+
+## v12 tweaks
+- Side menu alignment adjusted closer to provided reference.
+- Side menu size reduced slightly.
+- Logo display enlarged slightly again.
+- Report grid is 3 across in 4:3.
+- Report item order changed so 001 starts downward by columns: 001,005,009 / 002,006,010 ...
+
+
+## v13 correction
+
+Report visual order:
+
+12 / 11 / 10
+9  / 8  / 7
+6  / 5  / 4
+3  / 2  / 1
+
+Report frame is vertical-standing. In CSS, vertical frame is `aspect-ratio: 3 / 4` because CSS uses width / height.
+
+
+## v14 final left panel / report correction
+
+Left panel follows the supplied reference: one large logo block and centered menu block.
+Report order is:
+12 / 11 / 10
+9  / 8  / 7
+6  / 5  / 4
+3  / 2  / 1
+
+Report tiles are vertical long frames: aspect-ratio 3 / 4.
+Lightbox remains active.
