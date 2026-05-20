@@ -716,3 +716,9 @@ a:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* REMOVE CATALOGUE COVER BORDER */
+
+.catalogue-release .cover-frame,
+.catalogue-cover {
+  border: 0 !important;
+}
