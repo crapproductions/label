@@ -48,28 +48,28 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 430px;
+  width: 275px;
   overflow: visible;
   text-align: center;
   line-height: 0;
 }
 
 .site-logo {
-  width: 430px;
+  width: 275px;
   height: auto;
   display: block;
-  transform: scale(1.18);
+  transform: none;
   transform-origin: top center;
 }
 
 /* IMAGE MENU */
 .image-nav {
-  margin-top: 150px;
-  width: 220px;
+  margin-top: 125px;
+  width: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 0;
 }
 
@@ -81,7 +81,7 @@ a:hover {
 
 .image-nav img {
   display: block;
-  width: 180px;
+  width: 210px;
   height: auto;
 }
 
@@ -288,22 +288,36 @@ a:hover {
 
   .logo-link,
   .site-logo {
-    width: 360px;
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .site-logo {
-    transform: scale(1.16);
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .image-nav {
-    margin-top: 125px;
-    width: 200px;
-    gap: 7px;
-  }
+  margin-top: 125px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
 
   .image-nav img {
-    width: 165px;
-  }
+  display: block;
+  width: 210px;
+  height: auto;
+}
 
   .main {
     padding: 28px 26px 70px;
@@ -324,22 +338,36 @@ a:hover {
 
   .logo-link,
   .site-logo {
-    width: 250px;
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .site-logo {
-    transform: scale(1.14);
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .image-nav {
-    width: 180px;
-    margin-top: 95px;
-    gap: 6px;
-  }
+  margin-top: 125px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
 
   .image-nav img {
-    width: 150px;
-  }
+  display: block;
+  width: 210px;
+  height: auto;
+}
 
   .main {
     padding: 28px 20px 60px;
@@ -371,24 +399,34 @@ a:hover {
 
   .logo-link,
   .site-logo {
-    width: 270px;
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .site-logo {
-    transform: none;
-  }
+  width: 275px;
+  height: auto;
+  display: block;
+  transform: none;
+  transform-origin: top center;
+}
 
   .image-nav {
-    width: 100%;
-    padding-left: 0;
-    margin-top: 32px;
-    align-items: flex-start;
-    gap: 6px;
-  }
+  margin-top: 125px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
 
   .image-nav img {
   display: block;
-  width: 180px;
+  width: 210px;
   height: auto;
 }
 
