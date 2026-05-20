@@ -48,3 +48,23 @@ For now the page stays visually clean.
 ## v3 change
 
 Left fixed menu has been enlarged to match the supplied mockup proportions. Upload `style.css` to overwrite the previous layout, or upload the full folder.
+
+
+## v5 main fix
+
+Latest image enlarged to `min(1040px, 92%)`; left fixed menu pushed lower with larger logo/title/menu.
+
+## v6 logo and square latest-cover fix
+
+- Left logo block now uses one combined image: `assets/ui/logo.png`.
+- Replace `assets/ui/logo.png` with your own image that already contains the mark and CRAP PRODUCTIONS type.
+- Home latest release image is now forced to a square album-cover frame.
+
+## v7 final notes
+
+This package combines:
+- One-image left logo block: `assets/ui/logo.png`
+- Crooked / uneven menu alignment
+- Square latest-release image on the home page
+- Two-column catalogue page
+- 4:3 report grid
