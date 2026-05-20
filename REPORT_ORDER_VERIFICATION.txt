@@ -1,0 +1,14 @@
+REPORT ORDER VERIFICATION
+
+The report.html file is hardcoded in this exact visual order:
+
+Row 1: report-012.jpg / report-011.jpg / report-010.jpg
+Row 2: report-009.jpg / report-008.jpg / report-007.jpg
+Row 3: report-006.jpg / report-005.jpg / report-004.jpg
+Row 4: report-003.jpg / report-002.jpg / report-001.jpg
+
+CSS:
+.report-grid { grid-template-columns: repeat(3, 1fr); }
+.report-item { aspect-ratio: 3 / 4; }
+
+Note: CSS aspect-ratio is width / height. Therefore 3 / 4 is the vertical-standing frame.

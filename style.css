@@ -3,7 +3,7 @@
 }
 
 :root {
-  --sidebar-w: 515px;
+  --sidebar-w: 520px;
   --ink: #000;
   --paper: #fff;
 }
@@ -30,52 +30,59 @@ a:hover {
 }
 
 /*
-  LEFT PANEL FIX
-  The uploaded logo image already contains both the exploded image and CRAP PRODUCTIONS text.
-  The menu is a centered block under the logo, matching the supplied reference.
+  LEFT PANEL
+  logo.png = upper logo block
+  home.png / catalogue.png / report.png / contact.png = menu images
 */
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  inset: 0 auto 0 0;
   width: var(--sidebar-w);
-  padding: 118px 0 54px 0;
   background: #fff;
   z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 92px;
 }
 
 .logo-link {
   display: block;
-  width: 390px;
+  width: 430px;
+  overflow: visible;
+  text-align: center;
+  line-height: 0;
 }
 
 .site-logo {
-  width: 390px;
+  width: 430px;
   height: auto;
   display: block;
+  transform: scale(1.18);
+  transform-origin: top center;
 }
 
-.side-nav {
-  margin-top: 122px;
+/* IMAGE MENU */
+.image-nav {
+  margin-top: 190px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 19px;
-  width: 390px;
+  gap: 16px;
   padding: 0;
 }
 
-.side-nav a {
+.image-nav a {
   display: block;
+  line-height: 0;
   width: fit-content;
-  font-size: 31px;
-  font-weight: 400;
-  letter-spacing: 0.10em;
-  line-height: 1.02;
+}
+
+.image-nav img {
+  display: block;
+  width: 300px;
+  height: auto;
 }
 
 /* RIGHT CONTENT AREA */
@@ -165,10 +172,8 @@ a:hover {
 }
 
 /*
-  REPORT FIX
-  3 columns.
-  Vertical-standing long tiles.
-  Correct visual order:
+  REPORT
+  Visual order is hardcoded in report.html:
   12 / 11 / 10
    9 /  8 /  7
    6 /  5 /  4
@@ -275,25 +280,29 @@ a:hover {
 
 /* MEDIUM */
 @media (max-width: 1320px) {
-  :root { --sidebar-w: 460px; }
+  :root { --sidebar-w: 455px; }
 
   .sidebar {
-    padding-top: 96px;
+    padding-top: 80px;
   }
 
   .logo-link,
   .site-logo {
-    width: 350px;
+    width: 360px;
   }
 
-  .side-nav {
-    margin-top: 98px;
-    width: 350px;
-    gap: 16px;
+  .site-logo {
+    transform: scale(1.16);
   }
 
-  .side-nav a {
-    font-size: 28px;
+  .image-nav {
+    margin-top: 155px;
+    width: 300px;
+    gap: 14px;
+  }
+
+  .image-nav img {
+    width: 270px;
   }
 
   .main {
@@ -310,7 +319,7 @@ a:hover {
   :root { --sidebar-w: 320px; }
 
   .sidebar {
-    padding-top: 72px;
+    padding-top: 70px;
   }
 
   .logo-link,
@@ -318,14 +327,18 @@ a:hover {
     width: 250px;
   }
 
-  .side-nav {
-    width: 250px;
-    margin-top: 72px;
-    gap: 12px;
+  .site-logo {
+    transform: scale(1.14);
   }
 
-  .side-nav a {
-    font-size: 22px;
+  .image-nav {
+    width: 240px;
+    margin-top: 112px;
+    gap: 10px;
+  }
+
+  .image-nav img {
+    width: 220px;
   }
 
   .main {
@@ -361,16 +374,20 @@ a:hover {
     width: 270px;
   }
 
-  .side-nav {
+  .site-logo {
+    transform: none;
+  }
+
+  .image-nav {
     width: 100%;
     padding-left: 0;
     margin-top: 32px;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
   }
 
-  .side-nav a {
-    font-size: 22px;
+  .image-nav img {
+    width: 220px;
   }
 
   .main {

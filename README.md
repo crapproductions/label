@@ -126,3 +126,16 @@ Lightbox remains active.
 ## v15 actual fix
 Left panel is now centered and uses the uploaded logo image as a single block.
 Report order and 3-column vertical tile frame corrected.
+
+
+## v18 image menu
+
+The sidebar menu is now image-based.
+
+Required files:
+assets/ui/home.png
+assets/ui/catalogue.png
+assets/ui/report.png
+assets/ui/contact.png
+
+The HTML no longer uses text menu labels. Each menu image is wrapped in its own link.
