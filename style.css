@@ -933,3 +933,20 @@ a:hover {
     font-size: 18px;
   }
 }
+/* HOME VIDEO LAYOUT FIX */
+
+.feature-news {
+  width: min(920px, calc(100vw - var(--sidebar-w) - 100px));
+  aspect-ratio: auto;
+  border: 0 !important;
+  overflow: visible;
+  background: transparent;
+}
+
+.feature-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border: 0;
+}
