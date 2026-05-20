@@ -950,3 +950,36 @@ a:hover {
   object-fit: contain;
   border: 0;
 }
+/* MOBILE HOME VIDEO FIX ONLY */
+
+@media (max-width: 680px) {
+  .sidebar {
+    padding-bottom: 8px;
+  }
+
+  .image-nav {
+    margin-bottom: 8px;
+  }
+
+  .main-home {
+    padding: 0;
+    display: block;
+  }
+
+  .main-home .feature-news {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: 0;
+    border: 0 !important;
+    aspect-ratio: auto;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .main-home .feature-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
