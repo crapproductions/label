@@ -3,10 +3,9 @@
 }
 
 :root {
-  --sidebar-w: 320px;
+  --sidebar-w: 470px;
   --ink: #000;
   --paper: #fff;
-  --gap: 34px;
 }
 
 html {
@@ -30,11 +29,12 @@ a:hover {
   text-decoration: underline;
 }
 
+/* LEFT FIXED AREA — enlarged to match the supplied mockup */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: var(--sidebar-w);
-  padding: 78px 30px 54px;
+  padding: 92px 42px 54px 46px;
   background: #fff;
   z-index: 20;
   display: flex;
@@ -43,45 +43,48 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 260px;
+  width: 350px;
 }
 
 .mark {
-  width: 250px;
+  width: 330px;
   height: auto;
   display: block;
-  margin: 0 0 30px;
+  margin: 0 0 34px;
 }
 
 .logo-link strong {
   display: block;
-  font-size: 23px;
-  letter-spacing: 0.06em;
-  line-height: 1.1;
+  font-size: 35px;
+  letter-spacing: 0.055em;
+  line-height: 1.08;
+  white-space: nowrap;
 }
 
 .side-nav {
-  margin-top: 116px;
+  margin-top: 108px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 13px;
-  width: 250px;
+  gap: 14px;
+  width: 330px;
 }
 
 .side-nav a {
   display: block;
-  font-size: 27px;
-  letter-spacing: 0.13em;
-  line-height: 1.05;
+  font-size: 36px;
+  letter-spacing: 0.14em;
+  line-height: 1.02;
 }
 
+/* RIGHT CONTENT AREA */
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
   padding: 50px 52px 80px;
 }
 
+/* HOME */
 .main-home {
   display: grid;
   place-items: center;
@@ -90,8 +93,8 @@ a:hover {
 
 .feature-news {
   display: block;
-  width: min(780px, 84%);
-  border: 2px solid var(--ink);
+  width: min(780px, 82%);
+  border: 3px solid var(--ink);
 }
 
 .feature-news img {
@@ -100,9 +103,10 @@ a:hover {
   height: auto;
 }
 
+/* CATALOGUE */
 .catalogue-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
   gap: 34px 32px;
   align-items: start;
 }
@@ -156,6 +160,7 @@ a:hover {
   max-width: 720px;
 }
 
+/* REPORT — default: iPhone 4:3 images, 3 per row */
 .report-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -183,6 +188,7 @@ Alternative report layouts:
 - For mixed original ratios, remove aspect-ratio from .report-item and set .report-item img { height: auto; }.
 */
 
+/* CONTACT */
 .contact-main {
   display: grid;
   align-items: center;
@@ -221,31 +227,67 @@ Alternative report layouts:
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 920px) {
+/* MEDIUM SCREENS */
+@media (max-width: 1120px) {
   :root {
-    --sidebar-w: 240px;
+    --sidebar-w: 390px;
   }
 
   .sidebar {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 34px;
+    padding-right: 30px;
   }
 
   .logo-link,
   .side-nav {
-    width: 200px;
+    width: 290px;
   }
 
   .mark {
-    width: 200px;
+    width: 285px;
   }
 
   .logo-link strong {
-    font-size: 18px;
+    font-size: 28px;
   }
 
   .side-nav a {
+    font-size: 30px;
+  }
+
+  .main {
+    padding: 42px 34px 70px;
+  }
+}
+
+@media (max-width: 920px) {
+  :root {
+    --sidebar-w: 310px;
+  }
+
+  .sidebar {
+    padding: 62px 24px 42px;
+  }
+
+  .logo-link,
+  .side-nav {
+    width: 240px;
+  }
+
+  .mark {
+    width: 235px;
+  }
+
+  .logo-link strong {
     font-size: 22px;
+  }
+
+  .side-nav {
+    margin-top: 82px;
+  }
+
+  .side-nav a {
+    font-size: 24px;
   }
 
   .main {
@@ -261,6 +303,7 @@ Alternative report layouts:
   }
 }
 
+/* PHONE */
 @media (max-width: 680px) {
   :root {
     --sidebar-w: 0px;
@@ -281,8 +324,12 @@ Alternative report layouts:
   }
 
   .mark {
-    width: 190px;
+    width: 220px;
     margin-bottom: 18px;
+  }
+
+  .logo-link strong {
+    font-size: 24px;
   }
 
   .side-nav {
