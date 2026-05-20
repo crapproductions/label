@@ -587,3 +587,110 @@ a:hover {
     font-size: 16px;
   }
 }
+/* CATALOGUE PLAYER + STREAMING LINKS ONLY */
+/* Paste at the very bottom of style.css */
+
+.catalogue-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 54px 32px;
+  width: 100%;
+}
+
+.catalogue-release {
+  width: 100%;
+  min-width: 0;
+}
+
+.catalogue-release .cover-frame,
+.catalogue-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid var(--ink);
+  background: #fff;
+  overflow: hidden;
+}
+
+.catalogue-release .cover-frame img,
+.catalogue-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* cover 아래: 왼쪽 Bandcamp player / 오른쪽 streaming links */
+.release-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 14px;
+  margin-top: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bc-embed-small {
+  width: 100%;
+  height: 42px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.bc-embed-small iframe {
+  display: block;
+  width: 100%;
+  height: 42px;
+  border: 0;
+}
+
+.release-platform-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  white-space: nowrap;
+}
+
+.release-platform-links a {
+  color: inherit;
+  text-decoration: none;
+  font-size: clamp(13px, 1.05vw, 18px);
+  letter-spacing: 0.025em;
+}
+
+.release-platform-links a:hover {
+  text-decoration: underline;
+}
+
+.release-title-line {
+  display: none;
+}
+
+@media (max-width: 920px) {
+  .catalogue-list {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+}
+
+@media (max-width: 680px) {
+  .catalogue-list {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .release-strip {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
+
+  .release-platform-links {
+    justify-content: flex-start;
+  }
+
+  .release-platform-links a {
+    font-size: 16px;
+  }
+}
