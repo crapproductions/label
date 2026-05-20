@@ -3,7 +3,7 @@
 }
 
 :root {
-  --sidebar-w: 560px;
+  --sidebar-w: 515px;
   --ink: #000;
   --paper: #fff;
 }
@@ -30,10 +30,9 @@ a:hover {
 }
 
 /*
-  LEFT PANEL FINAL
-  - The logo image is treated as one complete block: assets/ui/logo.png
-  - The panel follows the supplied ideal reference:
-    large logo block on top, menu centered under it, plenty of white space.
+  LEFT PANEL FIX
+  The uploaded logo image already contains both the exploded image and CRAP PRODUCTIONS text.
+  The menu is a centered block under the logo, matching the supplied reference.
 */
 .sidebar {
   position: fixed;
@@ -41,52 +40,52 @@ a:hover {
   top: 0;
   bottom: 0;
   width: var(--sidebar-w);
-  padding: 122px 0 54px 30px;
+  padding: 118px 0 54px 0;
   background: #fff;
   z-index: 20;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .logo-link {
   display: block;
-  width: 520px;
+  width: 390px;
 }
 
 .site-logo {
-  width: 520px;
+  width: 390px;
   height: auto;
   display: block;
 }
 
-/* Menu: centered as a block, with naturally uneven left edges like the reference image */
 .side-nav {
-  margin-top: 112px;
+  margin-top: 122px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  width: 420px;
-  padding-left: 22px;
+  gap: 19px;
+  width: 390px;
+  padding: 0;
 }
 
 .side-nav a {
   display: block;
   width: fit-content;
-  font-size: 34px;
+  font-size: 31px;
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
   line-height: 1.02;
 }
 
-/* Right content area */
+/* RIGHT CONTENT AREA */
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
   padding: 34px 34px 80px;
 }
 
-/* Home */
+/* HOME */
 .main-home {
   display: grid;
   place-items: center;
@@ -109,7 +108,7 @@ a:hover {
   object-fit: cover;
 }
 
-/* Catalogue */
+/* CATALOGUE */
 .catalogue-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(320px, 1fr));
@@ -166,16 +165,14 @@ a:hover {
 }
 
 /*
-  REPORT FINAL
-  Visual order:
+  REPORT FIX
+  3 columns.
+  Vertical-standing long tiles.
+  Correct visual order:
   12 / 11 / 10
    9 /  8 /  7
    6 /  5 /  4
    3 /  2 /  1
-
-  Three columns.
-  Vertical long frame.
-  In CSS, vertical frame is width / height = 3 / 4.
 */
 .report-grid {
   display: grid;
@@ -199,7 +196,7 @@ a:hover {
   cursor: zoom-in;
 }
 
-/* Lightbox */
+/* LIGHTBOX */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -237,7 +234,7 @@ a:hover {
   cursor: pointer;
 }
 
-/* Contact */
+/* CONTACT */
 .contact-main {
   display: grid;
   align-items: center;
@@ -276,29 +273,27 @@ a:hover {
   letter-spacing: 0.08em;
 }
 
-/* Medium */
+/* MEDIUM */
 @media (max-width: 1320px) {
-  :root { --sidebar-w: 485px; }
+  :root { --sidebar-w: 460px; }
 
   .sidebar {
-    padding-left: 28px;
-    padding-top: 104px;
+    padding-top: 96px;
   }
 
   .logo-link,
   .site-logo {
-    width: 435px;
+    width: 350px;
   }
 
   .side-nav {
-    width: 360px;
-    margin-top: 92px;
-    padding-left: 18px;
+    margin-top: 98px;
+    width: 350px;
     gap: 16px;
   }
 
   .side-nav a {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .main {
@@ -310,29 +305,27 @@ a:hover {
   }
 }
 
-/* Tablet */
+/* TABLET */
 @media (max-width: 920px) {
-  :root { --sidebar-w: 330px; }
+  :root { --sidebar-w: 320px; }
 
   .sidebar {
-    padding-left: 22px;
-    padding-top: 76px;
+    padding-top: 72px;
   }
 
   .logo-link,
   .site-logo {
-    width: 285px;
+    width: 250px;
   }
 
   .side-nav {
-    width: 245px;
+    width: 250px;
     margin-top: 72px;
-    padding-left: 10px;
     gap: 12px;
   }
 
   .side-nav a {
-    font-size: 23px;
+    font-size: 22px;
   }
 
   .main {
@@ -348,7 +341,7 @@ a:hover {
   }
 }
 
-/* Phone */
+/* PHONE */
 @media (max-width: 680px) {
   :root { --sidebar-w: 0px; }
 
@@ -360,6 +353,7 @@ a:hover {
     position: static;
     width: 100%;
     padding: 30px 22px 22px;
+    align-items: flex-start;
   }
 
   .logo-link,

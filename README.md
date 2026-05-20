@@ -121,3 +121,8 @@ Report order is:
 
 Report tiles are vertical long frames: aspect-ratio 3 / 4.
 Lightbox remains active.
+
+
+## v15 actual fix
+Left panel is now centered and uses the uploaded logo image as a single block.
+Report order and 3-column vertical tile frame corrected.
