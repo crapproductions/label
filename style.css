@@ -3,7 +3,6 @@
 }
 
 :root {
-  /* MAIN mockup proportion: left area wider, content starts farther right */
   --sidebar-w: 560px;
   --ink: #000;
   --paper: #fff;
@@ -30,26 +29,14 @@ a:hover {
   text-decoration: underline;
 }
 
-/*
-  V8 — MAIN mockup match
-
-  LEFT:
-  - `assets/ui/logo.png` is ONE complete logo image.
-  - The logo image is now 1.2x larger than the previous version.
-  - The whole left block is pushed lower.
-
-  HOME:
-  - Latest release/news frame is square.
-  - The square is much larger, closer to the first MAIN mockup.
-*/
-
+/* Left fixed area */
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   width: var(--sidebar-w);
-  padding: 150px 0 54px 64px; /* pushed down */
+  padding: 138px 0 54px 48px;
   background: #fff;
   z-index: 20;
   display: flex;
@@ -58,22 +45,22 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 444px; /* 370px * 1.2 */
+  width: 475px;
 }
 
 .site-logo {
-  width: 444px; /* 1.2x larger */
+  width: 475px;
   height: auto;
   display: block;
 }
 
-/* Crooked / uneven menu column, now lower */
+/* MENU: smaller and crooked, matching the MAIN mockup feel */
 .side-nav {
-  margin-top: 122px; /* more downward distance after logo */
+  margin-top: 98px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  width: 390px;
+  gap: 12px;
+  width: 320px;
   padding-left: 0;
   align-items: flex-start;
 }
@@ -81,36 +68,34 @@ a:hover {
 .side-nav a {
   display: block;
   width: fit-content;
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.10em;
   line-height: 1.02;
 }
 
-/* Uneven offsets, like the supplied MAIN mockup */
-.side-nav a:nth-child(1) { margin-left: 122px; } /* HOME */
-.side-nav a:nth-child(2) { margin-left: 56px; }  /* CATALOGUE */
-.side-nav a:nth-child(3) { margin-left: 104px; } /* REPORT */
-.side-nav a:nth-child(4) { margin-left: 82px; }  /* CONTACT */
+.side-nav a:nth-child(1) { margin-left: 96px; }  /* HOME */
+.side-nav a:nth-child(2) { margin-left: 50px; }  /* CATALOGUE */
+.side-nav a:nth-child(3) { margin-left: 82px; }  /* REPORT */
+.side-nav a:nth-child(4) { margin-left: 68px; }  /* CONTACT */
 
-/* RIGHT CONTENT AREA */
+/* Right content area */
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
-  padding: 50px 70px 90px;
+  padding: 34px 36px 80px;
 }
 
-/* HOME */
+/* Home */
 .main-home {
   display: grid;
   place-items: center;
-  padding-top: 50px;
+  padding-top: 32px;
 }
 
-/* Latest release/news is square album-cover frame, now larger */
 .feature-news {
   display: block;
-  width: min(920px, 82vh, calc(100vw - var(--sidebar-w) - 150px));
+  width: min(920px, 82vh, calc(100vw - var(--sidebar-w) - 110px));
   aspect-ratio: 1 / 1;
   border: 3px solid var(--ink);
   overflow: hidden;
@@ -124,7 +109,7 @@ a:hover {
   object-fit: cover;
 }
 
-/* CATALOGUE */
+/* Catalogue */
 .catalogue-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(320px, 1fr));
@@ -151,7 +136,6 @@ a:hover {
   display: block;
 }
 
-/* If a cassette-wrap / landscape image should keep its full shape, add class="contain" to the img. */
 .cover-frame img.contain {
   object-fit: contain;
 }
@@ -181,17 +165,17 @@ a:hover {
   max-width: 720px;
 }
 
-/* REPORT */
+/* REPORT: portrait/longer tiles like the reference */
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
   align-items: start;
 }
 
 .report-item {
   margin: 0;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: #eee;
 }
@@ -201,15 +185,48 @@ a:hover {
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: zoom-in;
 }
 
-/*
-Alternative report layouts:
-- For 4 photos per row on desktop, change .report-grid to repeat(4, 1fr).
-- For mixed original ratios, remove aspect-ratio from .report-item and set .report-item img { height: auto; }.
-*/
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  place-items: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.84);
+}
 
-/* CONTACT */
+.lightbox.is-open {
+  display: grid;
+}
+
+.lightbox-image {
+  max-width: min(92vw, 1200px);
+  max-height: 88vh;
+  object-fit: contain;
+  border: 2px solid var(--ink);
+  background: #fff;
+  cursor: zoom-out;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 1000;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 46px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Contact */
 .contact-main {
   display: grid;
   align-items: center;
@@ -248,49 +265,48 @@ Alternative report layouts:
   letter-spacing: 0.08em;
 }
 
-/* Medium screens */
-@media (max-width: 1120px) {
-  :root {
-    --sidebar-w: 410px;
-  }
+@media (max-width: 1320px) {
+  :root { --sidebar-w: 470px; }
 
   .sidebar {
-    padding-left: 42px;
-    padding-top: 110px;
+    padding-left: 36px;
+    padding-top: 112px;
   }
 
   .logo-link,
   .site-logo {
-    width: 330px;
+    width: 390px;
   }
 
   .side-nav {
-    width: 330px;
-    margin-top: 92px;
+    width: 290px;
+    margin-top: 82px;
   }
 
   .side-nav a {
-    font-size: 30px;
+    font-size: 28px;
   }
 
-  .side-nav a:nth-child(1) { margin-left: 92px; }
-  .side-nav a:nth-child(2) { margin-left: 38px; }
-  .side-nav a:nth-child(3) { margin-left: 78px; }
-  .side-nav a:nth-child(4) { margin-left: 62px; }
+  .side-nav a:nth-child(1) { margin-left: 84px; }
+  .side-nav a:nth-child(2) { margin-left: 40px; }
+  .side-nav a:nth-child(3) { margin-left: 72px; }
+  .side-nav a:nth-child(4) { margin-left: 58px; }
 
   .main {
-    padding: 42px 34px 70px;
+    padding: 28px 26px 70px;
   }
 
   .feature-news {
-    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 80px));
+    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 70px));
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 920px) {
-  :root {
-    --sidebar-w: 320px;
-  }
+  :root { --sidebar-w: 320px; }
 
   .sidebar {
     padding-left: 28px;
@@ -299,25 +315,25 @@ Alternative report layouts:
 
   .logo-link,
   .site-logo {
-    width: 260px;
+    width: 265px;
   }
 
   .side-nav {
-    width: 270px;
-    margin-top: 72px;
+    width: 230px;
+    margin-top: 66px;
   }
 
   .side-nav a {
-    font-size: 24px;
+    font-size: 22px;
   }
 
-  .side-nav a:nth-child(1) { margin-left: 70px; }
-  .side-nav a:nth-child(2) { margin-left: 26px; }
-  .side-nav a:nth-child(3) { margin-left: 60px; }
-  .side-nav a:nth-child(4) { margin-left: 44px; }
+  .side-nav a:nth-child(1) { margin-left: 58px; }
+  .side-nav a:nth-child(2) { margin-left: 22px; }
+  .side-nav a:nth-child(3) { margin-left: 48px; }
+  .side-nav a:nth-child(4) { margin-left: 34px; }
 
   .main {
-    padding: 38px 28px 60px;
+    padding: 28px 22px 60px;
   }
 
   .catalogue-grid {
@@ -329,11 +345,8 @@ Alternative report layouts:
   }
 }
 
-/* Phone */
 @media (max-width: 680px) {
-  :root {
-    --sidebar-w: 0px;
-  }
+  :root { --sidebar-w: 0px; }
 
   body {
     letter-spacing: 0.04em;
@@ -378,47 +391,6 @@ Alternative report layouts:
   }
 
   .report-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
-}
-.report-item img {
-  cursor: zoom-in;
-}
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  display: none;
-  place-items: center;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.82);
-}
-
-.lightbox.is-open {
-  display: grid;
-}
-
-.lightbox-image {
-  max-width: min(92vw, 1200px);
-  max-height: 88vh;
-  object-fit: contain;
-  border: 2px solid var(--ink);
-  background: #fff;
-  box-shadow: 0 0 0 9999px rgba(255, 255, 255, 0.25);
-  cursor: zoom-out;
-}
-
-.lightbox-close {
-  position: fixed;
-  top: 24px;
-  right: 32px;
-  z-index: 1000;
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 46px;
-  line-height: 1;
-  cursor: pointer;
 }

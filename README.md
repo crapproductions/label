@@ -68,3 +68,16 @@ This package combines:
 - Square latest-release image on the home page
 - Two-column catalogue page
 - 4:3 report grid
+
+
+## v8 main match
+- Logo image display width increased to 444px.
+- Left block pushed lower.
+- Home latest square cover max size increased to 920px.
+
+
+## v10 report/menu update
+- Report grid changed to portrait tiles (3:4) and 4 columns on desktop.
+- Report page now has click-to-enlarge lightbox without leaving the page.
+- Left navigation made smaller and more crooked like the original MAIN mockup.
+- Logo display size increased again.

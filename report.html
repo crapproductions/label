@@ -60,43 +60,45 @@
       </figure>
     </section>
   </main>
-<div class="lightbox" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
-  <img class="lightbox-image" src="" alt="">
-</div>
 
-<script>
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImage = document.querySelector(".lightbox-image");
-  const closeButton = document.querySelector(".lightbox-close");
-  const reportImages = document.querySelectorAll(".report-item img");
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
+    <img class="lightbox-image" src="" alt="">
+  </div>
 
-  reportImages.forEach((image) => {
-    image.addEventListener("click", () => {
-      lightboxImage.src = image.src;
-      lightboxImage.alt = image.alt;
-      lightbox.classList.add("is-open");
-      lightbox.setAttribute("aria-hidden", "false");
+  <script>
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.querySelector(".lightbox-image");
+    const closeButton = document.querySelector(".lightbox-close");
+    const reportImages = document.querySelectorAll(".report-item img");
+
+    reportImages.forEach((image) => {
+      image.addEventListener("click", () => {
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
     });
-  });
 
-  function closeLightbox() {
-    lightbox.classList.remove("is-open");
-    lightbox.setAttribute("aria-hidden", "true");
-    lightboxImage.src = "";
-  }
-
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox || event.target === closeButton) {
-      closeLightbox();
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
     }
-  });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeLightbox();
-    }
-  });
-</script>
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox || event.target === closeButton || event.target === lightboxImage) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+    });
+  </script>
+
 </body>
 </html>
