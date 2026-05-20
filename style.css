@@ -3,7 +3,8 @@
 }
 
 :root {
-  --sidebar-w: 520px;
+  /* MAIN mockup proportion: left area wider, content starts farther right */
+  --sidebar-w: 560px;
   --ink: #000;
   --paper: #fff;
 }
@@ -30,19 +31,16 @@ a:hover {
 }
 
 /*
-  FINAL STRUCTURE
+  V8 — MAIN mockup match
 
   LEFT:
-  - Use one combined logo image: assets/ui/logo.png
-  - This image should already include the mark + CRAP PRODUCTIONS type.
-  - Replace logo.png with your own finished logo image.
+  - `assets/ui/logo.png` is ONE complete logo image.
+  - The logo image is now 1.2x larger than the previous version.
+  - The whole left block is pushed lower.
 
   HOME:
-  - Latest release/news image is forced to a square album-cover frame.
-
-  MENU:
-  - Not centered.
-  - Each line has a slightly different left offset, like the supplied MAIN mockup.
+  - Latest release/news frame is square.
+  - The square is much larger, closer to the first MAIN mockup.
 */
 
 .sidebar {
@@ -51,7 +49,7 @@ a:hover {
   top: 0;
   bottom: 0;
   width: var(--sidebar-w);
-  padding: 120px 0 54px 55px;
+  padding: 150px 0 54px 64px; /* pushed down */
   background: #fff;
   z-index: 20;
   display: flex;
@@ -60,22 +58,22 @@ a:hover {
 
 .logo-link {
   display: block;
-  width: 370px;
+  width: 444px; /* 370px * 1.2 */
 }
 
 .site-logo {
-  width: 370px;
+  width: 444px; /* 1.2x larger */
   height: auto;
   display: block;
 }
 
-/* Crooked / uneven menu column */
+/* Crooked / uneven menu column, now lower */
 .side-nav {
-  margin-top: 95px;
+  margin-top: 122px; /* more downward distance after logo */
   display: flex;
   flex-direction: column;
   gap: 14px;
-  width: 360px;
+  width: 390px;
   padding-left: 0;
   align-items: flex-start;
 }
@@ -89,40 +87,30 @@ a:hover {
   line-height: 1.02;
 }
 
-.side-nav a:nth-child(1) {
-  margin-left: 122px; /* HOME */
-}
-
-.side-nav a:nth-child(2) {
-  margin-left: 58px;  /* CATALOGUE */
-}
-
-.side-nav a:nth-child(3) {
-  margin-left: 104px; /* REPORT */
-}
-
-.side-nav a:nth-child(4) {
-  margin-left: 82px;  /* CONTACT */
-}
+/* Uneven offsets, like the supplied MAIN mockup */
+.side-nav a:nth-child(1) { margin-left: 122px; } /* HOME */
+.side-nav a:nth-child(2) { margin-left: 56px; }  /* CATALOGUE */
+.side-nav a:nth-child(3) { margin-left: 104px; } /* REPORT */
+.side-nav a:nth-child(4) { margin-left: 82px; }  /* CONTACT */
 
 /* RIGHT CONTENT AREA */
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
-  padding: 58px 60px 90px;
+  padding: 50px 70px 90px;
 }
 
 /* HOME */
 .main-home {
   display: grid;
   place-items: center;
-  padding-top: 58px;
+  padding-top: 50px;
 }
 
-/* Latest release/news is square, because it is usually an album cover. */
+/* Latest release/news is square album-cover frame, now larger */
 .feature-news {
   display: block;
-  width: min(760px, 82vh, 78vw);
+  width: min(920px, 82vh, calc(100vw - var(--sidebar-w) - 150px));
   aspect-ratio: 1 / 1;
   border: 3px solid var(--ink);
   overflow: hidden;
@@ -263,23 +251,22 @@ Alternative report layouts:
 /* Medium screens */
 @media (max-width: 1120px) {
   :root {
-    --sidebar-w: 390px;
+    --sidebar-w: 410px;
   }
 
   .sidebar {
-    padding-left: 36px;
-    padding-top: 92px;
+    padding-left: 42px;
+    padding-top: 110px;
   }
 
   .logo-link,
   .site-logo {
-    width: 300px;
+    width: 330px;
   }
 
   .side-nav {
-    width: 300px;
-    padding-left: 0;
-    margin-top: 82px;
+    width: 330px;
+    margin-top: 92px;
   }
 
   .side-nav a {
@@ -296,29 +283,28 @@ Alternative report layouts:
   }
 
   .feature-news {
-    width: min(660px, 80vh, 78vw);
+    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 80px));
   }
 }
 
 @media (max-width: 920px) {
   :root {
-    --sidebar-w: 310px;
+    --sidebar-w: 320px;
   }
 
   .sidebar {
     padding-left: 28px;
-    padding-top: 72px;
+    padding-top: 82px;
   }
 
   .logo-link,
   .site-logo {
-    width: 240px;
+    width: 260px;
   }
 
   .side-nav {
-    width: 250px;
-    padding-left: 0;
-    margin-top: 70px;
+    width: 270px;
+    margin-top: 72px;
   }
 
   .side-nav a {
@@ -361,7 +347,7 @@ Alternative report layouts:
 
   .logo-link,
   .site-logo {
-    width: 240px;
+    width: 260px;
   }
 
   .side-nav {
@@ -384,7 +370,7 @@ Alternative report layouts:
   }
 
   .feature-news {
-    width: min(100%, 520px);
+    width: min(100%, 560px);
   }
 
   .tiny-links a {
