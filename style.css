@@ -1199,3 +1199,111 @@ a:hover {
     gap: 4px;
   }
 }
+/* CONTACT FINAL SCALE FIX */
+
+.contact-layout {
+  width: min(1200px, 100%) !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.contact-image {
+  display: block;
+  width: min(1120px, 100%) !important;
+  height: auto;
+  margin: 0 auto 46px !important;
+}
+
+/* CONTACT */
+.contact-title {
+  text-align: center !important;
+  font-size: clamp(62px, 7vw, 108px) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em !important;
+  line-height: 0.95 !important;
+  margin: 0 auto 24px !important;
+}
+
+/* MAIL / CALL */
+.contact-row {
+  justify-content: center !important;
+  text-align: center !important;
+  font-size: clamp(22px, 2.2vw, 34px) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  margin: 0 auto 64px !important;
+}
+
+/* SHOP US image block */
+.shop-image-block {
+  width: 100% !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin-top: 0 !important;
+}
+
+/* SHOP US + CERTIFIED CRAP DEALERS */
+.shop-us-image {
+  display: block;
+  width: min(620px, 100%) !important;
+  height: auto;
+  margin: 0 auto 34px !important;
+}
+
+/* dealer list */
+.shop-image-links {
+  width: 100% !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.shop-image-links a {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  line-height: 0 !important;
+}
+
+.shop-image-links img {
+  display: block;
+  width: min(420px, 100%) !important;
+  height: auto !important;
+  margin: 0 auto !important;
+}
+
+/* MOBILE */
+@media (max-width: 680px) {
+  .contact-layout {
+    width: 100% !important;
+  }
+
+  .contact-image {
+    width: 100% !important;
+    margin-bottom: 34px !important;
+  }
+
+  .contact-title {
+    font-size: 48px !important;
+    letter-spacing: 0.18em !important;
+    margin-bottom: 18px !important;
+  }
+
+  .contact-row {
+    font-size: 18px !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 42px !important;
+  }
+
+  .shop-us-image {
+    width: min(390px, 100%) !important;
+    margin-bottom: 26px !important;
+  }
+
+  .shop-image-links img {
+    width: min(280px, 100%) !important;
+  }
+
+  .shop-image-links {
+    gap: 7px !important;
+  }
+}
