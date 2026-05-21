@@ -1344,3 +1344,52 @@ a:hover {
 .contact-row span {
   font-weight: 300 !important;
 }
+/* LAPTOP HEIGHT FIX — LEFT PANEL */
+
+@media (max-height: 850px) and (min-width: 681px) {
+  .sidebar {
+    padding-top: 40px;
+  }
+
+  .logo-link {
+    margin-top: 35px;
+    width: 300px;
+  }
+
+  .site-logo {
+    width: 300px;
+  }
+
+  .image-nav {
+    margin-top: 70px;
+    gap: 6px;
+  }
+
+  .image-nav img {
+    width: 185px;
+  }
+}
+
+@media (max-height: 740px) and (min-width: 681px) {
+  .sidebar {
+    padding-top: 24px;
+  }
+
+  .logo-link {
+    margin-top: 20px;
+    width: 270px;
+  }
+
+  .site-logo {
+    width: 270px;
+  }
+
+  .image-nav {
+    margin-top: 46px;
+    gap: 4px;
+  }
+
+  .image-nav img {
+    width: 165px;
+  }
+}
