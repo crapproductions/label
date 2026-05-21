@@ -1033,3 +1033,60 @@ a:hover {
     width: 165px;
   }
 }
+/* CONTACT SHOP IMAGE LINKS */
+
+.shop-title,
+.shop-list {
+  display: none;
+}
+
+.shop-image-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 34px;
+}
+
+.shop-us-image {
+  display: block;
+  width: min(520px, 100%);
+  height: auto;
+  margin-bottom: 28px;
+}
+
+.shop-image-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-image-links a {
+  display: block;
+  line-height: 0;
+}
+
+.shop-image-links img {
+  display: block;
+  width: min(360px, 100%);
+  height: auto;
+}
+
+@media (max-width: 680px) {
+  .shop-image-block {
+    margin-top: 28px;
+  }
+
+  .shop-us-image {
+    width: min(330px, 100%);
+    margin-bottom: 22px;
+  }
+
+  .shop-image-links {
+    gap: 6px;
+  }
+
+  .shop-image-links img {
+    width: min(250px, 100%);
+  }
+}
