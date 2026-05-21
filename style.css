@@ -1393,3 +1393,35 @@ a:hover {
     width: 165px;
   }
 }
+/* REPORT 200 + MOBILE 3-COLUMN FIX */
+/* Paste at the very bottom of style.css */
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  align-items: start;
+}
+
+.report-item {
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #eee;
+}
+
+.report-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+
+/* 모바일에서도 REPORT 3열 유지 */
+@media (max-width: 680px) {
+  .report-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+}
