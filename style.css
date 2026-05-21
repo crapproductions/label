@@ -1051,7 +1051,7 @@ a:hover {
   display: block;
   width: min(520px, 100%);
   height: auto;
-  margin-bottom: 28px;
+  margin-bottom: 10px;
 }
 
 .shop-image-links {
@@ -1329,4 +1329,18 @@ a:hover {
 .contact-row a,
 .contact-row span {
   font-weight: 400 !important;
+}
+/* CONTACT MAIL CALL SPACING + SHOP GAP CONTROL */
+
+.contact-row {
+  gap: 34px !important;
+  font-weight: 300 !important;
+  font-size: clamp(20px, 1.9vw, 30px) !important;
+  letter-spacing: 0.18em !important;
+  margin-bottom: 64px !important;
+}
+
+.contact-row a,
+.contact-row span {
+  font-weight: 300 !important;
 }
