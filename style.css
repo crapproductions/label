@@ -1090,3 +1090,77 @@ a:hover {
     width: min(250px, 100%);
   }
 }
+/* CONTACT ALIGNMENT FIX */
+
+.contact-layout {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  text-align: center !important;
+}
+
+.contact-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 34px;
+}
+
+/* CONTACT / MAIL CALL 다시 중앙정렬 */
+.contact-title {
+  display: block;
+  width: 100%;
+  text-align: center !important;
+  margin: 0 auto 16px;
+}
+
+.contact-row {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  width: 100%;
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* SHOP US 이미지 블록 중앙정렬 */
+.shop-image-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* SHOP US 헤더 이미지 중앙 */
+.shop-us-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 딜러 리스트 전체 중앙정렬 */
+.shop-image-links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  justify-content: center;
+  text-align: center !important;
+}
+
+/* 각 딜러 링크 이미지 중앙 */
+.shop-image-links a {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  line-height: 0;
+}
+
+.shop-image-links img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
