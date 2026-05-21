@@ -1164,3 +1164,38 @@ a:hover {
   margin-left: auto;
   margin-right: auto;
 }
+/* CONTACT SHOP IMAGE SIZE TUNING */
+
+/* SHOP US 이미지 더 크게 */
+.shop-us-image {
+  width: min(620px, 100%) !important;
+  height: auto;
+  margin-bottom: 24px;
+}
+
+/* 딜러 리스트 이미지 조금 작게 */
+.shop-image-links img {
+  width: min(300px, 100%) !important;
+  height: auto;
+}
+
+/* 딜러 리스트 간격 */
+.shop-image-links {
+  gap: 5px;
+}
+
+/* 모바일에서는 너무 커지지 않게 */
+@media (max-width: 680px) {
+  .shop-us-image {
+    width: min(390px, 100%) !important;
+    margin-bottom: 20px;
+  }
+
+  .shop-image-links img {
+    width: min(220px, 100%) !important;
+  }
+
+  .shop-image-links {
+    gap: 4px;
+  }
+}
