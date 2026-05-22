@@ -53,28 +53,49 @@
       return String(number).padStart(3, "0");
     }
 
+    function getReportSrc(number) {
+      return `${imageBasePath}${padNumber(number)}.jpg`;
+    }
+
+    function openLightbox(src, alt) {
+      lightboxImage.src = src;
+      lightboxImage.alt = alt;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+    }
+
+    function updateHash(number) {
+      history.replaceState(null, "", `#report-${padNumber(number)}`);
+    }
+
     function addReportImage(number) {
       const padded = padNumber(number);
-      const src = `${imageBasePath}${padded}.jpg`;
+      const src = getReportSrc(number);
 
       const figure = document.createElement("figure");
       figure.className = "report-item";
+      figure.id = `report-${padded}`;
 
       const image = document.createElement("img");
       image.src = src;
       image.alt = `Report image ${padded}`;
       image.loading = "lazy";
       image.decoding = "async";
+      image.dataset.reportNumber = padded;
 
       image.onerror = () => {
         figure.remove();
       };
 
       image.addEventListener("click", () => {
-        lightboxImage.src = image.src;
-        lightboxImage.alt = image.alt;
-        lightbox.classList.add("is-open");
-        lightbox.setAttribute("aria-hidden", "false");
+        openLightbox(image.src, image.alt);
+        updateHash(number);
       });
 
       figure.appendChild(image);
@@ -87,10 +108,36 @@
       }
     }
 
-    function closeLightbox() {
-      lightbox.classList.remove("is-open");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImage.src = "";
+    function openReportFromHash() {
+      const match = window.location.hash.match(/^#report-(\d{1,3})$/);
+
+      if (!match) return;
+
+      const number = Number(match[1]);
+
+      if (!Number.isInteger(number) || number < 1 || number > maxReportNumber) return;
+
+      const padded = padNumber(number);
+      const src = getReportSrc(number);
+      const alt = `Report image ${padded}`;
+
+      const tester = new Image();
+
+      tester.onload = () => {
+        const target = document.getElementById(`report-${padded}`);
+
+        if (target) {
+          target.scrollIntoView({ block: "center" });
+        }
+
+        openLightbox(src, alt);
+      };
+
+      tester.onerror = () => {
+        console.warn(`Report image ${padded} not found.`);
+      };
+
+      tester.src = src;
     }
 
     lightbox.addEventListener("click", (event) => {
@@ -105,7 +152,10 @@
       }
     });
 
+    window.addEventListener("hashchange", openReportFromHash);
+
     loadReports();
+    openReportFromHash();
   </script>
 </body>
 </html>
