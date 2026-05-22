@@ -1512,3 +1512,66 @@ a:hover {
   box-shadow: none !important;
   background: transparent !important;
 }
+/* REPORT LIGHTBOX FINAL OVERRIDE — NO BOX LINE */
+
+.lightbox {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.lightbox.is-open {
+  display: flex !important;
+}
+
+.lightbox-image {
+  display: block !important;
+
+  max-width: 96vw !important;
+  max-height: 96vh !important;
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+
+  object-fit: contain !important;
+}
+
+.lightbox img,
+.lightbox.is-open img,
+#lightbox img,
+#lightbox .lightbox-image {
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.lightbox-close {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
