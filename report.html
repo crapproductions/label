@@ -46,11 +46,22 @@
     const lightboxImage = document.querySelector(".lightbox-image");
     const closeButton = document.querySelector(".lightbox-close");
 
-    const maxReportNumber = 200;
+    const maxReportNumber = 500;
     const imageBasePath = "assets/reports/report-";
 
     function padNumber(number) {
       return String(number).padStart(3, "0");
+    }
+
+    function imageExists(src) {
+      return new Promise((resolve) => {
+        const tester = new Image();
+
+        tester.onload = () => resolve(true);
+        tester.onerror = () => resolve(false);
+
+        tester.src = src;
+      });
     }
 
     function addReportImage(src, alt) {
@@ -73,24 +84,31 @@
       reportGrid.appendChild(figure);
     }
 
-    function checkAndAddImage(number) {
-      const padded = padNumber(number);
-      const src = `${imageBasePath}${padded}.jpg`;
-      const tester = new Image();
+    async function loadReports() {
+      const checks = [];
 
-      tester.onload = () => {
-        addReportImage(src, `Report image ${padded}`);
-      };
+      for (let number = maxReportNumber; number >= 1; number--) {
+        const padded = padNumber(number);
+        const src = `${imageBasePath}${padded}.jpg`;
 
-      tester.onerror = () => {
-        // Missing image: skip it completely.
-      };
+        checks.push(
+          imageExists(src).then((exists) => ({
+            exists,
+            src,
+            alt: `Report image ${padded}`,
+            number
+          }))
+        );
+      }
 
-      tester.src = src;
-    }
+      const results = await Promise.all(checks);
 
-    for (let number = maxReportNumber; number >= 1; number -= 1) {
-      checkAndAddImage(number);
+      results
+        .filter((item) => item.exists)
+        .sort((a, b) => b.number - a.number)
+        .forEach((item) => {
+          addReportImage(item.src, item.alt);
+        });
     }
 
     function closeLightbox() {
@@ -110,6 +128,8 @@
         closeLightbox();
       }
     });
+
+    loadReports();
   </script>
 </body>
 </html>
