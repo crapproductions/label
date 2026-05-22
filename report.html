@@ -53,25 +53,22 @@
       return String(number).padStart(3, "0");
     }
 
-    function imageExists(src) {
-      return new Promise((resolve) => {
-        const tester = new Image();
+    function addReportImage(number) {
+      const padded = padNumber(number);
+      const src = `${imageBasePath}${padded}.jpg`;
 
-        tester.onload = () => resolve(true);
-        tester.onerror = () => resolve(false);
-
-        tester.src = src;
-      });
-    }
-
-    function addReportImage(src, alt) {
       const figure = document.createElement("figure");
       figure.className = "report-item";
 
       const image = document.createElement("img");
       image.src = src;
-      image.alt = alt;
+      image.alt = `Report image ${padded}`;
       image.loading = "lazy";
+      image.decoding = "async";
+
+      image.onerror = () => {
+        figure.remove();
+      };
 
       image.addEventListener("click", () => {
         lightboxImage.src = image.src;
@@ -84,31 +81,10 @@
       reportGrid.appendChild(figure);
     }
 
-    async function loadReports() {
-      const checks = [];
-
+    function loadReports() {
       for (let number = maxReportNumber; number >= 1; number--) {
-        const padded = padNumber(number);
-        const src = `${imageBasePath}${padded}.jpg`;
-
-        checks.push(
-          imageExists(src).then((exists) => ({
-            exists,
-            src,
-            alt: `Report image ${padded}`,
-            number
-          }))
-        );
+        addReportImage(number);
       }
-
-      const results = await Promise.all(checks);
-
-      results
-        .filter((item) => item.exists)
-        .sort((a, b) => b.number - a.number)
-        .forEach((item) => {
-          addReportImage(item.src, item.alt);
-        });
     }
 
     function closeLightbox() {
