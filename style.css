@@ -1425,3 +1425,24 @@ a:hover {
     gap: 0;
   }
 }
+/* REPORT IMAGE BORDER / LINE REMOVE */
+.report-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.report-item img {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  display: block;
+}
+
+.report-grid {
+  gap: 0 !important;
+  background: transparent !important;
+}
