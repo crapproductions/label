@@ -1575,3 +1575,196 @@ a:hover {
   box-shadow: none !important;
   background: transparent !important;
 }
+
+/* CATALOG PAGE PHASE 1 — COVER GRID + COVER-ONLY POPUP */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 34px 0;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.topbar nav {
+  display: flex;
+  gap: 18px;
+}
+
+.page {
+  padding: 34px;
+}
+
+.catalog-hero {
+  margin-bottom: 34px;
+}
+
+.catalog-hero .banner p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+}
+
+.catalog-hero .banner h1 {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 72px);
+  line-height: 0.95;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.release-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(280px, 1fr)) !important;
+  gap: 34px 32px !important;
+  align-items: start !important;
+}
+
+.release-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.release-card .release-meta,
+.release-card .release-strip,
+.release-card .release-links,
+.release-card .release-platform-links,
+.release-card .bc-embed-small,
+.release-card .release-title-line {
+  display: none !important;
+}
+
+.catalog-cover-button,
+.release-card .cover-link {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  cursor: zoom-in !important;
+  line-height: 0 !important;
+}
+
+.catalog-cover-button img,
+.release-card .cover-link img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.catalog-modal-open {
+  overflow: hidden;
+}
+
+.catalog-release-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.catalog-release-modal.is-open {
+  display: flex;
+}
+
+.catalog-release-modal-card {
+  width: min(960px, calc(100vw - 80px));
+  height: min(540px, calc(100vh - 80px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.catalog-release-modal-cover {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.catalog-release-modal-close {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 10001;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 46px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  .topbar {
+    padding: 22px 22px 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .topbar nav {
+    gap: 14px;
+  }
+
+  .page {
+    padding: 28px 22px 60px;
+  }
+
+  .release-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  .catalog-release-modal {
+    padding: 22px;
+  }
+
+  .catalog-release-modal-card {
+    width: calc(100vw - 44px);
+    height: calc(100vh - 88px);
+  }
+
+  .catalog-release-modal-close {
+    top: 14px;
+    right: 18px;
+    font-size: 42px;
+  }
+}
