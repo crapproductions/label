@@ -1576,7 +1576,7 @@ a:hover {
   background: transparent !important;
 }
 
-/* CATALOGUE POPUP PHASE 1 — KEEP LEFT PANEL LAYOUT */
+/* CATALOG POPUP RECOVERY — SINGLE FILE: catalog.html */
 
 /* Hide old under-cover players / links if any remain */
 .release-strip,
@@ -1588,7 +1588,7 @@ a:hover {
   display: none !important;
 }
 
-/* Keep catalogue as 2-column cover archive */
+/* Keep catalog as 2-column cover archive */
 .catalogue-main {
   padding-top: 34px !important;
 }
