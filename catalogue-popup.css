@@ -1,0 +1,58 @@
+/* CATALOGUE POPUP SIZE OVERRIDE */
+
+@media (min-width: 921px) {
+  .release-modal {
+    padding: 32px !important;
+  }
+
+  .release-modal-card-detail {
+    width: min(1240px, calc(100vw - 72px)) !important;
+    min-height: min(680px, calc(100vh - 72px)) !important;
+    grid-template-columns: min(560px, 76vh) minmax(0, 1fr) !important;
+    column-gap: 64px !important;
+    padding: 44px !important;
+  }
+
+  .release-modal-left {
+    width: min(560px, 76vh) !important;
+    height: min(560px, 76vh) !important;
+  }
+
+  .release-bandcamp-artwork,
+  .release-modal-cover {
+    width: min(560px, 76vh) !important;
+    height: min(560px, 76vh) !important;
+  }
+
+  .release-modal-catno {
+    font-size: 17px !important;
+  }
+
+  .release-modal-title {
+    font-size: clamp(44px, 4.8vw, 72px) !important;
+  }
+
+  .release-modal-note {
+    max-width: 440px !important;
+    font-size: 17px !important;
+  }
+
+  .release-modal-links a {
+    font-size: 21px !important;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 921px) {
+  .release-modal-card-detail {
+    grid-template-columns: min(500px, 70vh) minmax(0, 1fr) !important;
+    min-height: auto !important;
+    padding: 34px !important;
+  }
+
+  .release-modal-left,
+  .release-bandcamp-artwork,
+  .release-modal-cover {
+    width: min(500px, 70vh) !important;
+    height: min(500px, 70vh) !important;
+  }
+}
