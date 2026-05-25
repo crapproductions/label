@@ -24,21 +24,67 @@
     height: min(560px, 76vh) !important;
   }
 
+  .release-modal-info {
+    min-height: min(560px, 76vh) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+  }
+
+  .release-modal-header {
+    flex: 0 0 auto !important;
+  }
+
   .release-modal-catno {
-    font-size: 17px !important;
+    margin-bottom: 12px !important;
+    font-size: 13px !important;
   }
 
   .release-modal-title {
-    font-size: clamp(44px, 4.8vw, 72px) !important;
+    margin-bottom: 14px !important;
+    font-size: clamp(28px, 2.8vw, 42px) !important;
+    line-height: 0.95 !important;
   }
 
   .release-modal-note {
     max-width: 440px !important;
-    font-size: 17px !important;
+    margin-bottom: 20px !important;
+    font-size: 13px !important;
   }
 
-  .release-modal-links a {
-    font-size: 21px !important;
+  .release-modal-credits {
+    flex: 1 1 auto !important;
+    margin: 0 0 22px !important;
+    white-space: pre-wrap !important;
+    font-family: "Courier New", Courier, "Lucida Console", Monaco, monospace !important;
+    font-size: clamp(11px, 1.02vw, 15px) !important;
+    line-height: 1.14 !important;
+    letter-spacing: 0.015em !important;
+    text-transform: uppercase !important;
+    color: #000 !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .release-modal-links {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin-top: auto !important;
+    width: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  .release-modal-links a,
+  .release-modal-links span {
+    display: inline-block !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
   }
 }
 
@@ -54,5 +100,58 @@
   .release-modal-cover {
     width: min(500px, 70vh) !important;
     height: min(500px, 70vh) !important;
+  }
+
+  .release-modal-info {
+    min-height: min(500px, 70vh) !important;
+  }
+
+  .release-modal-title {
+    font-size: clamp(24px, 2.4vw, 34px) !important;
+  }
+
+  .release-modal-credits {
+    font-size: clamp(10px, 0.92vw, 13px) !important;
+    line-height: 1.08 !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .release-modal-info {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .release-modal-title {
+    font-size: 26px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .release-modal-credits {
+    margin: 0 0 24px !important;
+    white-space: pre-wrap !important;
+    font-family: "Courier New", Courier, "Lucida Console", Monaco, monospace !important;
+    font-size: 12px !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: uppercase !important;
+    color: #000 !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .release-modal-links {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    white-space: nowrap !important;
+  }
+
+  .release-modal-links a,
+  .release-modal-links span {
+    font-size: 12px !important;
+    letter-spacing: 0.05em !important;
   }
 }
