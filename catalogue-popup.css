@@ -1,34 +1,47 @@
-/* CATALOGUE POPUP SIZE OVERRIDE */
+/* CATALOGUE POPUP — LARGE DESKTOP LAYOUT */
 
 @media (min-width: 921px) {
   .release-modal {
-    padding: 32px !important;
+    padding: 28px !important;
+    background: rgba(255, 255, 255, 0.97) !important;
   }
 
   .release-modal-card-detail {
-    width: min(1240px, calc(100vw - 72px)) !important;
-    min-height: min(680px, calc(100vh - 72px)) !important;
-    grid-template-columns: min(560px, 76vh) minmax(0, 1fr) !important;
-    column-gap: 64px !important;
-    padding: 44px !important;
+    --popup-art-size: min(62vw, calc(100vh - 96px), 900px);
+    width: calc(100vw - 56px) !important;
+    min-height: calc(100vh - 56px) !important;
+    display: grid !important;
+    grid-template-columns: var(--popup-art-size) minmax(380px, 1fr) !important;
+    column-gap: 34px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px 34px 22px 22px !important;
+    background: #fff !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .release-modal-left,
+  .release-bandcamp-artwork,
+  .release-modal-cover {
+    width: var(--popup-art-size) !important;
+    height: var(--popup-art-size) !important;
   }
 
   .release-modal-left {
-    width: min(560px, 76vh) !important;
-    height: min(560px, 76vh) !important;
-  }
-
-  .release-bandcamp-artwork,
-  .release-modal-cover {
-    width: min(560px, 76vh) !important;
-    height: min(560px, 76vh) !important;
+    align-self: center !important;
   }
 
   .release-modal-info {
-    min-height: min(560px, 76vh) !important;
+    height: var(--popup-art-size) !important;
+    min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    align-self: stretch !important;
+    align-self: center !important;
+    padding: 5.2% 0 0 0 !important;
+    text-align: left !important;
+    color: #000 !important;
   }
 
   .release-modal-header {
@@ -36,30 +49,45 @@
   }
 
   .release-modal-catno {
-    margin-bottom: 12px !important;
-    font-size: 13px !important;
+    margin: 0 0 18px !important;
+    font-size: clamp(18px, 2vw, 34px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 700 !important;
   }
 
   .release-modal-title {
-    margin-bottom: 14px !important;
-    font-size: clamp(28px, 2.8vw, 42px) !important;
-    line-height: 0.95 !important;
+    margin: 0 0 70px !important;
+    font-size: clamp(28px, 3.1vw, 52px) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.03em !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+  }
+
+  .release-modal-title span {
+    display: inline !important;
+  }
+
+  .release-modal-title span:first-child::after {
+    content: " - ";
   }
 
   .release-modal-note {
-    max-width: 440px !important;
-    margin-bottom: 20px !important;
-    font-size: 13px !important;
+    display: none !important;
   }
 
   .release-modal-credits {
     flex: 1 1 auto !important;
-    margin: 0 0 22px !important;
+    margin: 0 0 22px 70px !important;
+    max-width: 470px !important;
     white-space: pre-wrap !important;
     font-family: "Courier New", Courier, "Lucida Console", Monaco, monospace !important;
-    font-size: clamp(11px, 1.02vw, 15px) !important;
-    line-height: 1.14 !important;
-    letter-spacing: 0.015em !important;
+    font-size: clamp(14px, 1.45vw, 24px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0.04em !important;
+    font-weight: 700 !important;
     text-transform: uppercase !important;
     color: #000 !important;
     background: transparent !important;
@@ -72,7 +100,7 @@
     flex-direction: row !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 8px !important;
+    gap: 15px !important;
     margin-top: auto !important;
     width: 100% !important;
     white-space: nowrap !important;
@@ -81,38 +109,43 @@
   .release-modal-links a,
   .release-modal-links span {
     display: inline-block !important;
-    font-size: 15px !important;
+    font-size: clamp(15px, 1.35vw, 24px) !important;
     line-height: 1 !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.28em !important;
     text-transform: uppercase !important;
+    font-weight: 400 !important;
+  }
+
+  .release-modal-links .is-disabled {
+    color: #8a8a8a !important;
   }
 }
 
 @media (max-height: 760px) and (min-width: 921px) {
   .release-modal-card-detail {
-    grid-template-columns: min(500px, 70vh) minmax(0, 1fr) !important;
-    min-height: auto !important;
-    padding: 34px !important;
-  }
-
-  .release-modal-left,
-  .release-bandcamp-artwork,
-  .release-modal-cover {
-    width: min(500px, 70vh) !important;
-    height: min(500px, 70vh) !important;
+    --popup-art-size: min(58vw, calc(100vh - 84px), 720px);
+    padding: 18px 30px 20px 20px !important;
   }
 
   .release-modal-info {
-    min-height: min(500px, 70vh) !important;
+    padding-top: 3.8% !important;
   }
 
   .release-modal-title {
-    font-size: clamp(24px, 2.4vw, 34px) !important;
+    margin-bottom: 38px !important;
+    font-size: clamp(24px, 2.5vw, 40px) !important;
   }
 
   .release-modal-credits {
-    font-size: clamp(10px, 0.92vw, 13px) !important;
+    margin-left: 48px !important;
+    font-size: clamp(11px, 1.18vw, 17px) !important;
     line-height: 1.08 !important;
+  }
+
+  .release-modal-links a,
+  .release-modal-links span {
+    font-size: clamp(12px, 1.1vw, 18px) !important;
+    letter-spacing: 0.22em !important;
   }
 }
 
@@ -125,6 +158,18 @@
   .release-modal-title {
     font-size: 26px !important;
     margin-bottom: 16px !important;
+  }
+
+  .release-modal-title span {
+    display: inline !important;
+  }
+
+  .release-modal-title span:first-child::after {
+    content: " - ";
+  }
+
+  .release-modal-note {
+    display: none !important;
   }
 
   .release-modal-credits {
