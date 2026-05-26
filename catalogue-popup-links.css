@@ -51,3 +51,29 @@
     letter-spacing: 0.13em !important;
   }
 }
+
+@media (max-width: 680px) {
+  .release-modal-title {
+    font-size: 21px !important;
+    line-height: 1.02 !important;
+    letter-spacing: 0.12em !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
+  }
+
+  .release-modal-title span {
+    display: inline !important;
+  }
+
+  .release-modal-title span:first-child::after {
+    content: " - " !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .release-modal-title {
+    font-size: 19px !important;
+    letter-spacing: 0.1em !important;
+  }
+}
