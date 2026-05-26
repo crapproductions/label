@@ -7,18 +7,18 @@
   }
 
   .release-modal-card-detail {
-    --popup-art-size: 480px;
-    width: 1180px !important;
-    height: 560px !important;
+    --popup-art-size: 520px;
+    width: 1280px !important;
+    height: 608px !important;
     max-width: calc(100vw - 88px) !important;
     max-height: calc(100vh - 88px) !important;
     min-height: 0 !important;
     display: grid !important;
     grid-template-columns: var(--popup-art-size) minmax(0, 1fr) !important;
-    column-gap: 58px !important;
+    column-gap: 62px !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 40px !important;
+    padding: 44px !important;
     background: #fff !important;
     border: 0 !important;
     outline: 0 !important;
@@ -93,7 +93,7 @@
     min-height: 0 !important;
     max-height: none !important;
     width: calc(100% - 38px) !important;
-    max-width: 430px !important;
+    max-width: 470px !important;
     margin: 0 0 18px 38px !important;
     white-space: pre-wrap !important;
     overflow-wrap: break-word !important;
@@ -140,13 +140,13 @@
   }
 }
 
-@media (max-width: 1180px) and (min-width: 921px), (max-height: 720px) and (min-width: 921px) {
+@media (max-width: 1280px) and (min-width: 921px), (max-height: 760px) and (min-width: 921px) {
   .release-modal-card-detail {
-    --popup-art-size: 420px;
-    width: 1040px !important;
-    height: 500px !important;
-    column-gap: 44px !important;
-    padding: 32px !important;
+    --popup-art-size: 455px;
+    width: 1125px !important;
+    height: 534px !important;
+    column-gap: 48px !important;
+    padding: 36px !important;
   }
 
   .release-modal-info {
@@ -154,25 +154,26 @@
   }
 
   .release-modal-catno {
-    font-size: 17px !important;
+    font-size: 18px !important;
   }
 
   .release-modal-title {
-    margin-bottom: 20px !important;
-    font-size: 25px !important;
+    margin-bottom: 22px !important;
+    font-size: 27px !important;
   }
 
   .release-modal-credits {
-    margin-left: 28px !important;
-    width: calc(100% - 28px) !important;
-    font-size: 11px !important;
+    margin-left: 30px !important;
+    width: calc(100% - 30px) !important;
+    max-width: 430px !important;
+    font-size: 12px !important;
     line-height: 1.08 !important;
   }
 
   .release-modal-links a,
   .release-modal-links span {
-    font-size: 12px !important;
-    letter-spacing: 0.16em !important;
+    font-size: 13px !important;
+    letter-spacing: 0.17em !important;
   }
 }
 
