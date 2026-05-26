@@ -59,8 +59,8 @@
         </button>
       </article>
 
-      <article class="catalogue-release" id="crap003-old">
-        <button class="catalogue-cover release-cover-button" type="button" data-cover="https://f4.bcbits.com/img/a3104703231_10.jpg" data-alt="YTST — We Are Terror cover" data-catno="CRAP003" data-artist="YTST" data-title="We Are Terror" data-note="Crap archive entry." data-credits="" data-bandcamp="https://fastercrapproduction.bandcamp.com/album/we-are-terror" data-embed="" aria-label="Open YTST — We Are Terror">
+      <article class="catalogue-release" id="ytst-mix">
+        <button class="catalogue-cover release-cover-button" type="button" data-cover="https://f4.bcbits.com/img/a3104703231_10.jpg" data-alt="YTST — We Are Terror cover" data-catno="YTST MIX" data-artist="YTST" data-title="We Are Terror" data-note="" data-credits="A - Serious Beats Unmixed Side&#10;B - Tuff Enuff Side&#10;&#10;Recorded in 2022&#10;&#10;Artwork by Wreckpack" data-bandcamp="https://fastercrapproduction.bandcamp.com/album/we-are-terror" data-embed="https://bandcamp.com/EmbeddedPlayer/album=2365382086/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" data-second-label="Soundcloud" data-second-url="" aria-label="Open YTST — We Are Terror">
           <img src="https://f4.bcbits.com/img/a3104703231_10.jpg" alt="YTST — We Are Terror cover">
         </button>
       </article>
@@ -112,9 +112,9 @@
         <nav class="release-modal-links" aria-label="Release links">
           <a id="releaseModalBandcamp" href="#" target="_blank" rel="noopener">Bandcamp</a>
           <span aria-hidden="true">-</span>
-          <a class="is-disabled" href="#" aria-disabled="true">Apple Music</a>
+          <a id="releaseModalSecondLink" class="is-disabled" href="#" aria-disabled="true">Apple Music</a>
           <span aria-hidden="true">-</span>
-          <a class="is-disabled" href="#" aria-disabled="true">Spotify</a>
+          <a id="releaseModalThirdLink" class="is-disabled" href="#" aria-disabled="true">Spotify</a>
         </nav>
       </div>
     </div>
@@ -132,6 +132,8 @@
     const releaseModalNote = document.getElementById("releaseModalNote");
     const releaseModalCredits = document.getElementById("releaseModalCredits");
     const releaseModalBandcamp = document.getElementById("releaseModalBandcamp");
+    const releaseModalSecondLink = document.getElementById("releaseModalSecondLink");
+    const releaseModalThirdLink = document.getElementById("releaseModalThirdLink");
 
     function clearReleaseModalMedia() {
       releaseModalLeft.innerHTML = "";
@@ -163,6 +165,24 @@
       return image;
     }
 
+    function setOptionalLink(link, label, url) {
+      link.textContent = label;
+
+      if (url) {
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.classList.remove("is-disabled");
+        link.removeAttribute("aria-disabled");
+      } else {
+        link.href = "#";
+        link.removeAttribute("target");
+        link.removeAttribute("rel");
+        link.classList.add("is-disabled");
+        link.setAttribute("aria-disabled", "true");
+      }
+    }
+
     function openReleaseModal(button) {
       const cover = button.dataset.cover;
       const alt = button.dataset.alt || "Release cover";
@@ -173,6 +193,10 @@
       const title = button.dataset.title || "";
       const note = button.dataset.note || "";
       const credits = button.dataset.credits || "";
+      const secondLabel = button.dataset.secondLabel || "Apple Music";
+      const secondUrl = button.dataset.secondUrl || "";
+      const thirdLabel = button.dataset.thirdLabel || "Spotify";
+      const thirdUrl = button.dataset.thirdUrl || "";
 
       clearReleaseModalMedia();
 
@@ -189,6 +213,8 @@
       releaseModalCredits.textContent = credits;
       releaseModalCredits.hidden = !credits;
       releaseModalBandcamp.href = bandcamp;
+      setOptionalLink(releaseModalSecondLink, secondLabel, secondUrl);
+      setOptionalLink(releaseModalThirdLink, thirdLabel, thirdUrl);
 
       releaseModal.classList.add("is-open");
       releaseModal.setAttribute("aria-hidden", "false");
@@ -200,6 +226,8 @@
       clearReleaseModalMedia();
       releaseModalCredits.textContent = "";
       releaseModalCredits.hidden = true;
+      setOptionalLink(releaseModalSecondLink, "Apple Music", "");
+      setOptionalLink(releaseModalThirdLink, "Spotify", "");
     }
 
     releaseModalCredits.hidden = true;
