@@ -232,18 +232,3 @@
     letter-spacing: 0.05em !important;
   }
 }
-/* COIL BREAKS COVER FIX */
-
-#crap008-coil-breaks .catalogue-cover,
-#crap009-coil-breaks .catalogue-cover {
-  background-image: url("https://f4.bcbits.com/img/a2974466671_10.jpg?cb=20260601") !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-color: #fff !important;
-}
-
-#crap008-coil-breaks .catalogue-cover img,
-#crap009-coil-breaks .catalogue-cover img {
-  opacity: 0 !important;
-}
