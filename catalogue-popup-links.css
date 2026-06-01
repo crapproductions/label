@@ -77,3 +77,24 @@
     letter-spacing: 0.1em !important;
   }
 }
+
+/* COIL BREAKS COVER PATCH */
+#crap008-coil-breaks .catalogue-cover,
+#crap009-coil-breaks .catalogue-cover {
+  position: relative !important;
+  background-color: #fff !important;
+}
+
+#crap008-coil-breaks .catalogue-cover::after,
+#crap009-coil-breaks .catalogue-cover::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  z-index: 3 !important;
+  background-image: url("https://f4.bcbits.com/img/a2699047796_10.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  pointer-events: none !important;
+}
