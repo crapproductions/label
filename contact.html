@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — Crap Productions</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="reservation.css">
 </head>
 <body>
 <aside class="sidebar">
@@ -43,6 +44,12 @@
       <a href="tel:+821057235569">CALL</a>
     </div>
 
+    <div class="reservation-action">
+      <button class="reservation-open" type="button" aria-haspopup="dialog" aria-controls="reservationModal">
+        RESERVATION
+      </button>
+    </div>
+
     <div class="shop-image-block">
       <img class="shop-us-image" src="assets/ui/shop-us.png" alt="SHOP US - Certified Crap Dealer">
 
@@ -62,5 +69,66 @@
     </div>
   </section>
 </main>
+
+<div class="reservation-modal" id="reservationModal" role="dialog" aria-modal="true" aria-labelledby="reservationTitle" aria-hidden="true">
+  <div class="reservation-window">
+    <button class="reservation-close" type="button" aria-label="Close reservation popup">×</button>
+
+    <h2 id="reservationTitle">RESERVATION</h2>
+    <p class="reservation-sub">PLEASE LEAVE YOUR INFORMATION</p>
+
+    <form
+      id="reservationForm"
+      class="reservation-form"
+      action="PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"
+      method="POST"
+      target="reservationSink"
+    >
+      <label>
+        <span>EVENT / ITEM</span>
+        <input type="text" name="event" placeholder="EVENT / ITEM" autocomplete="off">
+      </label>
+
+      <label>
+        <span>NAME</span>
+        <input type="text" name="name" placeholder="NAME" autocomplete="name" required>
+      </label>
+
+      <label>
+        <span>EMAIL</span>
+        <input type="email" name="email" placeholder="EMAIL" autocomplete="email" required>
+      </label>
+
+      <label>
+        <span>PHONE / CALL</span>
+        <input type="tel" name="phone" placeholder="PHONE / CALL" autocomplete="tel">
+      </label>
+
+      <label>
+        <span>QUANTITY</span>
+        <input type="number" name="quantity" placeholder="QUANTITY" min="1" inputmode="numeric">
+      </label>
+
+      <label>
+        <span>NOTE</span>
+        <textarea name="note" placeholder="NOTE"></textarea>
+      </label>
+
+      <label class="reservation-trap" aria-hidden="true" tabindex="-1">
+        <span>Website</span>
+        <input type="text" name="website" autocomplete="off" tabindex="-1">
+      </label>
+
+      <input type="hidden" name="source" value="crap.productions/contact.html">
+
+      <button class="reservation-submit" type="submit">SEND</button>
+    </form>
+
+    <p class="reservation-message" id="reservationMessage" aria-live="polite"></p>
+    <iframe class="reservation-sink" name="reservationSink" title="Reservation submission"></iframe>
+  </div>
+</div>
+
+<script src="reservation.js"></script>
 </body>
 </html>
