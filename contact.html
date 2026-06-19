@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — Crap Productions</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="reservation.css">
+  <link rel="stylesheet" href="reservation.css?v=20260619b">
 </head>
 <body>
 <aside class="sidebar">
@@ -131,6 +131,17 @@
   </div>
 </div>
 
-<script src="reservation.js"></script>
+<script src="reservation.js?v=20260619b"></script>
+<script>
+  (function () {
+    var shouldOpenReservation = window.location.search.indexOf('reservation=1') !== -1 || window.location.hash === '#reservation';
+    if (!shouldOpenReservation) return;
+
+    window.setTimeout(function () {
+      var button = document.querySelector('.reservation-open');
+      if (button) button.click();
+    }, 250);
+  })();
+</script>
 </body>
 </html>
