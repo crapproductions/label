@@ -5,17 +5,34 @@ const reservationForm = document.getElementById('reservationForm');
 const reservationMessage = document.getElementById('reservationMessage');
 const reservationSubmit = document.querySelector('.reservation-submit');
 
+const reservationUrl = '/bakedpaint.show';
+const contactUrl = '/contact.html';
+
+function setReservationUrl() {
+  if (window.history && window.history.pushState && window.location.pathname !== reservationUrl) {
+    window.history.pushState({ reservationOpen: true }, '', reservationUrl);
+  }
+}
+
+function setContactUrl() {
+  if (window.history && window.history.pushState && window.location.pathname === reservationUrl) {
+    window.history.pushState({ reservationOpen: false }, '', contactUrl);
+  }
+}
+
 function openReservationModal() {
   reservationModal.classList.add('is-open');
   reservationModal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('reservation-lock');
   reservationMessage.textContent = '';
+  setReservationUrl();
 }
 
 function closeReservationModal() {
   reservationModal.classList.remove('is-open');
   reservationModal.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('reservation-lock');
+  setContactUrl();
 }
 
 reservationOpen.addEventListener('click', openReservationModal);
@@ -33,7 +50,17 @@ document.addEventListener('keydown', function (event) {
   }
 });
 
-if (window.location.search.indexOf('reservation=1') !== -1 || window.location.hash === '#reservation') {
+window.addEventListener('popstate', function () {
+  if (window.location.pathname === reservationUrl) {
+    openReservationModal();
+  } else {
+    reservationModal.classList.remove('is-open');
+    reservationModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('reservation-lock');
+  }
+});
+
+if (window.location.search.indexOf('reservation=1') !== -1 || window.location.hash === '#reservation' || window.location.pathname === reservationUrl) {
   window.setTimeout(openReservationModal, 100);
 }
 
