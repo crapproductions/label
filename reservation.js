@@ -6,7 +6,7 @@ const reservationMessage = document.getElementById('reservationMessage');
 const reservationSubmit = document.querySelector('.reservation-submit');
 
 const endpointBase = 'https://script.google.com/macros/s/';
-const endpointId = 'AKfycbxpRJ7tG2RuTJ4SoN5o_7i58I3Dnrsiu7KfDIB-0gXgRED_7wrsG19Zk4FkJo3UHixg';
+const endpointId = 'AKfycbxIHgONps897TOxEWbEVOZ0Czh0aev7DEEKzQbRT7xVzgc6dWFwVKT8m2-l8dmXxGwD';
 const appsScriptEndpoint = endpointBase + endpointId + '/exec';
 const reservationUrl = '/bakedpaint.show';
 const contactUrl = '/contact.html';
