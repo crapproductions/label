@@ -11,13 +11,14 @@ function doPost(e) {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow([
       'Timestamp',
-      'Event / Item',
+      'Event',
       'Name',
-      'Email',
       'Phone',
       'Quantity',
-      'Note',
-      'Source'
+      'Ticket Price',
+      'Payment Account',
+      'Source',
+      'Status'
     ]);
   }
 
@@ -29,13 +30,14 @@ function doPost(e) {
 
   sheet.appendRow([
     new Date(),
-    data.event || '',
+    data.event || 'Night Animal Live - Baked Paint',
     data.name || '',
-    data.email || '',
     data.phone || '',
     data.quantity || '',
-    data.note || '',
-    data.source || ''
+    data.ticket_price || '20,000KRW',
+    data.payment_account || 'KB 884202-04-112365',
+    data.source || 'crap.productions/bakedpaint.show',
+    'NEW'
   ]);
 
   return ContentService.createTextOutput('OK');
