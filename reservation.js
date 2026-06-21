@@ -5,8 +5,15 @@ const reservationForm = document.getElementById('reservationForm');
 const reservationMessage = document.getElementById('reservationMessage');
 const reservationSubmit = document.querySelector('.reservation-submit');
 
+const endpointBase = 'https://script.google.com/macros/s/';
+const endpointId = 'AKfycbxpRJ7tG2RuTJ4SoN5o_7i58I3Dnrsiu7KfDIB-0gXgRED_7wrsG19Zk4FkJo3UHixg';
+const appsScriptEndpoint = endpointBase + endpointId + '/exec';
 const reservationUrl = '/bakedpaint.show';
 const contactUrl = '/contact.html';
+
+if (reservationForm) {
+  reservationForm.setAttribute('action', appsScriptEndpoint);
+}
 
 function setReservationUrl() {
   if (window.history && window.history.pushState && window.location.pathname !== reservationUrl) {
