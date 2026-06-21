@@ -1,7 +1,21 @@
+const SPREADSHEET_ID = 'PASTE_GOOGLE_SHEET_ID_HERE';
 const SHEET_NAME = 'Reservations';
 
+function getReservationSpreadsheet() {
+  if (SPREADSHEET_ID && SPREADSHEET_ID !== 'PASTE_GOOGLE_SHEET_ID_HERE') {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  }
+
+  const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!activeSpreadsheet) {
+    throw new Error('Spreadsheet ID is required for standalone Apps Script deployment.');
+  }
+
+  return activeSpreadsheet;
+}
+
 function doPost(e) {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = getReservationSpreadsheet();
   let sheet = spreadsheet.getSheetByName(SHEET_NAME);
 
   if (!sheet) {
