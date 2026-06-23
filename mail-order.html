@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mail Order — Crap Productions</title>
+  <meta name="description" content="CRAP PRODUCTIONS mail order request form.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mail-order.css?v=20260624a">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="logo-link" href="index.html" aria-label="Crap Productions home">
+    <img class="site-logo" src="assets/ui/logo.png" alt="Crap Productions">
+  </a>
+
+  <nav class="image-nav" aria-label="Main navigation">
+    <a href="index.html" aria-label="Home">
+      <img src="assets/ui/home.png" alt="Home">
+    </a>
+
+    <a href="catalogue.html" aria-label="Catalogue">
+      <img src="assets/ui/catalogue.png" alt="Catalogue">
+    </a>
+
+    <a href="mail-order.html" aria-label="Mail Order">
+      <img src="assets/ui/mail-order.svg" alt="Mail Order">
+    </a>
+
+    <a href="report.html" aria-label="Report">
+      <img src="assets/ui/report.png" alt="Report">
+    </a>
+
+    <a href="contact.html" aria-label="Contact">
+      <img src="assets/ui/contact.png" alt="Contact">
+    </a>
+  </nav>
+</aside>
+
+<main class="main mail-order-main">
+  <section class="mail-order-panel" aria-labelledby="mailOrderTitle">
+    <h1 class="mail-order-title" id="mailOrderTitle">MAIL ORDER</h1>
+    <p class="mail-order-copy">Available CRAP PRODUCTIONS releases can be ordered by request. Submit the form and we will contact you with stock confirmation, total price, shipping fee and payment details.</p>
+
+    <div class="mail-order-card" aria-hidden="true">
+      <p class="mail-order-card-kicker">AVAILABLE FROM THE BACK ROOM</p>
+      <p class="mail-order-card-text">NO AUTOMATED CHECKOUT<br>REQUEST A COPY FIRST</p>
+    </div>
+
+    <button class="mail-order-open" type="button" aria-haspopup="dialog" aria-controls="mailOrderModal">REQUEST A COPY</button>
+  </section>
+</main>
+
+<div class="mail-order-modal" id="mailOrderModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="mail-order-window">
+    <button class="mail-order-close" type="button" aria-label="Close mail order popup">×</button>
+    <h1>MAIL ORDER</h1>
+    <p class="mail-order-note">Order request only. We will confirm stock and send payment / shipping details manually.</p>
+
+    <form id="mailOrderForm" class="mail-order-form" action="PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE" method="POST" target="mailOrderSink">
+      <label>
+        <span>Release</span>
+        <select name="release" required>
+          <option value="" selected disabled>SELECT RELEASE</option>
+          <option value="CRAP009 Baked Paint - Night Animal / Cassette">CRAP009 Baked Paint - Night Animal / Cassette</option>
+          <option value="CRAP008 Wholesome - Coil Breaks / Cassette">CRAP008 Wholesome - Coil Breaks / Cassette</option>
+          <option value="CRAP008 Wholesome - TOP BEATS / Cassette">CRAP008 Wholesome - TOP BEATS / Cassette</option>
+          <option value="CRAP007 Yoonkee Kim - Total Seom">CRAP007 Yoonkee Kim - Total Seom</option>
+          <option value="CRAP004 The Burners - Burn Me Away">CRAP004 The Burners - Burn Me Away</option>
+          <option value="CRAP003 Repo Man - Oh Yeah / Money">CRAP003 Repo Man - Oh Yeah / Money</option>
+          <option value="CRAP002 Sweaty Hand Lou - Category 3">CRAP002 Sweaty Hand Lou - Category 3</option>
+          <option value="CRAP001 Bonjin No Tanoshimi">CRAP001 Bonjin No Tanoshimi</option>
+          <option value="Other / Ask first">OTHER / ASK FIRST</option>
+        </select>
+      </label>
+
+      <label><span>Quantity</span><input type="number" name="quantity" placeholder="QUANTITY" min="1" inputmode="numeric" required></label>
+      <label><span>Name</span><input type="text" name="name" placeholder="NAME" autocomplete="name" required></label>
+      <label><span>Phone / Email</span><input type="text" name="contact" placeholder="PHONE / EMAIL" autocomplete="email" required></label>
+      <label><span>Shipping Address</span><textarea name="address" placeholder="SHIPPING ADDRESS" autocomplete="shipping street-address" required></textarea></label>
+      <label><span>Depositor Name</span><input type="text" name="depositor" placeholder="DEPOSITOR NAME / 입금자명" required></label>
+      <label><span>Memo</span><textarea name="memo" placeholder="MEMO"></textarea></label>
+
+      <label class="mail-order-privacy">
+        <input type="checkbox" name="privacy" value="agreed" required>
+        <span>I agree to provide my name, contact and shipping address for order confirmation, payment notice and delivery.</span>
+      </label>
+
+      <input type="hidden" name="source" value="crap.productions/mail-order">
+      <button class="mail-order-submit" type="submit">SEND</button>
+    </form>
+
+    <p class="mail-order-message" id="mailOrderMessage" aria-live="polite"></p>
+    <iframe class="mail-order-sink" name="mailOrderSink" title="Mail order submission"></iframe>
+  </div>
+</div>
+
+<script src="mail-order.js?v=20260624a"></script>
+</body>
+</html>
