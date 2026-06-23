@@ -18,6 +18,8 @@
   <meta name="twitter:image" content="https://crap.productions/assets/ui/og-image.jpg">
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="catalogue-popup.css">
+  <link rel="stylesheet" href="catalogue-popup-links.css">
 </head>
 <body>
 <aside class="sidebar">
@@ -44,10 +46,177 @@
   </nav>
 </aside>
 
-  <main class="main main-home">
-    <a class="feature-news" href="catalogue.html#crap009" aria-label="Go to CRAP009 catalogue entry">
-      <img src="assets/ui/home.jpg" alt="" loading="eager">
-    </a>
-  </main>
+<main class="main main-home">
+  <button class="feature-news release-cover-button" type="button" data-cover="assets/catalogue/crap009-night-animal.png?v=20260622h" data-alt="Baked Paint — Night Animal cover" data-catno="CRAP009" data-artist="Baked Paint" data-title="Night Animal" data-note="" data-credits="NIGHT ANIMAL IS SINGLE TRACKED AMBIENT JAM&#10;FROM BAKED PAINT COMPOSED AND PRODUCED&#10;BY BAKED PAINT&#10;ORIGINALLY PERFORMED AND RECORDED IN&#10;OCTOBER OF 2025&#10;&#10;ALL SOUNDS WERE RECORDED ON THE EAST&#10;SIDE OF THE RIVER&#10;SLEEPLESS ANIMALS ROAM THE NIGHT THEY&#10;GAZE AT THE NIGHT WALKER&#10;&#10;credits&#10;&#10;Released June 23, 2026&#10;&#10;BAKED PAINT (LEE JONGKWON)&#10;2026 CRAP PRODUCTIONS&#10;&#10;https://bakedpaint.bandcamp.com/&#10;https://www.instagram.com/a.r.p_b.p_etc" data-bandcamp="https://fastercrapproduction.bandcamp.com/album/night-animal" data-embed="https://bandcamp.com/EmbeddedPlayer/album=1228880632/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" data-second-label="Apple Music" data-second-url="https://music.apple.com/search?term=Baked%20Paint%20Night%20Animal" data-third-label="Spotify" data-third-url="https://open.spotify.com/search/Baked%20Paint%20Night%20Animal" aria-label="Open Baked Paint — Night Animal">
+    <img src="assets/catalogue/crap009-night-animal.png?v=20260622h" alt="Baked Paint — Night Animal cover" loading="eager">
+  </button>
+</main>
+
+<div class="release-modal" id="releaseModal" aria-hidden="true">
+  <button class="release-modal-close" type="button" aria-label="Close release popup">×</button>
+
+  <div class="release-modal-card release-modal-card-detail">
+    <div class="release-modal-left" id="releaseModalLeft"></div>
+
+    <div class="release-modal-info">
+      <div class="release-modal-header">
+        <p class="release-modal-catno" id="releaseModalCatno"></p>
+        <h1 class="release-modal-title">
+          <span id="releaseModalArtist"></span>
+          <span id="releaseModalTitle"></span>
+        </h1>
+        <p class="release-modal-note" id="releaseModalNote"></p>
+      </div>
+
+      <pre class="release-modal-credits" id="releaseModalCredits"></pre>
+
+      <nav class="release-modal-links" aria-label="Release links">
+        <a id="releaseModalPrimaryLink" href="#" target="_blank" rel="noopener">Bandcamp</a>
+        <span id="releaseModalSep1" aria-hidden="true">-</span>
+        <a id="releaseModalSecondLink" href="#">Apple Music</a>
+        <span id="releaseModalSep2" aria-hidden="true">-</span>
+        <a id="releaseModalThirdLink" href="#">Spotify</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  const releaseModal = document.getElementById("releaseModal");
+  const releaseModalLeft = document.getElementById("releaseModalLeft");
+  const releaseModalClose = document.querySelector(".release-modal-close");
+  const releaseCoverButtons = document.querySelectorAll(".release-cover-button");
+
+  const releaseModalCatno = document.getElementById("releaseModalCatno");
+  const releaseModalArtist = document.getElementById("releaseModalArtist");
+  const releaseModalTitle = document.getElementById("releaseModalTitle");
+  const releaseModalNote = document.getElementById("releaseModalNote");
+  const releaseModalCredits = document.getElementById("releaseModalCredits");
+  const releaseModalPrimaryLink = document.getElementById("releaseModalPrimaryLink");
+  const releaseModalSecondLink = document.getElementById("releaseModalSecondLink");
+  const releaseModalThirdLink = document.getElementById("releaseModalThirdLink");
+  const releaseModalSep1 = document.getElementById("releaseModalSep1");
+  const releaseModalSep2 = document.getElementById("releaseModalSep2");
+
+  function clearReleaseModalMedia() {
+    releaseModalLeft.innerHTML = "";
+  }
+
+  function createBandcampEmbed(src, title, bandcampUrl) {
+    const iframe = document.createElement("iframe");
+    iframe.className = "release-bandcamp-artwork";
+    iframe.style.border = "0";
+    iframe.width = "400";
+    iframe.height = "400";
+    iframe.src = src;
+    iframe.seamless = true;
+    iframe.title = title;
+
+    const fallback = document.createElement("a");
+    fallback.href = bandcampUrl;
+    fallback.textContent = title;
+
+    iframe.appendChild(fallback);
+    return iframe;
+  }
+
+  function createCoverImage(src, alt) {
+    const image = document.createElement("img");
+    image.className = "release-modal-cover";
+    image.src = src;
+    image.alt = alt || "Release cover";
+    return image;
+  }
+
+  function setLink(link, label, url) {
+    const shouldShow = Boolean(label && url);
+    link.hidden = !shouldShow;
+
+    if (!shouldShow) {
+      link.href = "#";
+      link.textContent = "";
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+      return false;
+    }
+
+    link.textContent = label;
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    return true;
+  }
+
+  function openReleaseModal(button) {
+    const cover = button.dataset.cover;
+    const alt = button.dataset.alt || "Release cover";
+    const embed = button.dataset.embed || "";
+    const bandcamp = button.dataset.bandcamp || "#";
+    const catno = button.dataset.catno || "";
+    const artist = button.dataset.artist || "";
+    const title = button.dataset.title || "";
+    const note = button.dataset.note || "";
+    const credits = button.dataset.credits || "";
+
+    const primaryLabel = button.dataset.primaryLabel || "Bandcamp";
+    const primaryUrl = button.dataset.primaryUrl || bandcamp;
+    const secondLabel = button.dataset.secondLabel || "";
+    const secondUrl = button.dataset.secondUrl || "";
+    const thirdLabel = button.dataset.thirdLabel || "";
+    const thirdUrl = button.dataset.thirdUrl || "";
+
+    clearReleaseModalMedia();
+
+    if (embed) {
+      releaseModalLeft.appendChild(createBandcampEmbed(embed, `${title} by ${artist}`, bandcamp));
+    } else {
+      releaseModalLeft.appendChild(createCoverImage(cover, alt));
+    }
+
+    releaseModalCatno.textContent = catno;
+    releaseModalArtist.textContent = artist;
+    releaseModalTitle.textContent = title;
+    releaseModalNote.textContent = note;
+    releaseModalCredits.textContent = credits;
+    releaseModalCredits.hidden = !credits;
+
+    const hasPrimary = setLink(releaseModalPrimaryLink, primaryLabel, primaryUrl);
+    const hasSecond = setLink(releaseModalSecondLink, secondLabel, secondUrl);
+    const hasThird = setLink(releaseModalThirdLink, thirdLabel, thirdUrl);
+    releaseModalSep1.hidden = !(hasPrimary && hasSecond);
+    releaseModalSep2.hidden = !(hasSecond && hasThird);
+
+    releaseModal.classList.add("is-open");
+    releaseModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeReleaseModal() {
+    releaseModal.classList.remove("is-open");
+    releaseModal.setAttribute("aria-hidden", "true");
+    clearReleaseModalMedia();
+    releaseModalCredits.textContent = "";
+    releaseModalCredits.hidden = true;
+  }
+
+  releaseModalCredits.hidden = true;
+
+  releaseCoverButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      openReleaseModal(button);
+    });
+  });
+
+  releaseModal.addEventListener("click", (event) => {
+    if (event.target === releaseModal || event.target === releaseModalClose) {
+      closeReleaseModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeReleaseModal();
+    }
+  });
+</script>
 </body>
 </html>
