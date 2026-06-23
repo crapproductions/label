@@ -1,2 +1,5 @@
-.feature-news{appearance:none;-webkit-appearance:none;padding:0;cursor:pointer;line-height:0}
+.main-home{padding-top:24px}
+.feature-news{appearance:none;-webkit-appearance:none;padding:0;cursor:pointer;line-height:0;width:min(680px,68vh,calc(100vw - var(--sidebar-w) - 140px))}
 .feature-news:hover,.feature-news:focus-visible{outline:0}
+@media(max-width:1320px){.feature-news{width:min(600px,66vh,calc(100vw - var(--sidebar-w) - 100px))}}
+@media(max-width:680px){.feature-news{width:min(82vw,440px)}}
