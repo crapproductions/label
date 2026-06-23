@@ -1,5 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="78" viewBox="0 0 420 78" role="img" aria-labelledby="title">
-  <title id="title">Mail Order</title>
-  <rect x="5" y="9" width="410" height="60" fill="white" stroke="black" stroke-width="0"/>
-  <text x="210" y="51" text-anchor="middle" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="42" font-weight="900" letter-spacing="3">MAIL ORDER</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="150" viewBox="0 0 800 150">
+  <image href="order.svg" x="0" y="0" width="800" height="150" preserveAspectRatio="xMidYMid meet"/>
 </svg>
