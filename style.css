@@ -32,7 +32,7 @@ a:hover {
 /*
   LEFT PANEL
   logo.png = upper logo block
-  home.png / catalogue.png / order.png / report.png / contact.png = menu images
+  home.png / catalogue.png / report.png / contact.png = menu images
 */
 .sidebar {
   position: fixed;
@@ -86,8 +86,16 @@ a:hover {
   height: auto;
 }
 
+.image-nav a[href="mail-order.html"] {
+  width: 210px;
+  height: 40px;
+  background: url("assets/ui/order.png?v=20260624b") center/contain no-repeat;
+}
+
 .image-nav a[href="mail-order.html"] img {
-  content: url("assets/ui/order.png");
+  width: 210px;
+  height: 40px;
+  opacity: 0;
 }
 
 /* RIGHT CONTENT AREA */
