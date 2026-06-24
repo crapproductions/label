@@ -6,7 +6,7 @@ const mailOrderMessage = document.getElementById('mailOrderMessage');
 const mailOrderSubmit = document.querySelector('.mail-order-submit');
 
 const mailOrderEndpointBase = 'https://script.google.com/macros/s/';
-const mailOrderEndpointId = '';
+const mailOrderEndpointId = 'AKfycbxIHgONps897TOxEWbEVOZ0Czh0aev7DEEKzQbRT7xVzgc6dWFwVKT8m2-l8dmXxGwD';
 const mailOrderEndpoint = mailOrderEndpointId ? mailOrderEndpointBase + mailOrderEndpointId + '/exec' : '';
 
 if (mailOrderForm && mailOrderEndpoint) {
