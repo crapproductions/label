@@ -98,3 +98,8 @@
   background-repeat: no-repeat !important;
   pointer-events: none !important;
 }
+
+/* CATALOGUE MENU ORDER IMAGE PATCH */
+.image-nav a[href="mail-order.html"] img[src="assets/ui/mail-order.svg"] {
+  content: url("assets/ui/order.png") !important;
+}
