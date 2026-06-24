@@ -103,3 +103,10 @@
 .image-nav a[href="mail-order.html"] img[src="assets/ui/mail-order.svg"] {
   content: url("assets/ui/order.png") !important;
 }
+
+/* MOBILE CATALOGUE GRID ONLY */
+@media (max-width: 680px) {
+  .catalogue-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
