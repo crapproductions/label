@@ -38,7 +38,7 @@
     </a>
 
     <a href="mail-order.html" aria-label="Mail Order">
-      <img src="assets/ui/mail-order.svg" alt="Mail Order">
+      <img src="assets/ui/order.png" alt="Order">
     </a>
 
     <a href="report.html" aria-label="Report">
@@ -78,150 +78,14 @@
       <nav class="release-modal-links" aria-label="Release links">
         <a id="releaseModalPrimaryLink" href="#" target="_blank" rel="noopener">Bandcamp</a>
         <span id="releaseModalSep1" aria-hidden="true">-</span>
-        <a id="releaseModalSecondLink" href="#">Apple Music</a>
+        <a id="releaseModalSecondLink" href="#" target="_blank" rel="noopener">Apple Music</a>
         <span id="releaseModalSep2" aria-hidden="true">-</span>
-        <a id="releaseModalThirdLink" href="#">Spotify</a>
+        <a id="releaseModalThirdLink" href="#" target="_blank" rel="noopener">Spotify</a>
       </nav>
     </div>
   </div>
 </div>
 
-<script>
-  const releaseModal = document.getElementById("releaseModal");
-  const releaseModalLeft = document.getElementById("releaseModalLeft");
-  const releaseModalClose = document.querySelector(".release-modal-close");
-  const releaseCoverButtons = document.querySelectorAll(".release-cover-button");
-
-  const releaseModalCatno = document.getElementById("releaseModalCatno");
-  const releaseModalArtist = document.getElementById("releaseModalArtist");
-  const releaseModalTitle = document.getElementById("releaseModalTitle");
-  const releaseModalNote = document.getElementById("releaseModalNote");
-  const releaseModalCredits = document.getElementById("releaseModalCredits");
-  const releaseModalPrimaryLink = document.getElementById("releaseModalPrimaryLink");
-  const releaseModalSecondLink = document.getElementById("releaseModalSecondLink");
-  const releaseModalThirdLink = document.getElementById("releaseModalThirdLink");
-  const releaseModalSep1 = document.getElementById("releaseModalSep1");
-  const releaseModalSep2 = document.getElementById("releaseModalSep2");
-
-  function clearReleaseModalMedia() {
-    releaseModalLeft.innerHTML = "";
-  }
-
-  function createBandcampEmbed(src, title, bandcampUrl) {
-    const iframe = document.createElement("iframe");
-    iframe.className = "release-bandcamp-artwork";
-    iframe.style.border = "0";
-    iframe.width = "400";
-    iframe.height = "400";
-    iframe.src = src;
-    iframe.seamless = true;
-    iframe.title = title;
-
-    const fallback = document.createElement("a");
-    fallback.href = bandcampUrl;
-    fallback.textContent = title;
-
-    iframe.appendChild(fallback);
-    return iframe;
-  }
-
-  function createCoverImage(src, alt) {
-    const image = document.createElement("img");
-    image.className = "release-modal-cover";
-    image.src = src;
-    image.alt = alt || "Release cover";
-    return image;
-  }
-
-  function setLink(link, label, url) {
-    const shouldShow = Boolean(label && url);
-    link.hidden = !shouldShow;
-
-    if (!shouldShow) {
-      link.href = "#";
-      link.textContent = "";
-      link.removeAttribute("target");
-      link.removeAttribute("rel");
-      return false;
-    }
-
-    link.textContent = label;
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    return true;
-  }
-
-  function openReleaseModal(button) {
-    const cover = button.dataset.cover;
-    const alt = button.dataset.alt || "Release cover";
-    const embed = button.dataset.embed || "";
-    const bandcamp = button.dataset.bandcamp || "#";
-    const catno = button.dataset.catno || "";
-    const artist = button.dataset.artist || "";
-    const title = button.dataset.title || "";
-    const note = button.dataset.note || "";
-    const credits = button.dataset.credits || "";
-
-    const primaryLabel = button.dataset.primaryLabel || "Bandcamp";
-    const primaryUrl = button.dataset.primaryUrl || bandcamp;
-    const secondLabel = button.dataset.secondLabel || "";
-    const secondUrl = button.dataset.secondUrl || "";
-    const thirdLabel = button.dataset.thirdLabel || "";
-    const thirdUrl = button.dataset.thirdUrl || "";
-
-    clearReleaseModalMedia();
-
-    if (embed) {
-      releaseModalLeft.appendChild(createBandcampEmbed(embed, `${title} by ${artist}`, bandcamp));
-    } else {
-      releaseModalLeft.appendChild(createCoverImage(cover, alt));
-    }
-
-    releaseModalCatno.textContent = catno;
-    releaseModalArtist.textContent = artist;
-    releaseModalTitle.textContent = title;
-    releaseModalNote.textContent = note;
-    releaseModalCredits.textContent = credits;
-    releaseModalCredits.hidden = !credits;
-
-    const hasPrimary = setLink(releaseModalPrimaryLink, primaryLabel, primaryUrl);
-    const hasSecond = setLink(releaseModalSecondLink, secondLabel, secondUrl);
-    const hasThird = setLink(releaseModalThirdLink, thirdLabel, thirdUrl);
-    releaseModalSep1.hidden = !(hasPrimary && hasSecond);
-    releaseModalSep2.hidden = !(hasSecond && hasThird);
-
-    releaseModal.classList.add("is-open");
-    releaseModal.setAttribute("aria-hidden", "false");
-  }
-
-  function closeReleaseModal() {
-    releaseModal.classList.remove("is-open");
-    releaseModal.setAttribute("aria-hidden", "true");
-    clearReleaseModalMedia();
-    releaseModalCredits.textContent = "";
-    releaseModalCredits.hidden = true;
-  }
-
-  releaseModalCredits.hidden = true;
-
-  releaseCoverButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      openReleaseModal(button);
-    });
-  });
-
-  releaseModal.addEventListener("click", (event) => {
-    if (event.target === releaseModal || event.target === releaseModalClose) {
-      closeReleaseModal();
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeReleaseModal();
-    }
-  });
-</script>
+<script src="catalogue-popup.js?v=20260622d"></script>
 </body>
 </html>
