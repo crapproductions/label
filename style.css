@@ -29,11 +29,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/*
-  LEFT PANEL
-  logo.png = upper logo block
-  home.png / catalogue.png / report.png / contact.png = menu images
-*/
+/* LEFT PANEL */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -63,7 +59,6 @@ a:hover {
   transform-origin: top center;
 }
 
-/* IMAGE MENU */
 .image-nav {
   margin-top: 125px;
   width: 260px;
@@ -107,17 +102,428 @@ a:hover {
   border: 3px solid var(--ink);
   overflow: hidden;
   background: #fff;
+  padding: 0;
+  cursor: pointer;
 }
 
-.feature-news img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
+.feature-news img,
 .feature-video {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+/* CATALOGUE */
+.catalogue-main {
+  padding-top: 34px;
+}
+
+.catalogue-list,
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 54px 32px;
+  width: 100%;
+  align-items: start;
+}
+
+.catalogue-release,
+.catalogue-item {
+  width: 100%;
+  scroll-margin-top: 40px;
+}
+
+.catalogue-cover,
+.cover-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid var(--ink);
+  background: #fff;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+}
+
+.catalogue-cover img,
+.cover-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cover-frame img.contain {
+  object-fit: contain;
+}
+
+.tiny-links {
+  margin-top: 8px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.tiny-links a {
+  font-size: 24px;
+  letter-spacing: 0.03em;
+}
+
+.tiny-links .is-disabled {
+  color: #777;
+  cursor: not-allowed;
+}
+
+.catalogue-caption {
+  margin: 8px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  line-height: 1.35;
+  max-width: 720px;
+}
+
+/* REPORT */
+.report-main {
+  padding: 0;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  align-items: start;
+  width: 100%;
+}
+
+.report-item {
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #eee;
+}
+
+.report-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  place-items: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.lightbox.is-open {
+  display: grid;
+}
+
+.lightbox-image {
+  max-width: min(92vw, 1200px);
+  max-height: 88vh;
+  object-fit: contain;
+  border: 2px solid var(--ink);
+  background: #fff;
+  cursor: zoom-out;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 1000;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 46px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* CONTACT */
+.contact-main {
+  display: grid;
+  align-items: start;
+  padding-top: 0;
+}
+
+.contact-layout {
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.contact-image {
+  display: block;
+  width: 100%;
+  max-height: 290px;
+  object-fit: cover;
+  object-position: center;
+  margin: 0 0 18px;
+}
+
+.contact-title {
+  margin: 0 0 14px;
+  font-size: 28px;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.contact-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 38px;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+.reservation-action {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 80px;
+}
+
+.reservation-open {
+  border: 1.5px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  padding: 16px 34px;
+  cursor: pointer;
+}
+
+.shop-image-block {
+  width: min(780px, 100%);
+  margin: 0 auto;
+}
+
+.shop-us-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shop-image-links {
+  display: flex;
+  justify-content: center;
+  gap: 34px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.shop-image-links a {
+  display: block;
+  line-height: 0;
+}
+
+.shop-image-links img {
+  display: block;
+  max-width: 220px;
+  height: auto;
+}
+
+/* RELEASE MODAL */
+.release-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: none;
+  background: rgba(255,255,255,.92);
+  padding: 34px;
+  overflow: auto;
+}
+
+.release-modal.is-open {
+  display: block;
+}
+
+.release-modal-close {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+  z-index: 901;
+  border: 0;
+  background: transparent;
+  font-size: 42px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.release-modal-card {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(280px, 520px) minmax(280px, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.release-modal-left img,
+.release-modal-left iframe {
+  width: 100%;
+  display: block;
+}
+
+.release-modal-info {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.release-modal-title {
+  margin: 0 0 10px;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.release-modal-catno,
+.release-modal-note {
+  margin: 0 0 10px;
+}
+
+.release-modal-credits {
+  white-space: pre-wrap;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.release-modal-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1320px) {
+  :root { --sidebar-w: 455px; }
+
+  .sidebar {
+    padding-top: 80px;
+  }
+
+  .logo-link,
+  .site-logo {
+    width: 275px;
+  }
+
+  .image-nav {
+    margin-top: 125px;
+    width: 260px;
+  }
+
+  .image-nav img {
+    width: 210px;
+  }
+
+  .main {
+    padding: 28px 26px 70px;
+  }
+
+  .feature-news {
+    width: min(760px, 78vh, calc(100vw - var(--sidebar-w) - 65px));
+  }
+}
+
+@media (max-width: 920px) {
+  :root { --sidebar-w: 320px; }
+
+  .sidebar {
+    padding-top: 70px;
+  }
+
+  .logo-link,
+  .site-logo {
+    width: 275px;
+  }
+
+  .image-nav {
+    margin-top: 125px;
+    width: 260px;
+  }
+
+  .image-nav img {
+    width: 210px;
+  }
+
+  .main {
+    padding: 28px 20px 60px;
+  }
+
+  .catalogue-list,
+  .catalogue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .release-modal-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  :root { --sidebar-w: 0px; }
+
+  body {
+    letter-spacing: 0.04em;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 30px 22px 22px;
+    align-items: flex-start;
+  }
+
+  .logo-link,
+  .site-logo {
+    width: 275px;
+  }
+
+  .image-nav {
+    margin-top: 125px;
+    width: 260px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .image-nav img {
+    width: 210px;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 24px 22px 60px;
+  }
+
+  .feature-news {
+    width: min(100%, 560px);
+  }
+
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-image {
+    max-height: none;
+  }
+
+  .reservation-open {
+    font-size: 20px;
+    padding: 13px 20px;
+  }
 }
