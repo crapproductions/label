@@ -68,19 +68,11 @@
         </select>
       </label>
 
-      <label><span>Quantity</span><input type="number" name="quantity" placeholder="QUANTITY" min="1" inputmode="numeric" required></label>
       <label><span>Name</span><input type="text" name="name" placeholder="NAME" autocomplete="name" required></label>
       <label><span>Phone / Email</span><input type="text" name="contact" placeholder="PHONE / EMAIL" autocomplete="email" required></label>
       <label><span>Shipping Address</span><textarea name="address" placeholder="SHIPPING ADDRESS" autocomplete="shipping street-address" required></textarea></label>
-      <label><span>Depositor Name</span><input type="text" name="depositor" placeholder="DEPOSITOR NAME / 입금자명" required></label>
-      <label><span>Memo</span><textarea name="memo" placeholder="MEMO"></textarea></label>
 
-      <label class="mail-order-privacy">
-        <input type="checkbox" name="privacy" value="agreed" required>
-        <span>I agree to provide my name, contact and shipping address for order confirmation, payment notice and delivery.</span>
-      </label>
-
-      <input type="hidden" name="source" value="crap.productions/mail-order">
+      <input type="hidden" name="source" value="order">
       <button class="mail-order-submit" type="submit">SEND</button>
     </form>
 
@@ -89,6 +81,6 @@
   </div>
 </div>
 
-<script src="mail-order.js?v=20260624e"></script>
+<script src="mail-order.js?v=20260624f"></script>
 </body>
 </html>
