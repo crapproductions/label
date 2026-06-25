@@ -10,8 +10,8 @@
     html,body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif;letter-spacing:.08em}
     body{min-height:100vh;display:grid;place-items:center;padding:28px}
     .guest-page{width:min(720px,100%);border:2px solid #000;padding:34px 42px 42px;background:#fff;text-align:center}
+    .guest-title{margin:0 0 32px;font-size:clamp(34px,8vw,72px);font-weight:700;letter-spacing:.34em;line-height:.92;text-transform:uppercase;text-indent:.34em}
     .guest-image{display:block;width:min(610px,100%);height:auto;margin:0 auto 30px}
-    .guest-title{margin:0 0 30px;font-size:clamp(34px,8vw,72px);font-weight:700;letter-spacing:.16em;line-height:.92;text-transform:uppercase}
     .guest-form{display:flex;flex-direction:column;gap:12px;margin:0 auto;width:min(470px,100%)}
     .guest-form label{display:block;text-align:left;margin:0}
     .guest-form span{display:none}
@@ -22,13 +22,13 @@
     .guest-submit{appearance:none;width:100%;border:2px solid #000;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:34px;font-weight:700;letter-spacing:.18em;line-height:1;text-transform:uppercase;padding:15px 14px 14px;cursor:pointer}
     .guest-submit:hover,.guest-submit:focus-visible{background:#fff;color:#000;outline:0}
     .guest-message{min-height:20px;margin:16px 0 0;font-size:13px;font-weight:700;letter-spacing:.12em;line-height:1.35}
-    @media(max-width:680px){body{padding:20px}.guest-page{padding:28px 22px 34px}.guest-image{width:100%;margin-bottom:24px}.guest-title{font-size:42px;margin-bottom:24px}.guest-form{width:88%}.guest-submit{font-size:28px}}
+    @media(max-width:680px){body{padding:20px}.guest-page{padding:28px 22px 34px}.guest-title{font-size:38px;letter-spacing:.28em;text-indent:.28em;margin-bottom:24px}.guest-image{width:100%;margin-bottom:24px}.guest-form{width:88%}.guest-submit{font-size:28px}}
   </style>
 </head>
 <body>
   <main class="guest-page" aria-label="VIP pass guest form">
-    <img class="guest-image" src="/assets/ui/reservation-header.jpg?v=20260624guest" alt="Night Animal Live Baked Paint">
     <h1 class="guest-title">VIP PASS</h1>
+    <img class="guest-image" src="/assets/ui/reservation-header.jpg?v=20260624guest" alt="Night Animal Live Baked Paint">
     <form class="guest-form" id="guestForm">
       <label><span>NAME</span><input type="text" name="name" placeholder="NAME" autocomplete="name" required></label>
       <label><span>GUESTS</span><input type="number" name="guests" placeholder="GUESTS" min="1" inputmode="numeric" required></label>
