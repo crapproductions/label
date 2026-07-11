@@ -39,6 +39,13 @@
 
   <main class="main catalogue-main">
     <section class="catalogue-list" aria-label="Crap Productions catalogue">
+      <article class="catalogue-release" id="crap010">
+        <div class="catalogue-cover" style="position: relative;">
+          <iframe style="border: 0; width: 100%; height: 100%; display: block; pointer-events: none;" src="https://bandcamp.com/EmbeddedPlayer/album=1589031412/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" title="Kid Blast — Officer / Asia To Oregon cover" loading="lazy" tabindex="-1" seamless><a href="https://fastercrapproduction.bandcamp.com/album/officer-asia-to-oregon">Officer / Asia To Oregon by Kid Blast</a></iframe>
+          <button class="release-cover-button" style="position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer;" type="button" data-cover="" data-alt="Kid Blast — Officer / Asia To Oregon cover" data-catno="CRAP010" data-artist="Kid Blast" data-title="Officer / Asia To Oregon" data-note="" data-credits="SELECTED RECORDINGS FROM UNFINISHED PROJECT KID BLAST&#10;RECORDED IN 2019 - 2020 / ORIGINALLY 12 SONGS WERE WRITTEN &amp; RECORDED&#10;&#10;JUST A THROWAWAY FOR REMEMBERING HOW MUCH FUN WE HAD THOSE DAYS&#10;&#10;MUCH LOVE TO EVERYONE INVOLVED IN THIS PROJECT&#10;&#10;Released July 11, 2026&#10;&#10;2026 CRAP PRODUCTIONS" data-bandcamp="https://fastercrapproduction.bandcamp.com/album/officer-asia-to-oregon" data-embed="https://bandcamp.com/EmbeddedPlayer/album=1589031412/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" data-embed-width="500" data-embed-height="500" aria-label="Open Kid Blast — Officer / Asia To Oregon"></button>
+        </div>
+      </article>
+
       <article class="catalogue-release" id="crap009">
         <button class="catalogue-cover release-cover-button" type="button" data-cover="assets/catalogue/crap009-night-animal.png?v=20260622h" data-alt="Baked Paint — Night Animal cover" data-catno="CRAP009" data-artist="Baked Paint" data-title="Night Animal" data-note="" data-credits="NIGHT ANIMAL IS SINGLE TRACKED AMBIENT JAM&#10;FROM BAKED PAINT COMPOSED AND PRODUCED&#10;BY BAKED PAINT&#10;ORIGINALLY PERFORMED AND RECORDED IN&#10;OCTOBER OF 2025&#10;&#10;ALL SOUNDS WERE RECORDED ON THE EAST&#10;SIDE OF THE RIVER&#10;SLEEPLESS ANIMALS ROAM THE NIGHT THEY&#10;GAZE AT THE NIGHT WALKER&#10;&#10;credits&#10;&#10;Released June 23, 2026&#10;&#10;BAKED PAINT (LEE JONGKWON)&#10;2026 CRAP PRODUCTIONS&#10;&#10;https://bakedpaint.bandcamp.com/&#10;https://www.instagram.com/a.r.p_b.p_etc" data-bandcamp="https://fastercrapproduction.bandcamp.com/album/night-animal" data-embed="https://bandcamp.com/EmbeddedPlayer/album=1228880632/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" data-second-label="Apple Music" data-second-url="https://music.apple.com/search?term=Baked%20Paint%20Night%20Animal" data-third-label="Spotify" data-third-url="https://open.spotify.com/search/Baked%20Paint%20Night%20Animal" aria-label="Open Baked Paint — Night Animal">
           <img src="assets/catalogue/crap009-night-animal.png?v=20260622h" alt="Baked Paint — Night Animal cover">
@@ -151,12 +158,12 @@
       releaseModalLeft.innerHTML = "";
     }
 
-    function createBandcampEmbed(src, title, bandcampUrl) {
+    function createBandcampEmbed(src, title, bandcampUrl, width = 400, height = 400) {
       const iframe = document.createElement("iframe");
       iframe.className = "release-bandcamp-artwork";
       iframe.style.border = "0";
-      iframe.width = "400";
-      iframe.height = "400";
+      iframe.width = String(width);
+      iframe.height = String(height);
       iframe.src = src;
       iframe.seamless = true;
       iframe.title = title;
@@ -200,6 +207,8 @@
       const cover = button.dataset.cover;
       const alt = button.dataset.alt || "Release cover";
       const embed = button.dataset.embed || "";
+      const embedWidth = Number.parseInt(button.dataset.embedWidth, 10) || 400;
+      const embedHeight = Number.parseInt(button.dataset.embedHeight, 10) || 400;
       const bandcamp = button.dataset.bandcamp || "#";
       const catno = button.dataset.catno || "";
       const artist = button.dataset.artist || "";
@@ -217,7 +226,7 @@
       clearReleaseModalMedia();
 
       if (embed) {
-        releaseModalLeft.appendChild(createBandcampEmbed(embed, `${title} by ${artist}`, bandcamp));
+        releaseModalLeft.appendChild(createBandcampEmbed(embed, `${title} by ${artist}`, bandcamp, embedWidth, embedHeight));
       } else {
         releaseModalLeft.appendChild(createCoverImage(cover, alt));
       }
