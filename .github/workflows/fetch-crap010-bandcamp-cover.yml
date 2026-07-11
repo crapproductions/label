@@ -1,0 +1,56 @@
+name: Fetch CRAP010 Bandcamp cover
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fetch-crap010-bandcamp-cover.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-cover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch high-resolution Bandcamp cover and commit it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          album_url='https://fastercrapproduction.bandcamp.com/album/officer-asia-to-oregon'
+          page="$(curl -fsSL -A 'Mozilla/5.0' "$album_url")"
+
+          cover_url="$(printf '%s' "$page" | python3 -c 'import html,re,sys; s=sys.stdin.read(); m=re.search(r"<meta[^>]+property=[\"'\"']og:image[\"'\"'][^>]+content=[\"'\"']([^\"'\"']+)",s,re.I) or re.search(r"<meta[^>]+content=[\"'\"']([^\"'\"']+)[\"'\"'][^>]+property=[\"'\"']og:image[\"'\"']",s,re.I); print(html.unescape(m.group(1)) if m else "")')"
+
+          if [ -z "$cover_url" ]; then
+            echo 'Could not find Bandcamp og:image URL.' >&2
+            exit 1
+          fi
+
+          hi_res_url="$(printf '%s' "$cover_url" | sed -E 's/_[0-9]+\.jpg$/_10.jpg/')"
+          if ! curl -fsSL -A 'Mozilla/5.0' "$hi_res_url" -o /tmp/crap010-cover.jpg; then
+            curl -fsSL -A 'Mozilla/5.0' "$cover_url" -o /tmp/crap010-cover.jpg
+          fi
+
+          python3 - <<'PY'
+          from PIL import Image
+          p='/tmp/crap010-cover.jpg'
+          im=Image.open(p)
+          if im.width < 900 or im.height < 900:
+              raise SystemExit(f'Bandcamp cover is unexpectedly small: {im.size}')
+          print('Downloaded Bandcamp cover:', im.size)
+          PY
+
+          encoded="$(base64 -w 0 /tmp/crap010-cover.jpg)"
+          api="https://api.github.com/repos/${REPOSITORY}/contents/assets/catalogue/crap010-bandcamp-cover.jpg"
+          payload="$(python3 -c 'import json,os; print(json.dumps({"message":"Add high-resolution CRAP010 Bandcamp cover","content":os.environ["ENCODED"],"branch":"main"}))' ENCODED="$encoded")"
+
+          curl -fsSL -X PUT \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "$api" \
+            -d "$payload"
