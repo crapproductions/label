@@ -111,24 +111,3 @@
     gap: 18px 16px !important;
   }
 }
-
-/* CRAP010: static cover in grid; Bandcamp player only in popup */
-#crap010 .catalogue-cover {
-  position: relative !important;
-  overflow: hidden !important;
-  background-color: #fff !important;
-  background-image: url("assets/catalogue/crap010-cover.svg?v=20260712b") !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
-
-#crap010 .catalogue-cover > iframe {
-  display: none !important;
-}
-
-#crap010 .catalogue-cover > .release-cover-button {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 5 !important;
-}
