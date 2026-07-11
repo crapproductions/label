@@ -1,19 +1,17 @@
 name: Resolve CRAP010 Bandcamp cover
 
 on:
-  push:
+  pull_request:
     paths:
-      - '.github/crap010-cover-trigger'
+      - '.github/crap010-cover-pr-trigger'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   resolve-cover:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
       - name: Resolve direct Bandcamp cover URL
         shell: bash
         run: |
@@ -33,15 +31,21 @@ jobs:
 
           data = json.loads(Path('/tmp/bandcamp-search.json').read_text())
           results = ((data or {}).get('auto') or {}).get('results') or []
+          print('RESULT_COUNT=' + str(len(results)))
 
-          def text(result):
-              return ' '.join(str(result.get(k, '')) for k in (
-                  'name', 'title', 'band_name', 'artist', 'item_url', 'url', 'bandcamp_url'
-              )).lower()
+          def flatten(value):
+              if isinstance(value, dict):
+                  return ' '.join(flatten(v) for v in value.values())
+              if isinstance(value, list):
+                  return ' '.join(flatten(v) for v in value)
+              return str(value or '')
 
-          match = next((r for r in results if 'officer' in text(r) and 'oregon' in text(r)), None)
+          match = next((r for r in results if 'officer' in flatten(r).lower() and 'oregon' in flatten(r).lower()), None)
           if not match:
-              raise SystemExit('CRAP010 album was not found in Bandcamp search response')
+              print(json.dumps(data, ensure_ascii=False))
+              raise SystemExit('CRAP010 album was not found')
+
+          print('MATCH=' + json.dumps(match, ensure_ascii=False))
 
           image_url = ''
           for key in ('img', 'image_url', 'art_url', 'img_url', 'image'):
@@ -57,47 +61,8 @@ jobs:
                       break
 
           if not image_url:
-              Path('assets/catalogue/crap010-bandcamp-search.json').write_text(
-                  json.dumps(data, indent=2, ensure_ascii=False)
-              )
               raise SystemExit('Bandcamp result did not contain an image URL')
 
           image_url = re.sub(r'_[0-9]+\.jpg(?:\?.*)?$', '_10.jpg', image_url)
-          if not image_url.startswith('https://f4.bcbits.com/img/'):
-              raise SystemExit(f'Unexpected Bandcamp image URL: {image_url}')
-
-          html_path = Path('catalogue.html')
-          html = html_path.read_text()
-          html = re.sub(
-              r'assets/catalogue/crap010-officer-asia-to-oregon\.jpg\?v=[^" ]+',
-              image_url,
-              html,
-          )
-          html = re.sub(
-              r'assets/catalogue/crap010-bandcamp-cover\.jpg\?v=[^" ]+',
-              image_url,
-              html,
-          )
-          html = re.sub(
-              r'https://f4\.bcbits\.com/img/a[0-9]+_10\.jpg',
-              lambda m: image_url if 'crap010' in html[max(0, m.start()-700):m.start()] else m.group(0),
-              html,
-          )
-          html_path.write_text(html)
-          Path('assets/catalogue/crap010-bandcamp-cover-url.txt').write_text(image_url + '\n')
-          print(image_url)
+          print('CRAP010_COVER_URL=' + image_url)
           PY
-
-      - name: Commit resolved cover URL
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add catalogue.html assets/catalogue/crap010-bandcamp-cover-url.txt assets/catalogue/crap010-bandcamp-search.json 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo 'No changes to commit.'
-            exit 0
-          fi
-          git commit -m 'Use Bandcamp CDN cover for CRAP010'
-          git push
