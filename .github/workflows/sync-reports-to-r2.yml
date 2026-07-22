@@ -1,0 +1,89 @@
+name: Sync REPORT images to R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview uploads without changing R2"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_BUCKET: crap-report-images
+      R2_PREFIX: reports
+
+    steps:
+      - name: Check out REPORT images only
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            assets/reports
+
+      - name: Validate configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$R2_ACCOUNT_ID" || { echo "Missing R2_ACCOUNT_ID secret"; exit 1; }
+          test -n "$AWS_ACCESS_KEY_ID" || { echo "Missing R2_ACCESS_KEY_ID secret"; exit 1; }
+          test -n "$AWS_SECRET_ACCESS_KEY" || { echo "Missing R2_SECRET_ACCESS_KEY secret"; exit 1; }
+          test -d assets/reports || { echo "assets/reports was not checked out"; exit 1; }
+          echo "Local JPG files: $(find assets/reports -maxdepth 1 -type f -name 'report-*.jpg' | wc -l)"
+
+      - name: Install AWS CLI
+        shell: bash
+        run: |
+          if ! command -v aws >/dev/null 2>&1; then
+            python -m pip install --disable-pip-version-check awscli
+          fi
+          aws --version
+
+      - name: Preview R2 sync
+        if: ${{ inputs.dry_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          aws s3 sync assets/reports "s3://${R2_BUCKET}/${R2_PREFIX}/" \
+            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --exclude "*" \
+            --include "report-*.jpg" \
+            --no-progress \
+            --dryrun
+
+      - name: Upload REPORT images to R2
+        if: ${{ !inputs.dry_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          aws s3 sync assets/reports "s3://${R2_BUCKET}/${R2_PREFIX}/" \
+            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --exclude "*" \
+            --include "report-*.jpg" \
+            --no-progress
+
+      - name: Verify uploaded object count
+        if: ${{ !inputs.dry_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          local_count=$(find assets/reports -maxdepth 1 -type f -name 'report-*.jpg' | wc -l | tr -d ' ')
+          remote_count=$(aws s3 ls "s3://${R2_BUCKET}/${R2_PREFIX}/" \
+            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --recursive | awk '/report-[0-9]+\.jpg$/ {count++} END {print count+0}')
+          echo "Local count:  ${local_count}"
+          echo "Remote count: ${remote_count}"
+          test "$local_count" -eq "$remote_count"
