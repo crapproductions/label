@@ -19,6 +19,11 @@
 
   <link rel="stylesheet" href="style.css">
   <style>
+    .home-main-link {
+      display: block;
+      line-height: 0;
+    }
+
     .home-main-image {
       display: block;
       width: min(560px, 54vh, calc(100vw - var(--sidebar-w) - 140px));
@@ -71,7 +76,9 @@
 </aside>
 
 <main class="main main-home">
-  <img class="home-main-image" src="assets/ui/home-main.svg?v=20260719a" alt="Crap Productions home image" loading="eager">
+  <a class="home-main-link" href="catalogue.html#crap011" aria-label="Open Dam Pipe — Grimy State Of Mind">
+    <img class="home-main-image" src="https://f4.bcbits.com/img/a3444540355_1x1_700.avif" alt="Dam Pipe — Grimy State Of Mind cover" loading="eager">
+  </a>
 </main>
 </body>
 </html>
