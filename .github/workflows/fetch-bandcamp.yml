@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - '.github/workflows/fetch-bandcamp.yml'
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
