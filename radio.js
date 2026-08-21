@@ -118,6 +118,8 @@
   audio.preload = 'auto';
   audio.loop = false;
   audio.playsInline = true;
+  audio.setAttribute('playsinline','');
+  audio.setAttribute('webkit-playsinline','');
 
   player.append(artwork, button, audio);
   const sidebar = document.querySelector('.sidebar');
@@ -146,10 +148,28 @@
     if (Number.isFinite(parsedStart)) startedAt = parsedStart;
   }
 
+  function setMediaPlaybackState(state) {
+    if (!('mediaSession' in navigator)) return;
+    try { navigator.mediaSession.playbackState = state; } catch (_) {}
+  }
+
+  function updateMediaPosition() {
+    if (!('mediaSession' in navigator) || typeof navigator.mediaSession.setPositionState !== 'function') return;
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0 || !Number.isFinite(audio.currentTime)) return;
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: audio.duration,
+        playbackRate: audio.playbackRate || 1,
+        position: Math.min(Math.max(0, audio.currentTime), audio.duration)
+      });
+    } catch (_) {}
+  }
+
   function setPlayingUI(playing) {
     player.classList.toggle('is-playing', playing);
     button.setAttribute('aria-label', playing ? 'Pause CRAP RADIO' : 'Play CRAP RADIO');
     button.title = playing ? 'Pause CRAP RADIO' : 'Play CRAP RADIO';
+    setMediaPlaybackState(playing ? 'playing' : 'paused');
   }
 
   function loadTrack(index, offset = 0, autoplay = false) {
@@ -169,6 +189,7 @@
         try { audio.currentTime = Math.min(Math.max(0, offset), maxOffset); } catch (_) {}
       }
       switchingTrack = false;
+      updateMediaPosition();
     };
 
     if (offset > 0 && audio.readyState < 1) {
@@ -182,7 +203,7 @@
       if (playPromise && typeof playPromise.catch === 'function') {
         playPromise.catch(error => {
           console.warn('CRAP RADIO could not play track.', error);
-          wantsPlayback = false;
+          // Keep wantsPlayback true so foreground/lock-screen play can recover.
           setPlayingUI(false);
         });
       }
@@ -215,6 +236,7 @@
     if (Math.abs(audio.currentTime - live.offset) > 1.5) {
       try { audio.currentTime = live.offset; } catch (_) {}
     }
+    updateMediaPosition();
     return true;
   }
 
@@ -222,12 +244,11 @@
     wantsPlayback = true;
     setPlayingUI(true);
 
-    // Important: call play() directly from the user's click. Do not await
-    // fetch/metadata first, otherwise browser user-activation can expire.
+    // Keep play() directly inside the user's action so mobile autoplay policy
+    // cannot expire while waiting for metadata or JSON.
     const playPromise = audio.play();
     if (playPromise && typeof playPromise.catch === 'function') {
       playPromise.catch(error => {
-        wantsPlayback = false;
         setPlayingUI(false);
         console.warn('CRAP RADIO could not start playback.', error);
       });
@@ -250,6 +271,41 @@
     loadTrack(nextIndex, 0, wantsPlayback);
   }
 
+  function recoverBackgroundPlayback() {
+    if (!wantsPlayback) return;
+    if (durationsReady) syncToBroadcastClock();
+    if (audio.paused) {
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+      }
+    }
+  }
+
+  function setupMobileMediaSession() {
+    try {
+      if ('audioSession' in navigator && navigator.audioSession) {
+        navigator.audioSession.type = 'playback';
+      }
+    } catch (_) {}
+
+    if (!('mediaSession' in navigator)) return;
+
+    try {
+      if (typeof window.MediaMetadata === 'function') {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: 'CRAP RADIO',
+          artist: 'CRAP PRODUCTIONS',
+          album: 'TRANSMITTING FROM CRAP HQ'
+        });
+      }
+    } catch (_) {}
+
+    try { navigator.mediaSession.setActionHandler('play', playRadio); } catch (_) {}
+    try { navigator.mediaSession.setActionHandler('pause', pauseRadio); } catch (_) {}
+    setMediaPlaybackState('paused');
+  }
+
   button.addEventListener('click', () => {
     if (wantsPlayback && !audio.paused) pauseRadio();
     else playRadio();
@@ -257,11 +313,17 @@
 
   audio.addEventListener('play', () => {
     if (wantsPlayback) setPlayingUI(true);
+    updateMediaPosition();
   });
 
   audio.addEventListener('pause', () => {
     if (!audio.ended && !wantsPlayback) setPlayingUI(false);
+    updateMediaPosition();
   });
+
+  audio.addEventListener('loadedmetadata', updateMediaPosition);
+  audio.addEventListener('durationchange', updateMediaPosition);
+  audio.addEventListener('timeupdate', updateMediaPosition);
 
   audio.addEventListener('ended', () => {
     if (wantsPlayback) goToNextTrack();
@@ -310,7 +372,6 @@
     totalDuration = tracks.reduce((sum,track) => sum + track.duration, 0);
     durationsReady = totalDuration > 0;
     if (durationsReady) {
-      // Prepare the correct live position even before the listener clicks.
       const live = getLivePosition();
       if (live && !wantsPlayback) loadTrack(live.index, live.offset, false);
       else if (live && wantsPlayback) syncToBroadcastClock();
@@ -336,20 +397,23 @@
     }
   }
 
-  // Build the known-good 001/002/003 list synchronously so PLAY works immediately.
   buildTracks(library);
   audio.src = tracks[0].url;
   audio.load();
 
-  // Refresh the editable JSON library in the background; never block PLAY on it.
+  setupMobileMediaSession();
   refreshLibrary();
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && wantsPlayback && durationsReady) syncToBroadcastClock();
+    if (!document.hidden) recoverBackgroundPlayback();
+  });
+  window.addEventListener('pageshow', recoverBackgroundPlayback);
+  window.addEventListener('focus', () => {
+    if (!document.hidden) recoverBackgroundPlayback();
   });
 
   window.setInterval(() => {
-    if (wantsPlayback && durationsReady) syncToBroadcastClock();
+    if (wantsPlayback && durationsReady && !document.hidden) syncToBroadcastClock();
   }, 30000);
 
   window.CrapRadio = {
@@ -359,7 +423,8 @@
     get currentTrackIndex(){ return currentTrackIndex; },
     get totalDuration(){ return totalDuration; },
     get startedAt(){ return startedAt; },
-    syncToBroadcastClock
+    syncToBroadcastClock,
+    recoverBackgroundPlayback
   };
 
   if (!window.__CRAP_RADIO_PERSIST_READY && !document.querySelector('script[src*="radio-persist.js"]')) {
