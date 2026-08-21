@@ -4,18 +4,28 @@
   const config = window.CRAP_RADIO_CONFIG || {};
   const fallbackSource = 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/A%20-%20Serious%20Beats%20Unmixed%20Side.mp3';
   const fallbackStartedAt = '2026-08-21T10:30:00+09:00';
-  const audioSource = typeof config.source === 'string' && config.source.trim()
-    ? config.source.trim()
-    : fallbackSource;
+  const audioSource = typeof config.source === 'string' && config.source.trim() ? config.source.trim() : fallbackSource;
   const startedAt = Date.parse(
-    typeof config.startedAt === 'string' && config.startedAt.trim()
-      ? config.startedAt.trim()
-      : fallbackStartedAt
+    typeof config.startedAt === 'string' && config.startedAt.trim() ? config.startedAt.trim() : fallbackStartedAt
   );
 
   const style = document.createElement('style');
   style.id = 'crap-radio-player-style';
   style.textContent = `
+    .crap-radio-dice {
+      display: block;
+      width: 280px;
+      height: auto;
+      margin: 72px auto 0;
+      object-fit: contain;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .sidebar .crap-radio-dice + #crap-radio-player {
+      margin-top: 12px !important;
+    }
+
     #crap-radio-player {
       --crap-radio-height: 72px;
       display: inline-flex;
@@ -105,9 +115,17 @@
     }
 
     @media (max-width: 920px) {
+      .crap-radio-dice {
+        width: 250px;
+        margin-top: 64px;
+      }
+
+      .sidebar .crap-radio-dice + #crap-radio-player {
+        margin-top: 10px !important;
+      }
+
       #crap-radio-player {
         --crap-radio-height: 64px;
-        margin-top: 72px;
       }
 
       .crap-radio-icon {
@@ -132,13 +150,23 @@
     }
 
     @media (max-width: 680px) {
+      .crap-radio-dice {
+        width: 235px;
+        margin: 60px auto 0;
+      }
+
       #crap-radio-player {
         --crap-radio-height: 62px;
-        margin: 70px auto 0;
       }
     }
   `;
   document.head.appendChild(style);
+
+  const dice = document.createElement('img');
+  dice.className = 'crap-radio-dice';
+  dice.src = 'assets/ui/crap-radio-dice.jpg?v=20260821a';
+  dice.alt = '';
+  dice.setAttribute('aria-hidden', 'true');
 
   const player = document.createElement('div');
   player.id = 'crap-radio-player';
@@ -170,7 +198,8 @@
   player.append(artwork, button, audio);
 
   const sidebar = document.querySelector('.sidebar');
-  (sidebar || document.body).appendChild(player);
+  const host = sidebar || document.body;
+  host.append(dice, player);
 
   function getLiveOffset() {
     if (!Number.isFinite(startedAt) || !Number.isFinite(audio.duration) || audio.duration <= 0) return null;
@@ -186,9 +215,7 @@
     const wrappedDifference = Math.min(difference, Math.abs(audio.duration - difference));
 
     if (force || wrappedDifference > 1.25) {
-      try {
-        audio.currentTime = liveOffset;
-      } catch (_) {}
+      try { audio.currentTime = liveOffset; } catch (_) {}
     }
     return true;
   }
