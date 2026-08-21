@@ -164,7 +164,7 @@
 
   const dice = document.createElement('img');
   dice.className = 'crap-radio-dice';
-  dice.src = 'assets/ui/crap-radio-dice.jpg?v=20260821a';
+  dice.src = 'assets/ui/crap-radio-dice.png?v=20260821b';
   dice.alt = '';
   dice.setAttribute('aria-hidden', 'true');
 
@@ -193,7 +193,7 @@
   audio.id = 'crap-radio-audio';
   audio.preload = 'metadata';
   audio.src = audioSource;
-  audio.loop = true;
+  audio.loop = false;
 
   player.append(artwork, button, audio);
 
@@ -235,13 +235,23 @@
     });
   }
 
-  async function playRadio() {
+  async function playRadio(forceSync = true) {
+    try {
+      await waitForMetadata();
+      if (forceSync) syncToBroadcastClock(true);
+      await audio.play();
+    } catch (error) {
+      console.warn('CRAP RADIO could not start playback.', error);
+    }
+  }
+
+  async function restartBroadcastAfterEnd() {
     try {
       await waitForMetadata();
       syncToBroadcastClock(true);
       await audio.play();
     } catch (error) {
-      console.warn('CRAP RADIO could not start playback.', error);
+      console.warn('CRAP RADIO could not restart after ending.', error);
     }
   }
 
@@ -250,7 +260,7 @@
   }
 
   button.addEventListener('click', () => {
-    if (audio.paused) playRadio();
+    if (audio.paused) playRadio(true);
     else pauseRadio();
   });
 
@@ -266,9 +276,16 @@
   });
 
   audio.addEventListener('pause', () => {
-    player.classList.remove('is-playing');
-    button.setAttribute('aria-label', 'Play CRAP RADIO');
-    button.title = 'Play CRAP RADIO';
+    if (!audio.ended) {
+      player.classList.remove('is-playing');
+      button.setAttribute('aria-label', 'Play CRAP RADIO');
+      button.title = 'Play CRAP RADIO';
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    player.classList.add('is-playing');
+    restartBroadcastAfterEnd();
   });
 
   document.addEventListener('visibilitychange', () => {
@@ -283,7 +300,8 @@
     player,
     audio,
     startedAt,
-    syncToBroadcastClock
+    syncToBroadcastClock,
+    restartBroadcastAfterEnd
   };
 
   if (!window.__CRAP_RADIO_PERSIST_READY && !document.querySelector('script[src*="radio-persist.js"]')) {
