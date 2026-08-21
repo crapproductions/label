@@ -2,10 +2,16 @@
   if (document.getElementById('crap-radio-player')) return;
 
   const config = window.CRAP_RADIO_CONFIG || {};
-  const fallbackSource = 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/04%20The%20Sapphires%20-%20Who%20Do%20You%20Love.mp3';
+  const fallbackSource = 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/A%20-%20Serious%20Beats%20Unmixed%20Side.mp3';
+  const fallbackStartedAt = '2026-08-21T10:30:00+09:00';
   const audioSource = typeof config.source === 'string' && config.source.trim()
     ? config.source.trim()
     : fallbackSource;
+  const startedAt = Date.parse(
+    typeof config.startedAt === 'string' && config.startedAt.trim()
+      ? config.startedAt.trim()
+      : fallbackStartedAt
+  );
 
   const style = document.createElement('style');
   style.id = 'crap-radio-player-style';
@@ -157,16 +163,55 @@
 
   const audio = document.createElement('audio');
   audio.id = 'crap-radio-audio';
-  audio.preload = 'none';
+  audio.preload = 'metadata';
   audio.src = audioSource;
+  audio.loop = true;
 
   player.append(artwork, button, audio);
 
   const sidebar = document.querySelector('.sidebar');
   (sidebar || document.body).appendChild(player);
 
+  function getLiveOffset() {
+    if (!Number.isFinite(startedAt) || !Number.isFinite(audio.duration) || audio.duration <= 0) return null;
+    const elapsed = Math.max(0, (Date.now() - startedAt) / 1000);
+    return elapsed % audio.duration;
+  }
+
+  function syncToBroadcastClock(force = false) {
+    const liveOffset = getLiveOffset();
+    if (liveOffset === null) return false;
+
+    const difference = Math.abs(audio.currentTime - liveOffset);
+    const wrappedDifference = Math.min(difference, Math.abs(audio.duration - difference));
+
+    if (force || wrappedDifference > 1.25) {
+      try {
+        audio.currentTime = liveOffset;
+      } catch (_) {}
+    }
+    return true;
+  }
+
+  function waitForMetadata() {
+    if (audio.readyState >= 1 && Number.isFinite(audio.duration)) return Promise.resolve();
+
+    return new Promise((resolve) => {
+      const done = () => {
+        audio.removeEventListener('loadedmetadata', done);
+        audio.removeEventListener('error', done);
+        resolve();
+      };
+      audio.addEventListener('loadedmetadata', done, { once: true });
+      audio.addEventListener('error', done, { once: true });
+      audio.load();
+    });
+  }
+
   async function playRadio() {
     try {
+      await waitForMetadata();
+      syncToBroadcastClock(true);
       await audio.play();
     } catch (error) {
       console.warn('CRAP RADIO could not start playback.', error);
@@ -182,7 +227,12 @@
     else pauseRadio();
   });
 
+  audio.addEventListener('loadedmetadata', () => {
+    if (!audio.paused) syncToBroadcastClock(true);
+  });
+
   audio.addEventListener('play', () => {
+    syncToBroadcastClock();
     player.classList.add('is-playing');
     button.setAttribute('aria-label', 'Pause CRAP RADIO');
     button.title = 'Pause CRAP RADIO';
@@ -194,11 +244,24 @@
     button.title = 'Play CRAP RADIO';
   });
 
-  window.CrapRadio = { player, audio };
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !audio.paused) syncToBroadcastClock(true);
+  });
+
+  window.setInterval(() => {
+    if (!audio.paused) syncToBroadcastClock();
+  }, 30000);
+
+  window.CrapRadio = {
+    player,
+    audio,
+    startedAt,
+    syncToBroadcastClock
+  };
 
   if (!window.__CRAP_RADIO_PERSIST_READY && !document.querySelector('script[src*="radio-persist.js"]')) {
     const persistScript = document.createElement('script');
-    persistScript.src = 'radio-persist.js?v=20260821c';
+    persistScript.src = 'radio-persist.js?v=20260821d';
     persistScript.defer = true;
     document.body.appendChild(persistScript);
   }
