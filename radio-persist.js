@@ -1,4 +1,7 @@
 (() => {
+  if (window.__CRAP_RADIO_PERSIST_READY) return;
+  window.__CRAP_RADIO_PERSIST_READY = true;
+
   const ROUTES = new Set([
     '/',
     '/index.html',
