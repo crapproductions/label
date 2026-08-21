@@ -1,7 +1,7 @@
 (() => {
   if (window.__CRAP_RADIO_PERSIST_READY) return;
   window.__CRAP_RADIO_PERSIST_READY = true;
-  window.__CRAP_RADIO_PERSIST_VERSION = '20260821d';
+  window.__CRAP_RADIO_PERSIST_VERSION = '20260821e';
 
   const ROUTES = new Set([
     '/',
@@ -46,6 +46,18 @@
     }
   `;
   document.head.appendChild(style);
+
+  function applyRadioMetadata() {
+    if (!('mediaSession' in navigator) || typeof window.MediaMetadata !== 'function') return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Transmitting From CRAP HQ',
+        artist: 'Crap Productions'
+      });
+    } catch (_) {}
+  }
+
+  applyRadioMetadata();
 
   function pinPlayerToSidebar() {
     const player = document.getElementById('crap-radio-player');
@@ -213,6 +225,7 @@
       clearDynamicBody();
       insertDynamicBody(targetDoc);
       pinPlayerToSidebar();
+      applyRadioMetadata();
       await runPageScripts(targetDoc, url.href);
 
       if (!url.hash) {
@@ -227,8 +240,6 @@
 
       return true;
     } catch (error) {
-      // Deliberately do NOT fall back to window.location here: a full
-      // navigation would destroy the live <audio> element and reset radio.
       console.error('CRAP partial navigation failed; current page kept to preserve radio.', error);
       return false;
     }
@@ -247,9 +258,6 @@
     if (!shouldInterceptClick(event, anchor)) return;
 
     const url = new URL(anchor.href, window.location.href);
-
-    // Capture phase: block normal document navigation before any other
-    // handler can allow the browser to unload the page/audio element.
     event.preventDefault();
     event.stopPropagation();
 
@@ -271,8 +279,6 @@
     if (isInternalRoute(url)) navigate(url, { push: false });
   });
 
-  // Warm the main pages in the background. This is not required for
-  // correctness, but makes subsequent radio-safe navigation near instant.
   window.setTimeout(() => {
     ROUTES.forEach((path) => {
       const url = new URL(path, window.location.origin);
