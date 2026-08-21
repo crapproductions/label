@@ -16,57 +16,26 @@
       inset: auto !important;
       right: auto !important;
       bottom: auto !important;
-      width: 300px !important;
-      max-width: calc(100% - 28px) !important;
-      height: 90px !important;
       margin: 82px auto 0 !important;
-      flex: 0 0 auto !important;
       z-index: 30 !important;
       box-shadow: none !important;
     }
 
-    .sidebar #crap-radio-player.is-home {
-      position: static !important;
-      width: 300px !important;
-      height: 90px !important;
-      margin: 82px auto 0 !important;
-    }
-
-    .sidebar #crap-radio-player .crap-radio-toggle,
-    .sidebar #crap-radio-player.is-home .crap-radio-toggle {
-      width: 72px !important;
-      min-width: 72px !important;
-    }
-
     @media (max-width: 1320px) {
-      .sidebar #crap-radio-player,
-      .sidebar #crap-radio-player.is-home {
-        width: 280px !important;
-        height: 84px !important;
+      .sidebar #crap-radio-player {
         margin-top: 76px !important;
-      }
-      .sidebar #crap-radio-player .crap-radio-toggle,
-      .sidebar #crap-radio-player.is-home .crap-radio-toggle {
-        width: 66px !important;
-        min-width: 66px !important;
       }
     }
 
     @media (max-width: 920px) {
-      .sidebar #crap-radio-player,
-      .sidebar #crap-radio-player.is-home {
-        width: 270px !important;
-        height: 81px !important;
+      .sidebar #crap-radio-player {
         margin-top: 72px !important;
       }
     }
 
     @media (max-width: 680px) {
-      .sidebar #crap-radio-player,
-      .sidebar #crap-radio-player.is-home {
-        width: 270px !important;
-        height: 81px !important;
-        margin: 70px 0 0 !important;
+      .sidebar #crap-radio-player {
+        margin: 70px auto 0 !important;
       }
     }
   `;
@@ -76,8 +45,6 @@
     const player = document.getElementById('crap-radio-player');
     const sidebar = document.querySelector('.sidebar');
     if (!player || !sidebar) return;
-
-    player.classList.remove('is-home');
     if (player.parentNode !== sidebar) sidebar.appendChild(player);
   }
 
@@ -142,7 +109,6 @@
       if (node.tagName === 'SCRIPT') return;
       node.remove();
     });
-
     document.body.className = '';
   }
 
@@ -156,11 +122,8 @@
     });
 
     const firstScript = Array.from(document.body.children).find((node) => node.tagName === 'SCRIPT');
-    if (firstScript) {
-      document.body.insertBefore(fragment, firstScript);
-    } else {
-      document.body.appendChild(fragment);
-    }
+    if (firstScript) document.body.insertBefore(fragment, firstScript);
+    else document.body.appendChild(fragment);
   }
 
   async function runPageScripts(targetDoc, targetUrl) {
@@ -214,16 +177,13 @@
 
       const targetDoc = new DOMParser().parseFromString(html, 'text/html');
 
-      if (options.push !== false) {
-        history.pushState({ crapPartial: true }, '', url.href);
-      }
+      if (options.push !== false) history.pushState({ crapPartial: true }, '', url.href);
 
       document.title = targetDoc.title || document.title;
       copyDynamicHead(targetDoc, url.href);
       clearDynamicBody();
       insertDynamicBody(targetDoc);
       pinPlayerToSidebar();
-
       await runPageScripts(targetDoc, url.href);
 
       if (!url.hash) {
