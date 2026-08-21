@@ -128,7 +128,7 @@
     @media (max-width: 680px) {
       #crap-radio-player {
         --crap-radio-height: 62px;
-        margin: 70px 0 0;
+        margin: 70px auto 0;
       }
     }
   `;
@@ -195,4 +195,11 @@
   });
 
   window.CrapRadio = { player, audio };
+
+  if (!window.__CRAP_RADIO_PERSIST_READY && !document.querySelector('script[src*="radio-persist.js"]')) {
+    const persistScript = document.createElement('script');
+    persistScript.src = 'radio-persist.js?v=20260821c';
+    persistScript.defer = true;
+    document.body.appendChild(persistScript);
+  }
 })();
