@@ -1,29 +1,20 @@
 (() => {
   if (document.getElementById('crap-radio-player')) return;
 
-  const LIBRARY_URL = 'radio-library.json?v=20260821h';
+  const LIBRARY_URL = 'radio-library.json?v=20260821i';
   const FALLBACK_LIBRARY = {
     startedAt: '2026-08-21T10:30:00+09:00',
     baseUrl: 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/',
-    files: ['A - Serious Beats Unmixed Side.mp3']
+    files: [
+      'CRAP-RADIO-001.mp3',
+      'CRAP-RADIO-002.mp3',
+      'CRAP-RADIO-003.mp3'
+    ]
   };
 
   const style = document.createElement('style');
   style.id = 'crap-radio-player-style';
   style.textContent = `
-    .crap-radio-dice {
-      display: block;
-      width: 280px;
-      height: auto;
-      margin: 68px auto 0;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .sidebar .crap-radio-dice + #crap-radio-player {
-      margin-top: 10px !important;
-    }
-
     #crap-radio-player {
       --crap-radio-height: 72px;
       display: inline-flex;
@@ -36,95 +27,70 @@
       box-sizing: border-box;
       margin: 82px auto 0;
     }
-
-    #crap-radio-player,
-    #crap-radio-player * {
-      box-sizing: border-box;
-    }
-
+    #crap-radio-player, #crap-radio-player * { box-sizing: border-box; }
     .crap-radio-artwork {
-      display: block;
-      flex: 0 0 auto;
-      width: calc(var(--crap-radio-height) * 10 / 3);
-      height: var(--crap-radio-height);
-      margin: 0;
-      padding: 0;
-      object-fit: contain;
-      object-position: left center;
-      background: #000;
-      user-select: none;
-      pointer-events: none;
+      display:block;
+      flex:0 0 auto;
+      width:calc(var(--crap-radio-height) * 10 / 3);
+      height:var(--crap-radio-height);
+      margin:0;
+      padding:0;
+      object-fit:contain;
+      object-position:left center;
+      background:#000;
+      user-select:none;
+      pointer-events:none;
     }
-
     .crap-radio-toggle {
-      position: relative;
-      display: grid;
-      place-items: center;
-      flex: 0 0 var(--crap-radio-height);
-      width: var(--crap-radio-height);
-      min-width: var(--crap-radio-height);
-      height: var(--crap-radio-height);
-      margin: 0;
-      padding: 0;
-      border: 0;
-      border-left: 1px solid rgba(255,255,255,.65);
-      border-radius: 0;
-      background: #000;
-      color: #fff;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
+      position:relative;
+      display:grid;
+      place-items:center;
+      flex:0 0 var(--crap-radio-height);
+      width:var(--crap-radio-height);
+      min-width:var(--crap-radio-height);
+      height:var(--crap-radio-height);
+      margin:0;
+      padding:0;
+      border:0;
+      border-left:1px solid rgba(255,255,255,.65);
+      border-radius:0;
+      background:#000;
+      color:#fff;
+      cursor:pointer;
+      appearance:none;
+      -webkit-appearance:none;
     }
-
-    .crap-radio-toggle:hover,
-    .crap-radio-toggle:focus-visible {
-      outline: none;
-      background: #111;
-    }
-
+    .crap-radio-toggle:hover, .crap-radio-toggle:focus-visible { outline:none; background:#111; }
     .crap-radio-icon {
-      display: block;
-      width: 0;
-      height: 0;
-      border-top: 13px solid transparent;
-      border-bottom: 13px solid transparent;
-      border-left: 21px solid currentColor;
-      margin-left: 4px;
+      display:block;
+      width:0;
+      height:0;
+      border-top:13px solid transparent;
+      border-bottom:13px solid transparent;
+      border-left:21px solid currentColor;
+      margin-left:4px;
     }
-
     #crap-radio-player.is-playing .crap-radio-icon {
-      width: 20px;
-      height: 26px;
-      margin-left: 0;
-      border: 0;
-      background: linear-gradient(to right,currentColor 0,currentColor 7px,transparent 7px,transparent 13px,currentColor 13px,currentColor 20px);
+      width:20px;
+      height:26px;
+      margin-left:0;
+      border:0;
+      background:linear-gradient(to right,currentColor 0,currentColor 7px,transparent 7px,transparent 13px,currentColor 13px,currentColor 20px);
     }
-
     #crap-radio-player audio { display:none; }
-
     @media (max-width:920px) {
-      .crap-radio-dice { width:250px; margin-top:60px; }
-      .sidebar .crap-radio-dice + #crap-radio-player { margin-top:9px !important; }
-      #crap-radio-player { --crap-radio-height:64px; }
+      #crap-radio-player { --crap-radio-height:64px; margin-top:72px; }
       .crap-radio-icon { border-top-width:11px; border-bottom-width:11px; border-left-width:18px; }
       #crap-radio-player.is-playing .crap-radio-icon {
         width:18px; height:23px;
         background:linear-gradient(to right,currentColor 0,currentColor 6px,transparent 6px,transparent 12px,currentColor 12px,currentColor 18px);
       }
     }
-
     @media (max-width:680px) {
-      .crap-radio-dice { width:235px; margin-top:56px; }
-      #crap-radio-player { --crap-radio-height:62px; }
+      #crap-radio-player { --crap-radio-height:62px; margin:70px auto 0; }
     }
   `;
   document.head.appendChild(style);
-
-  const dice = document.createElement('img');
-  dice.className = 'crap-radio-dice';
-  dice.src = 'assets/ui/crap-radio-dice-inline.svg?v=20260821b';
-  dice.alt = '';
-  dice.setAttribute('aria-hidden','true');
 
   const player = document.createElement('div');
   player.id = 'crap-radio-player';
@@ -154,185 +120,222 @@
 
   player.append(artwork,button,audio);
   const sidebar = document.querySelector('.sidebar');
-  const host = sidebar || document.body;
-  host.append(dice,player);
+  (sidebar || document.body).appendChild(player);
 
   let tracks = [];
+  let currentTrackIndex = 0;
   let startedAt = Date.parse(FALLBACK_LIBRARY.startedAt);
   let totalDuration = 0;
-  let currentTrackIndex = -1;
-  let playlistReady = false;
+  let durationsReady = false;
   let switchingTrack = false;
+  let wantsPlayback = false;
+
+  function setPlayingUI(playing) {
+    player.classList.toggle('is-playing', playing);
+    button.setAttribute('aria-label', playing ? 'Pause CRAP RADIO' : 'Play CRAP RADIO');
+    button.title = playing ? 'Pause CRAP RADIO' : 'Play CRAP RADIO';
+  }
 
   async function loadLibrary() {
     try {
-      const response = await fetch(LIBRARY_URL,{cache:'no-store'});
+      const response = await fetch(LIBRARY_URL, { cache:'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const library = await response.json();
-      if (!library || !Array.isArray(library.files) || !library.files.length) throw new Error('Invalid radio library');
-      return library;
+      const data = await response.json();
+      if (!data || !Array.isArray(data.files) || !data.files.length) throw new Error('Invalid library');
+      return data;
     } catch (error) {
-      console.warn('CRAP RADIO library fallback in use.',error);
+      console.warn('CRAP RADIO: using built-in three-track library.', error);
       return FALLBACK_LIBRARY;
     }
   }
 
-  function probeDuration(url) {
+  function absoluteTrackUrl(file, baseUrl) {
+    return new URL(encodeURIComponent(file), baseUrl).href;
+  }
+
+  function waitForMetadata(element, timeoutMs = 20000) {
+    if (element.readyState >= 1 && Number.isFinite(element.duration) && element.duration > 0) return Promise.resolve(element.duration);
     return new Promise((resolve,reject) => {
-      const probe = document.createElement('audio');
-      probe.preload = 'metadata';
-      probe.src = url;
-      let finished = false;
-      const timer = window.setTimeout(() => finish(new Error('Metadata timeout')),30000);
-
-      function finish(error,duration) {
-        if (finished) return;
-        finished = true;
+      let done = false;
+      const timer = window.setTimeout(() => finish(new Error('metadata timeout')), timeoutMs);
+      const onLoaded = () => finish(null, element.duration);
+      const onError = () => finish(new Error('audio metadata error'));
+      function finish(error, duration) {
+        if (done) return;
+        done = true;
         window.clearTimeout(timer);
-        probe.removeAttribute('src');
-        try { probe.load(); } catch (_) {}
-        if (error) reject(error); else resolve(duration);
+        element.removeEventListener('loadedmetadata', onLoaded);
+        element.removeEventListener('error', onError);
+        if (error || !Number.isFinite(duration) || duration <= 0) reject(error || new Error('invalid duration'));
+        else resolve(duration);
       }
-
-      probe.addEventListener('loadedmetadata',() => {
-        if (Number.isFinite(probe.duration) && probe.duration > 0) finish(null,probe.duration);
-        else finish(new Error('Invalid duration'));
-      },{once:true});
-      probe.addEventListener('error',() => finish(new Error(`Could not read ${url}`)),{once:true});
-      probe.load();
+      element.addEventListener('loadedmetadata', onLoaded, { once:true });
+      element.addEventListener('error', onError, { once:true });
     });
   }
 
-  function getBroadcastPosition() {
-    if (!playlistReady || !tracks.length || totalDuration <= 0 || !Number.isFinite(startedAt)) return null;
-    const elapsed = Math.max(0,(Date.now()-startedAt)/1000);
-    let position = elapsed % totalDuration;
-    for (let index=0; index<tracks.length; index+=1) {
-      const duration = tracks[index].duration;
-      if (position < duration || index === tracks.length-1) {
-        return {index,offset:Math.min(position,Math.max(0,duration-.05))};
-      }
-      position -= duration;
-    }
-    return {index:0,offset:0};
-  }
-
-  function waitForCurrentMetadata() {
-    if (audio.readyState >= 1 && Number.isFinite(audio.duration) && audio.duration > 0) return Promise.resolve();
-    return new Promise((resolve,reject) => {
-      let finished = false;
-      const timer = window.setTimeout(() => finish(new Error('Audio metadata timeout')),30000);
-      const onMetadata = () => finish(null);
-      const onError = () => finish(new Error('Audio failed to load'));
-      function finish(error) {
-        if (finished) return;
-        finished = true;
-        window.clearTimeout(timer);
-        audio.removeEventListener('loadedmetadata',onMetadata);
-        audio.removeEventListener('error',onError);
-        if (error) reject(error); else resolve();
-      }
-      audio.addEventListener('loadedmetadata',onMetadata,{once:true});
-      audio.addEventListener('error',onError,{once:true});
-    });
-  }
-
-  async function setTrack(index,offset,shouldPlay,forceReload=false) {
-    if (!tracks[index]) return false;
+  async function switchTrack(index, offset = 0, autoplay = false) {
+    if (!tracks.length || !tracks[index]) return false;
     switchingTrack = true;
+    currentTrackIndex = index;
     try {
-      if (forceReload || currentTrackIndex !== index || !audio.src) {
-        currentTrackIndex = index;
+      if (audio.src !== tracks[index].url) {
         audio.src = tracks[index].url;
         audio.load();
-        await waitForCurrentMetadata();
       }
-      const duration = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : tracks[index].duration;
-      const safeOffset = Math.min(Math.max(0,offset||0),Math.max(0,duration-.05));
-      try { audio.currentTime = safeOffset; } catch (_) {}
-      if (shouldPlay) await audio.play();
+      try {
+        await waitForMetadata(audio);
+        const maxOffset = Math.max(0, audio.duration - 0.1);
+        audio.currentTime = Math.min(Math.max(0, offset), maxOffset);
+      } catch (error) {
+        console.warn('CRAP RADIO: metadata unavailable; playing from track start.', error);
+        try { audio.currentTime = 0; } catch (_) {}
+      }
+      if (autoplay) await audio.play();
       return true;
     } catch (error) {
-      console.error('CRAP RADIO track switch failed.',error);
+      console.error('CRAP RADIO: track switch failed.', error);
       return false;
     } finally {
       switchingTrack = false;
     }
   }
 
-  async function syncToBroadcastClock(force=false,shouldPlay=!audio.paused) {
-    const live = getBroadcastPosition();
+  function getLivePosition() {
+    if (!durationsReady || totalDuration <= 0 || !Number.isFinite(startedAt)) return null;
+    const elapsed = Math.max(0, (Date.now() - startedAt) / 1000);
+    let position = elapsed % totalDuration;
+    for (let i = 0; i < tracks.length; i += 1) {
+      const duration = tracks[i].duration;
+      if (position < duration || i === tracks.length - 1) {
+        return { index:i, offset:Math.min(position, Math.max(0, duration - 0.1)) };
+      }
+      position -= duration;
+    }
+    return { index:0, offset:0 };
+  }
+
+  async function syncToBroadcastClock(autoplay = wantsPlayback) {
+    const live = getLivePosition();
     if (!live || switchingTrack) return false;
-    if (currentTrackIndex !== live.index) return setTrack(live.index,live.offset,shouldPlay);
-    const difference = Math.abs(audio.currentTime-live.offset);
-    if (force || difference > 1.25) {
+    if (currentTrackIndex !== live.index) return switchTrack(live.index, live.offset, autoplay);
+    if (Math.abs(audio.currentTime - live.offset) > 1.5) {
       try { audio.currentTime = live.offset; } catch (_) {}
     }
-    if (shouldPlay && audio.paused) {
-      try { await audio.play(); } catch (error) { console.warn('CRAP RADIO could not resume playback.',error); }
+    if (autoplay && audio.paused) {
+      try { await audio.play(); } catch (_) {}
     }
     return true;
   }
 
-  async function initializePlaylist() {
+  async function playRadio() {
+    wantsPlayback = true;
+    setPlayingUI(true);
+    await initialized;
+    if (durationsReady) {
+      await syncToBroadcastClock(true);
+      return;
+    }
+    if (!audio.src && tracks.length) await switchTrack(currentTrackIndex, 0, false);
+    try {
+      await audio.play();
+    } catch (error) {
+      wantsPlayback = false;
+      setPlayingUI(false);
+      console.warn('CRAP RADIO could not start playback.', error);
+    }
+  }
+
+  function pauseRadio() {
+    wantsPlayback = false;
+    audio.pause();
+    setPlayingUI(false);
+  }
+
+  async function goToNextTrack() {
+    if (!tracks.length) return;
+    const nextIndex = (currentTrackIndex + 1) % tracks.length;
+    await switchTrack(nextIndex, 0, wantsPlayback);
+  }
+
+  button.addEventListener('click', () => {
+    if (wantsPlayback && !audio.paused) pauseRadio();
+    else playRadio();
+  });
+
+  audio.addEventListener('play', () => {
+    if (wantsPlayback) setPlayingUI(true);
+  });
+
+  audio.addEventListener('pause', () => {
+    if (!switchingTrack && !audio.ended && !wantsPlayback) setPlayingUI(false);
+  });
+
+  audio.addEventListener('ended', () => {
+    if (wantsPlayback) goToNextTrack();
+  });
+
+  audio.addEventListener('error', () => {
+    if (wantsPlayback && !switchingTrack) {
+      console.warn('CRAP RADIO: skipping unavailable track.');
+      window.setTimeout(goToNextTrack, 500);
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && wantsPlayback && durationsReady) syncToBroadcastClock(true);
+  });
+
+  window.setInterval(() => {
+    if (wantsPlayback && durationsReady) syncToBroadcastClock(true);
+  }, 30000);
+
+  async function probeDurationsInBackground() {
+    const results = await Promise.allSettled(tracks.map(track => {
+      return new Promise((resolve,reject) => {
+        const probe = new Audio();
+        probe.preload = 'metadata';
+        probe.src = track.url;
+        waitForMetadata(probe, 30000)
+          .then(duration => { probe.removeAttribute('src'); resolve(duration); })
+          .catch(error => { probe.removeAttribute('src'); reject(error); });
+        probe.load();
+      });
+    }));
+
+    if (results.some(result => result.status !== 'fulfilled')) {
+      console.warn('CRAP RADIO: duration sync unavailable; sequential playback still active.');
+      return;
+    }
+
+    results.forEach((result,index) => { tracks[index].duration = result.value; });
+    totalDuration = tracks.reduce((sum,track) => sum + track.duration, 0);
+    durationsReady = totalDuration > 0;
+    if (durationsReady && wantsPlayback) syncToBroadcastClock(true);
+  }
+
+  const initialized = (async () => {
     const library = await loadLibrary();
     const baseUrl = library.baseUrl || FALLBACK_LIBRARY.baseUrl;
     const files = Array.isArray(library.files) && library.files.length ? library.files : FALLBACK_LIBRARY.files;
     const parsedStart = Date.parse(library.startedAt || FALLBACK_LIBRARY.startedAt);
     if (Number.isFinite(parsedStart)) startedAt = parsedStart;
-    const urls = files.map(file => new URL(file,baseUrl).href);
-    const durations = await Promise.all(urls.map(url => probeDuration(url)));
-    tracks = urls.map((url,index) => ({file:files[index],url,duration:durations[index]}));
-    totalDuration = tracks.reduce((sum,track) => sum+track.duration,0);
-    playlistReady = tracks.length > 0 && totalDuration > 0;
-    const live = getBroadcastPosition();
-    if (live) await setTrack(live.index,live.offset,false);
-  }
-
-  async function playRadio() {
-    if (!playlistReady) return;
-    await syncToBroadcastClock(true,true);
-  }
-
-  button.addEventListener('click',() => {
-    if (audio.paused) playRadio(); else audio.pause();
-  });
-
-  audio.addEventListener('play',() => {
-    player.classList.add('is-playing');
-    button.setAttribute('aria-label','Pause CRAP RADIO');
-    button.title = 'Pause CRAP RADIO';
-  });
-
-  audio.addEventListener('pause',() => {
-    if (!audio.ended && !switchingTrack) {
-      player.classList.remove('is-playing');
-      button.setAttribute('aria-label','Play CRAP RADIO');
-      button.title = 'Play CRAP RADIO';
+    tracks = files.map(file => ({ file, url:absoluteTrackUrl(file, baseUrl), duration:null }));
+    currentTrackIndex = 0;
+    if (tracks.length) {
+      audio.src = tracks[0].url;
+      audio.load();
     }
-  });
-
-  audio.addEventListener('ended',async () => {
-    if (!playlistReady || switchingTrack || !tracks.length) return;
-    const nextIndex = (currentTrackIndex + 1) % tracks.length;
-    await setTrack(nextIndex,0,true,true);
-  });
-
-  document.addEventListener('visibilitychange',() => {
-    if (!document.hidden && player.classList.contains('is-playing')) syncToBroadcastClock(true,true);
-  });
-
-  window.setInterval(() => {
-    if (player.classList.contains('is-playing')) syncToBroadcastClock(false,true);
-  },30000);
-
-  initializePlaylist().catch(error => console.error('CRAP RADIO playlist initialization failed.',error));
+    probeDurationsInBackground();
+  })();
 
   window.CrapRadio = {
-    player,audio,
+    player,
+    audio,
     get tracks(){ return tracks.slice(); },
-    get startedAt(){ return startedAt; },
+    get currentTrackIndex(){ return currentTrackIndex; },
     get totalDuration(){ return totalDuration; },
+    get startedAt(){ return startedAt; },
     syncToBroadcastClock
   };
 
