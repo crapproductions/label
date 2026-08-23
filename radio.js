@@ -2,6 +2,9 @@
   if (document.getElementById('crap-radio-player')) return;
 
   const LIBRARY_URL = 'radio-library.json?v=20260821j';
+  const STATS_HEARTBEAT_URL = 'https://crap-radio-stats.crapproductions66.workers.dev/heartbeat';
+  const STATS_INTERVAL_MS = 30000;
+
   const FALLBACK_LIBRARY = {
     startedAt: '2026-08-21T10:30:00+09:00',
     baseUrl: 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/',
@@ -133,6 +136,66 @@
   let durationsReady = false;
   let wantsPlayback = false;
   let switchingTrack = false;
+  let statsHeartbeatTimer = null;
+
+  function createStatsSessionId() {
+    const key = 'crap-radio-stats-session';
+    try {
+      const existing = window.sessionStorage.getItem(key);
+      if (existing) return existing;
+
+      const created = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+
+      window.sessionStorage.setItem(key, created);
+      return created;
+    } catch (_) {
+      return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+    }
+  }
+
+  const statsSessionId = createStatsSessionId();
+
+  function getCurrentMixId() {
+    const file = tracks[currentTrackIndex]?.file || '';
+    const match = file.match(/(?:^|[^0-9])(\d{3})(?=[^0-9]|$)/);
+    return match ? match[1] : null;
+  }
+
+  async function sendStatsHeartbeat() {
+    if (!wantsPlayback || audio.paused || audio.ended) return;
+
+    const mixId = getCurrentMixId();
+    if (!mixId) return;
+
+    try {
+      await fetch(STATS_HEARTBEAT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: statsSessionId,
+          mixId
+        }),
+        cache: 'no-store',
+        credentials: 'omit',
+        keepalive: true
+      });
+    } catch (_) {
+      // Statistics must never interrupt radio playback.
+    }
+  }
+
+  function startStatsHeartbeat() {
+    if (statsHeartbeatTimer) return;
+    statsHeartbeatTimer = window.setInterval(sendStatsHeartbeat, STATS_INTERVAL_MS);
+  }
+
+  function stopStatsHeartbeat() {
+    if (!statsHeartbeatTimer) return;
+    window.clearInterval(statsHeartbeatTimer);
+    statsHeartbeatTimer = null;
+  }
 
   function absoluteTrackUrl(file, baseUrl) {
     return new URL(encodeURIComponent(file), baseUrl).href;
@@ -262,6 +325,7 @@
   function pauseRadio() {
     wantsPlayback = false;
     audio.pause();
+    stopStatsHeartbeat();
     setPlayingUI(false);
   }
 
@@ -312,11 +376,15 @@
   });
 
   audio.addEventListener('play', () => {
-    if (wantsPlayback) setPlayingUI(true);
+    if (wantsPlayback) {
+      setPlayingUI(true);
+      startStatsHeartbeat();
+    }
     updateMediaPosition();
   });
 
   audio.addEventListener('pause', () => {
+    stopStatsHeartbeat();
     if (!audio.ended && !wantsPlayback) setPlayingUI(false);
     updateMediaPosition();
   });
@@ -326,10 +394,12 @@
   audio.addEventListener('timeupdate', updateMediaPosition);
 
   audio.addEventListener('ended', () => {
+    stopStatsHeartbeat();
     if (wantsPlayback) goToNextTrack();
   });
 
   audio.addEventListener('error', () => {
+    stopStatsHeartbeat();
     if (wantsPlayback && !switchingTrack) {
       console.warn('CRAP RADIO: unavailable track skipped.');
       window.setTimeout(goToNextTrack, 500);
@@ -421,6 +491,7 @@
     audio,
     get tracks(){ return tracks.slice(); },
     get currentTrackIndex(){ return currentTrackIndex; },
+    get currentMixId(){ return getCurrentMixId(); },
     get totalDuration(){ return totalDuration; },
     get startedAt(){ return startedAt; },
     syncToBroadcastClock,
