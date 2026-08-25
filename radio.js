@@ -1,7 +1,7 @@
 (() => {
   if (document.getElementById('crap-radio-player')) return;
 
-  const LIBRARY_URL = 'radio-library.json?v=20260821j';
+  const LIBRARY_URL = 'radio-library.json?v=20260825a';
   const STATS_HEARTBEAT_URL = 'https://crap-radio-stats.crapproductions66.workers.dev/heartbeat';
   const STATS_INTERVAL_MS = 30000;
 
@@ -11,7 +11,17 @@
     files: [
       'CRAP-RADIO-001.mp3',
       'CRAP-RADIO-002.mp3',
-      'CRAP-RADIO-003.mp3'
+      'CRAP-RADIO-003.mp3',
+      'CRAP-RADIO-004.mp3',
+      'CRAP-RADIO-005.mp3',
+      'CRAP-RADIO-006.mp3',
+      'CRAP-RADIO-007.mp3',
+      'CRAP-RADIO-008.mp3',
+      'CRAP-RADIO-009.mp3',
+      'CRAP-RADIO-010.mp3',
+      'CRAP-RADIO-011.mp3',
+      'CRAP-RADIO-012.mp3',
+      'CRAP-RADIO-013.mp3'
     ]
   };
 
@@ -463,7 +473,7 @@
       if (!wasPlaying && tracks.length) loadTrack(currentTrackIndex, 0, false);
       probeDurationsInBackground();
     } catch (error) {
-      console.warn('CRAP RADIO: library fetch failed; built-in 001/002/003 list remains active.', error);
+      console.warn('CRAP RADIO: library fetch failed; built-in 001-013 list remains active.', error);
     }
   }
 
