@@ -53,9 +53,80 @@
       object-fit: contain;
     }
 
-    body > #crap-radio-player {
+    .transmission-console {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: max-content;
+      max-width: 100%;
+      gap: 3px;
+      flex: 0 0 auto;
+    }
+
+    .transmission-console #crap-radio-player {
       margin: 0 !important;
       flex: 0 0 auto;
+    }
+
+    .transmission-status {
+      height: 23px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 9px;
+      box-sizing: border-box;
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8.5px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .transmission-on-air,
+    .transmission-time-group {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .transmission-on-air {
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .transmission-live-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      border-radius: 50%;
+      background: #f00;
+      animation: transmission-live-blink 1.15s steps(1, end) infinite;
+    }
+
+    .transmission-time-group {
+      justify-content: flex-end;
+      gap: 9px;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .transmission-time-value {
+      min-width: 58px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      letter-spacing: .06em;
+    }
+
+    @keyframes transmission-live-blink {
+      0%, 54% { opacity: 1; }
+      55%, 100% { opacity: .18; }
     }
 
     @media (max-width: 680px) {
@@ -67,11 +138,77 @@
       .transmission-figure {
         width: min(320px, 82vw, calc(100svh - 150px));
       }
+
+      .transmission-console {
+        gap: 3px;
+      }
+
+      .transmission-status {
+        height: 20px;
+        padding: 0 7px;
+        gap: 8px;
+        font-size: 7.5px;
+        letter-spacing: .08em;
+      }
+
+      .transmission-on-air {
+        gap: 5px;
+      }
+
+      .transmission-live-dot {
+        width: 6px;
+        height: 6px;
+        flex-basis: 6px;
+      }
+
+      .transmission-time-group {
+        gap: 8px;
+      }
+
+      .transmission-time-value {
+        min-width: 53px;
+      }
     }
   </style>
 </head>
 <body>
   <img class="transmission-figure" src="assets/ui/transmission-figure.webp?v=20260824b" alt="" aria-hidden="true">
-  <script src="radio.js?v=20260824a" defer></script>
+
+  <div class="transmission-console" id="transmission-console">
+    <div class="transmission-status" aria-label="CRAP RADIO transmission status">
+      <div class="transmission-on-air">
+        <span class="transmission-live-dot" aria-hidden="true"></span>
+        <span>ON AIR</span>
+      </div>
+      <div class="transmission-time-group">
+        <span>TIME TRANSMITTED</span>
+        <span class="transmission-time-value" id="transmission-time-value">000:00:00</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="radio.js?v=20260827a" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const consoleEl = document.getElementById('transmission-console');
+      const player = document.getElementById('crap-radio-player');
+      const timeValue = document.getElementById('transmission-time-value');
+      const transmissionStartedAt = Date.parse('2026-08-21T10:30:00+09:00');
+
+      if (consoleEl && player) consoleEl.prepend(player);
+
+      function updateTransmissionTime() {
+        if (!timeValue || !Number.isFinite(transmissionStartedAt)) return;
+        const elapsedSeconds = Math.max(0, Math.floor((Date.now() - transmissionStartedAt) / 1000));
+        const hours = Math.floor(elapsedSeconds / 3600);
+        const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+        const seconds = elapsedSeconds % 60;
+        timeValue.textContent = `${String(hours).padStart(3, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+
+      updateTransmissionTime();
+      window.setInterval(updateTransmissionTime, 250);
+    });
+  </script>
 </body>
 </html>
