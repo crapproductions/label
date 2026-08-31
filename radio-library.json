@@ -1,7 +1,9 @@
 {
-  "startedAt": "2026-08-21T10:30:00+09:00",
+  "transmissionStartedAt": "2026-08-21T10:30:00+09:00",
+  "startedAt": "2026-08-31T17:03:31+09:00",
   "baseUrl": "https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/",
   "files": [
+    "CRAP-RADIO-017.mp3",
     "CRAP-RADIO-001.mp3",
     "CRAP-RADIO-002.mp3",
     "CRAP-RADIO-003.mp3",
