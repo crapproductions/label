@@ -187,7 +187,7 @@
     </div>
   </div>
 
-  <script src="radio.js?v=20260827a" defer></script>
+  <script src="radio.js?v=20260831b" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const consoleEl = document.getElementById('transmission-console');
@@ -208,88 +208,6 @@
 
       updateTransmissionTime();
       window.setInterval(updateTransmissionTime, 250);
-
-      const radio = window.CrapRadio;
-      const audio = radio?.audio;
-      const toggle = player?.querySelector('.crap-radio-toggle');
-      let startupSyncTimer = null;
-      let startupMuted = false;
-      let previousMutedState = false;
-
-      function expectedLivePosition() {
-        if (!radio || !(radio.totalDuration > 0) || !Number.isFinite(radio.startedAt)) return null;
-        const currentTracks = radio.tracks;
-        if (!currentTracks.length || currentTracks.some(track => !(track.duration > 0))) return null;
-
-        let position = Math.max(0, (Date.now() - radio.startedAt) / 1000) % radio.totalDuration;
-        for (let index = 0; index < currentTracks.length; index += 1) {
-          const duration = currentTracks[index].duration;
-          if (position < duration || index === currentTracks.length - 1) {
-            return {
-              index,
-              offset: Math.min(position, Math.max(0, duration - 0.1))
-            };
-          }
-          position -= duration;
-        }
-        return null;
-      }
-
-      function finishStartupMute() {
-        if (!startupMuted || !audio) return;
-        startupMuted = false;
-        if (startupSyncTimer) {
-          window.clearInterval(startupSyncTimer);
-          startupSyncTimer = null;
-        }
-        audio.muted = previousMutedState;
-      }
-
-      function beginStartupMute() {
-        if (!radio || !audio || startupMuted || radio.totalDuration > 0) return;
-
-        previousMutedState = audio.muted;
-        startupMuted = true;
-        audio.muted = true;
-        const waitStartedAt = Date.now();
-
-        startupSyncTimer = window.setInterval(() => {
-          const live = expectedLivePosition();
-
-          if (live) {
-            radio.syncToBroadcastClock();
-
-            if (audio.paused) {
-              finishStartupMute();
-              return;
-            }
-
-            const syncedTrack = radio.currentTrackIndex === live.index;
-            const syncedOffset = Number.isFinite(audio.currentTime)
-              && Math.abs(audio.currentTime - live.offset) < 2.5;
-
-            if (syncedTrack && syncedOffset && audio.readyState >= 1) {
-              finishStartupMute();
-              return;
-            }
-          }
-
-          // Fail open if metadata probing is unavailable for an unusually long time.
-          if (Date.now() - waitStartedAt > 30000) finishStartupMute();
-        }, 50);
-      }
-
-      if (toggle && audio && radio) {
-        // Mute before the original play handler can expose track 001.
-        toggle.addEventListener('click', () => {
-          if (audio.paused && !(radio.totalDuration > 0)) beginStartupMute();
-        }, true);
-
-        // Also covers playback started from iOS Media Session / lock screen.
-        audio.addEventListener('play', () => {
-          if (!(radio.totalDuration > 0)) beginStartupMute();
-        });
-      }
     });
   </script>
 </body>
