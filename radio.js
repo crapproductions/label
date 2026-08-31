@@ -1,14 +1,16 @@
 (() => {
   if (document.getElementById('crap-radio-player')) return;
 
-  const LIBRARY_URL = 'radio-library.json?v=20260825a';
+  const LIBRARY_URL = 'radio-library.json?v=20260831b';
   const STATS_HEARTBEAT_URL = 'https://crap-radio-stats.crapproductions66.workers.dev/heartbeat';
   const STATS_INTERVAL_MS = 30000;
 
   const FALLBACK_LIBRARY = {
-    startedAt: '2026-08-21T10:30:00+09:00',
+    transmissionStartedAt: '2026-08-21T10:30:00+09:00',
+    startedAt: '2026-08-31T17:09:31+09:00',
     baseUrl: 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/',
     files: [
+      'CRAP-RADIO-017.mp3',
       'CRAP-RADIO-001.mp3',
       'CRAP-RADIO-002.mp3',
       'CRAP-RADIO-003.mp3',
@@ -21,7 +23,10 @@
       'CRAP-RADIO-010.mp3',
       'CRAP-RADIO-011.mp3',
       'CRAP-RADIO-012.mp3',
-      'CRAP-RADIO-013.mp3'
+      'CRAP-RADIO-013.mp3',
+      'CRAP-RADIO-014.mp3',
+      'CRAP-RADIO-015.mp3',
+      'CRAP-RADIO-016.mp3'
     ]
   };
 
@@ -107,8 +112,8 @@
 
   const player = document.createElement('div');
   player.id = 'crap-radio-player';
-  player.setAttribute('role','group');
-  player.setAttribute('aria-label','CRAP RADIO');
+  player.setAttribute('role', 'group');
+  player.setAttribute('aria-label', 'CRAP RADIO');
 
   const artwork = document.createElement('img');
   artwork.className = 'crap-radio-artwork';
@@ -118,12 +123,12 @@
   const button = document.createElement('button');
   button.className = 'crap-radio-toggle';
   button.type = 'button';
-  button.setAttribute('aria-label','Play CRAP RADIO');
+  button.setAttribute('aria-label', 'Play CRAP RADIO');
   button.title = 'Play CRAP RADIO';
 
   const icon = document.createElement('span');
   icon.className = 'crap-radio-icon';
-  icon.setAttribute('aria-hidden','true');
+  icon.setAttribute('aria-hidden', 'true');
   button.appendChild(icon);
 
   const audio = document.createElement('audio');
@@ -131,8 +136,8 @@
   audio.preload = 'auto';
   audio.loop = false;
   audio.playsInline = true;
-  audio.setAttribute('playsinline','');
-  audio.setAttribute('webkit-playsinline','');
+  audio.setAttribute('playsinline', '');
+  audio.setAttribute('webkit-playsinline', '');
 
   player.append(artwork, button, audio);
   const sidebar = document.querySelector('.sidebar');
@@ -146,6 +151,7 @@
   let durationsReady = false;
   let wantsPlayback = false;
   let switchingTrack = false;
+  let startupMuted = false;
   let statsHeartbeatTimer = null;
 
   function createStatsSessionId() {
@@ -153,11 +159,9 @@
     try {
       const existing = window.sessionStorage.getItem(key);
       if (existing) return existing;
-
       const created = (window.crypto && typeof window.crypto.randomUUID === 'function')
         ? window.crypto.randomUUID()
         : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
-
       window.sessionStorage.setItem(key, created);
       return created;
     } catch (_) {
@@ -166,46 +170,6 @@
   }
 
   const statsSessionId = createStatsSessionId();
-
-  function getCurrentMixId() {
-    const file = tracks[currentTrackIndex]?.file || '';
-    const match = file.match(/(?:^|[^0-9])(\d{3})(?=[^0-9]|$)/);
-    return match ? match[1] : null;
-  }
-
-  async function sendStatsHeartbeat() {
-    if (!wantsPlayback || audio.paused || audio.ended) return;
-
-    const mixId = getCurrentMixId();
-    if (!mixId) return;
-
-    try {
-      await fetch(STATS_HEARTBEAT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId: statsSessionId,
-          mixId
-        }),
-        cache: 'no-store',
-        credentials: 'omit',
-        keepalive: true
-      });
-    } catch (_) {
-      // Statistics must never interrupt radio playback.
-    }
-  }
-
-  function startStatsHeartbeat() {
-    if (statsHeartbeatTimer) return;
-    statsHeartbeatTimer = window.setInterval(sendStatsHeartbeat, STATS_INTERVAL_MS);
-  }
-
-  function stopStatsHeartbeat() {
-    if (!statsHeartbeatTimer) return;
-    window.clearInterval(statsHeartbeatTimer);
-    statsHeartbeatTimer = null;
-  }
 
   function absoluteTrackUrl(file, baseUrl) {
     return new URL(encodeURIComponent(file), baseUrl).href;
@@ -219,6 +183,12 @@
     tracks = files.map(file => ({ file, url: absoluteTrackUrl(file, baseUrl), duration: null }));
     const parsedStart = Date.parse(nextLibrary.startedAt || FALLBACK_LIBRARY.startedAt);
     if (Number.isFinite(parsedStart)) startedAt = parsedStart;
+  }
+
+  function getCurrentMixId() {
+    const file = tracks[currentTrackIndex]?.file || '';
+    const match = file.match(/(?:^|[^0-9])(\d{3})(?=[^0-9]|$)/);
+    return match ? match[1] : null;
   }
 
   function setMediaPlaybackState(state) {
@@ -245,13 +215,46 @@
     setMediaPlaybackState(playing ? 'playing' : 'paused');
   }
 
+  async function sendStatsHeartbeat() {
+    if (!wantsPlayback || audio.paused || audio.ended) return;
+    const mixId = getCurrentMixId();
+    if (!mixId) return;
+    try {
+      await fetch(STATS_HEARTBEAT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: statsSessionId, mixId }),
+        cache: 'no-store',
+        credentials: 'omit',
+        keepalive: true
+      });
+    } catch (_) {}
+  }
+
+  function startStatsHeartbeat() {
+    if (statsHeartbeatTimer) return;
+    statsHeartbeatTimer = window.setInterval(sendStatsHeartbeat, STATS_INTERVAL_MS);
+  }
+
+  function stopStatsHeartbeat() {
+    if (!statsHeartbeatTimer) return;
+    window.clearInterval(statsHeartbeatTimer);
+    statsHeartbeatTimer = null;
+  }
+
+  function provisionalFirstTrackOffset() {
+    if (!Number.isFinite(startedAt)) return 0;
+    return Math.max(0, (Date.now() - startedAt) / 1000);
+  }
+
   function loadTrack(index, offset = 0, autoplay = false) {
     if (!tracks.length || !tracks[index]) return;
     switchingTrack = true;
     currentTrackIndex = index;
     const target = tracks[index];
+    const sourceChanged = audio.src !== target.url;
 
-    if (audio.src !== target.url) {
+    if (sourceChanged) {
       audio.src = target.url;
       audio.load();
     }
@@ -263,23 +266,21 @@
       }
       switchingTrack = false;
       updateMediaPosition();
+      if (autoplay && audio.paused) {
+        const p = audio.play();
+        if (p && typeof p.catch === 'function') p.catch(() => setPlayingUI(false));
+      }
     };
 
-    if (offset > 0 && audio.readyState < 1) {
-      audio.addEventListener('loadedmetadata', applyOffset, { once:true });
+    if (audio.readyState < 1) {
+      audio.addEventListener('loadedmetadata', applyOffset, { once: true });
     } else {
       applyOffset();
     }
 
-    if (autoplay) {
-      const playPromise = audio.play();
-      if (playPromise && typeof playPromise.catch === 'function') {
-        playPromise.catch(error => {
-          console.warn('CRAP RADIO could not play track.', error);
-          // Keep wantsPlayback true so foreground/lock-screen play can recover.
-          setPlayingUI(false);
-        });
-      }
+    if (autoplay && offset <= 0 && sourceChanged) {
+      const p = audio.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
     }
   }
 
@@ -290,22 +291,20 @@
     for (let i = 0; i < tracks.length; i += 1) {
       const duration = tracks[i].duration;
       if (position < duration || i === tracks.length - 1) {
-        return { index:i, offset:Math.min(position, Math.max(0, duration - 0.1)) };
+        return { index: i, offset: Math.min(position, Math.max(0, duration - 0.1)) };
       }
       position -= duration;
     }
-    return { index:0, offset:0 };
+    return { index: 0, offset: 0 };
   }
 
   function syncToBroadcastClock() {
     const live = getLivePosition();
     if (!live || switchingTrack) return false;
-
-    if (currentTrackIndex !== live.index) {
+    if (currentTrackIndex !== live.index || audio.src !== tracks[live.index]?.url) {
       loadTrack(live.index, live.offset, wantsPlayback);
       return true;
     }
-
     if (Math.abs(audio.currentTime - live.offset) > 1.5) {
       try { audio.currentTime = live.offset; } catch (_) {}
     }
@@ -313,22 +312,42 @@
     return true;
   }
 
+  function releaseStartupMuteWhenSynced() {
+    if (!startupMuted) return;
+    const deadline = Date.now() + 5000;
+    const timer = window.setInterval(() => {
+      const live = getLivePosition();
+      const synced = live
+        && !switchingTrack
+        && currentTrackIndex === live.index
+        && Number.isFinite(audio.currentTime)
+        && Math.abs(audio.currentTime - live.offset) < 3;
+      if (synced || Date.now() >= deadline) {
+        window.clearInterval(timer);
+        startupMuted = false;
+        audio.muted = false;
+      }
+    }, 50);
+  }
+
   function playRadio() {
     wantsPlayback = true;
     setPlayingUI(true);
 
-    // Keep play() directly inside the user's action so mobile autoplay policy
-    // cannot expire while waiting for metadata or JSON.
-    const playPromise = audio.play();
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(error => {
+    if (durationsReady) {
+      syncToBroadcastClock();
+    } else {
+      startupMuted = true;
+      audio.muted = true;
+      if (!audio.src && tracks[0]) loadTrack(0, provisionalFirstTrackOffset(), false);
+    }
+
+    const p = audio.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(error => {
         setPlayingUI(false);
         console.warn('CRAP RADIO could not start playback.', error);
       });
-    }
-
-    if (durationsReady) {
-      window.setTimeout(syncToBroadcastClock, 0);
     }
   }
 
@@ -349,22 +368,17 @@
     if (!wantsPlayback) return;
     if (durationsReady) syncToBroadcastClock();
     if (audio.paused) {
-      const playPromise = audio.play();
-      if (playPromise && typeof playPromise.catch === 'function') {
-        playPromise.catch(() => {});
-      }
+      const p = audio.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
     }
   }
 
   function setupMobileMediaSession() {
     try {
-      if ('audioSession' in navigator && navigator.audioSession) {
-        navigator.audioSession.type = 'playback';
-      }
+      if ('audioSession' in navigator && navigator.audioSession) navigator.audioSession.type = 'playback';
     } catch (_) {}
 
     if (!('mediaSession' in navigator)) return;
-
     try {
       if (typeof window.MediaMetadata === 'function') {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -374,10 +388,82 @@
         });
       }
     } catch (_) {}
-
     try { navigator.mediaSession.setActionHandler('play', playRadio); } catch (_) {}
     try { navigator.mediaSession.setActionHandler('pause', pauseRadio); } catch (_) {}
     setMediaPlaybackState('paused');
+  }
+
+  function probeDuration(track) {
+    return new Promise((resolve, reject) => {
+      const probe = new Audio();
+      probe.preload = 'metadata';
+      probe.src = track.url;
+      let settled = false;
+      const timer = window.setTimeout(() => finish(new Error('metadata timeout')), 30000);
+
+      function finish(error, duration) {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        probe.removeAttribute('src');
+        try { probe.load(); } catch (_) {}
+        if (error || !Number.isFinite(duration) || duration <= 0) reject(error || new Error('invalid duration'));
+        else resolve(duration);
+      }
+
+      probe.addEventListener('loadedmetadata', () => finish(null, probe.duration), { once: true });
+      probe.addEventListener('error', () => finish(new Error('metadata error')), { once: true });
+      probe.load();
+    });
+  }
+
+  async function probeDurationsInBackground() {
+    const localTracks = tracks.slice();
+    const results = await Promise.allSettled(localTracks.map(probeDuration));
+    if (localTracks.length !== tracks.length) return;
+
+    if (results.some(result => result.status !== 'fulfilled')) {
+      console.warn('CRAP RADIO: live-clock sync unavailable; sequential playback remains active.');
+      if (startupMuted) {
+        startupMuted = false;
+        audio.muted = false;
+      }
+      return;
+    }
+
+    results.forEach((result, index) => { tracks[index].duration = result.value; });
+    totalDuration = tracks.reduce((sum, track) => sum + track.duration, 0);
+    durationsReady = totalDuration > 0;
+
+    if (durationsReady) {
+      const live = getLivePosition();
+      if (live) loadTrack(live.index, live.offset, wantsPlayback);
+      if (startupMuted) releaseStartupMuteWhenSynced();
+    }
+  }
+
+  async function refreshLibrary() {
+    try {
+      const response = await fetch(LIBRARY_URL, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if (!data || !Array.isArray(data.files) || !data.files.length) throw new Error('invalid library');
+
+      const oldFile = tracks[currentTrackIndex]?.file;
+      library = data;
+      buildTracks(library);
+      const sameIndex = tracks.findIndex(track => track.file === oldFile);
+      currentTrackIndex = sameIndex >= 0 ? sameIndex : 0;
+
+      if (!wantsPlayback && tracks[currentTrackIndex]) {
+        const offset = currentTrackIndex === 0 ? provisionalFirstTrackOffset() : 0;
+        loadTrack(currentTrackIndex, offset, false);
+      }
+    } catch (error) {
+      console.warn('CRAP RADIO: library fetch failed; built-in 017,001-016 rotation remains active.', error);
+    }
+
+    probeDurationsInBackground();
   }
 
   button.addEventListener('click', () => {
@@ -402,12 +488,10 @@
   audio.addEventListener('loadedmetadata', updateMediaPosition);
   audio.addEventListener('durationchange', updateMediaPosition);
   audio.addEventListener('timeupdate', updateMediaPosition);
-
   audio.addEventListener('ended', () => {
     stopStatsHeartbeat();
     if (wantsPlayback) goToNextTrack();
   });
-
   audio.addEventListener('error', () => {
     stopStatsHeartbeat();
     if (wantsPlayback && !switchingTrack) {
@@ -416,71 +500,8 @@
     }
   });
 
-  function probeDuration(track) {
-    return new Promise((resolve, reject) => {
-      const probe = new Audio();
-      probe.preload = 'metadata';
-      probe.src = track.url;
-      let settled = false;
-      const timer = window.setTimeout(() => finish(new Error('metadata timeout')), 30000);
-
-      function finish(error, duration) {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(timer);
-        probe.removeAttribute('src');
-        try { probe.load(); } catch (_) {}
-        if (error || !Number.isFinite(duration) || duration <= 0) reject(error || new Error('invalid duration'));
-        else resolve(duration);
-      }
-
-      probe.addEventListener('loadedmetadata', () => finish(null, probe.duration), { once:true });
-      probe.addEventListener('error', () => finish(new Error('metadata error')), { once:true });
-      probe.load();
-    });
-  }
-
-  async function probeDurationsInBackground() {
-    const localTracks = tracks.slice();
-    const results = await Promise.allSettled(localTracks.map(probeDuration));
-    if (localTracks.length !== tracks.length) return;
-    if (results.some(result => result.status !== 'fulfilled')) {
-      console.warn('CRAP RADIO: live-clock sync unavailable; sequential playback remains active.');
-      return;
-    }
-    results.forEach((result,index) => { tracks[index].duration = result.value; });
-    totalDuration = tracks.reduce((sum,track) => sum + track.duration, 0);
-    durationsReady = totalDuration > 0;
-    if (durationsReady) {
-      const live = getLivePosition();
-      if (live && !wantsPlayback) loadTrack(live.index, live.offset, false);
-      else if (live && wantsPlayback) syncToBroadcastClock();
-    }
-  }
-
-  async function refreshLibrary() {
-    try {
-      const response = await fetch(LIBRARY_URL, { cache:'no-store' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      if (!data || !Array.isArray(data.files) || !data.files.length) throw new Error('invalid library');
-      library = data;
-      const wasPlaying = wantsPlayback;
-      const oldFile = tracks[currentTrackIndex]?.file;
-      buildTracks(library);
-      const sameIndex = tracks.findIndex(track => track.file === oldFile);
-      currentTrackIndex = sameIndex >= 0 ? sameIndex : 0;
-      if (!wasPlaying && tracks.length) loadTrack(currentTrackIndex, 0, false);
-      probeDurationsInBackground();
-    } catch (error) {
-      console.warn('CRAP RADIO: library fetch failed; built-in 001-013 list remains active.', error);
-    }
-  }
-
   buildTracks(library);
-  audio.src = tracks[0].url;
-  audio.load();
-
+  if (tracks[0]) loadTrack(0, provisionalFirstTrackOffset(), false);
   setupMobileMediaSession();
   refreshLibrary();
 
