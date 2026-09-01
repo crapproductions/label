@@ -1,9 +1,8 @@
 {
   "transmissionStartedAt": "2026-08-21T10:30:00+09:00",
-  "startedAt": "2026-08-31T17:09:31+09:00",
+  "startedAt": "2026-09-01T16:39:00+09:00",
   "baseUrl": "https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/",
   "files": [
-    "CRAP-RADIO-017.mp3",
     "CRAP-RADIO-001.mp3",
     "CRAP-RADIO-002.mp3",
     "CRAP-RADIO-003.mp3",
@@ -19,6 +18,30 @@
     "CRAP-RADIO-013.mp3",
     "CRAP-RADIO-014.mp3",
     "CRAP-RADIO-015.mp3",
-    "CRAP-RADIO-016.mp3"
-  ]
+    "CRAP-RADIO-016.mp3",
+    "CRAP-RADIO-017.mp3"
+  ],
+  "schedule": {
+    "mode": "reverse-once-then-normal",
+    "reverseFiles": [
+      "CRAP-RADIO-017.mp3",
+      "CRAP-RADIO-016.mp3",
+      "CRAP-RADIO-015.mp3",
+      "CRAP-RADIO-014.mp3",
+      "CRAP-RADIO-013.mp3",
+      "CRAP-RADIO-012.mp3",
+      "CRAP-RADIO-011.mp3",
+      "CRAP-RADIO-010.mp3",
+      "CRAP-RADIO-009.mp3",
+      "CRAP-RADIO-008.mp3",
+      "CRAP-RADIO-007.mp3",
+      "CRAP-RADIO-006.mp3",
+      "CRAP-RADIO-005.mp3",
+      "CRAP-RADIO-004.mp3",
+      "CRAP-RADIO-003.mp3",
+      "CRAP-RADIO-002.mp3",
+      "CRAP-RADIO-001.mp3"
+    ],
+    "normalStartFile": "CRAP-RADIO-002.mp3"
+  }
 }
