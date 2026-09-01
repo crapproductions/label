@@ -1,16 +1,15 @@
 (() => {
   if (document.getElementById('crap-radio-player')) return;
 
-  const LIBRARY_URL = 'radio-library.json?v=20260831b';
+  const LIBRARY_URL = 'radio-library.json?v=20260901a';
   const STATS_HEARTBEAT_URL = 'https://crap-radio-stats.crapproductions66.workers.dev/heartbeat';
   const STATS_INTERVAL_MS = 30000;
 
   const FALLBACK_LIBRARY = {
     transmissionStartedAt: '2026-08-21T10:30:00+09:00',
-    startedAt: '2026-08-31T17:09:31+09:00',
+    startedAt: '2026-09-01T16:39:00+09:00',
     baseUrl: 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/',
     files: [
-      'CRAP-RADIO-017.mp3',
       'CRAP-RADIO-001.mp3',
       'CRAP-RADIO-002.mp3',
       'CRAP-RADIO-003.mp3',
@@ -26,8 +25,32 @@
       'CRAP-RADIO-013.mp3',
       'CRAP-RADIO-014.mp3',
       'CRAP-RADIO-015.mp3',
-      'CRAP-RADIO-016.mp3'
-    ]
+      'CRAP-RADIO-016.mp3',
+      'CRAP-RADIO-017.mp3'
+    ],
+    schedule: {
+      mode: 'reverse-once-then-normal',
+      reverseFiles: [
+        'CRAP-RADIO-017.mp3',
+        'CRAP-RADIO-016.mp3',
+        'CRAP-RADIO-015.mp3',
+        'CRAP-RADIO-014.mp3',
+        'CRAP-RADIO-013.mp3',
+        'CRAP-RADIO-012.mp3',
+        'CRAP-RADIO-011.mp3',
+        'CRAP-RADIO-010.mp3',
+        'CRAP-RADIO-009.mp3',
+        'CRAP-RADIO-008.mp3',
+        'CRAP-RADIO-007.mp3',
+        'CRAP-RADIO-006.mp3',
+        'CRAP-RADIO-005.mp3',
+        'CRAP-RADIO-004.mp3',
+        'CRAP-RADIO-003.mp3',
+        'CRAP-RADIO-002.mp3',
+        'CRAP-RADIO-001.mp3'
+      ],
+      normalStartFile: 'CRAP-RADIO-002.mp3'
+    }
   };
 
   const style = document.createElement('style');
@@ -143,8 +166,9 @@
   const sidebar = document.querySelector('.sidebar');
   (sidebar || document.body).appendChild(player);
 
-  let library = { ...FALLBACK_LIBRARY, files: [...FALLBACK_LIBRARY.files] };
+  let library = { ...FALLBACK_LIBRARY, files: [...FALLBACK_LIBRARY.files], schedule: { ...FALLBACK_LIBRARY.schedule, reverseFiles: [...FALLBACK_LIBRARY.schedule.reverseFiles] } };
   let tracks = [];
+  let broadcastSchedule = library.schedule;
   let currentTrackIndex = 0;
   let startedAt = Date.parse(FALLBACK_LIBRARY.startedAt);
   let totalDuration = 0;
@@ -181,6 +205,7 @@
       ? nextLibrary.files
       : FALLBACK_LIBRARY.files;
     tracks = files.map(file => ({ file, url: absoluteTrackUrl(file, baseUrl), duration: null }));
+    broadcastSchedule = nextLibrary.schedule || null;
     const parsedStart = Date.parse(nextLibrary.startedAt || FALLBACK_LIBRARY.startedAt);
     if (Number.isFinite(parsedStart)) startedAt = parsedStart;
   }
@@ -242,9 +267,19 @@
     statsHeartbeatTimer = null;
   }
 
-  function provisionalFirstTrackOffset() {
-    if (!Number.isFinite(startedAt)) return 0;
-    return Math.max(0, (Date.now() - startedAt) / 1000);
+  function getScheduleReverseIndices() {
+    if (broadcastSchedule?.mode !== 'reverse-once-then-normal') return null;
+    const reverseFiles = Array.isArray(broadcastSchedule.reverseFiles) ? broadcastSchedule.reverseFiles : [];
+    if (!reverseFiles.length) return null;
+    const indices = reverseFiles.map(file => tracks.findIndex(track => track.file === file));
+    return indices.every(index => index >= 0) ? indices : null;
+  }
+
+  function getProvisionalStart() {
+    const elapsed = Number.isFinite(startedAt) ? Math.max(0, (Date.now() - startedAt) / 1000) : 0;
+    const reverseIndices = getScheduleReverseIndices();
+    if (reverseIndices?.length) return { index: reverseIndices[0], offset: elapsed };
+    return { index: 0, offset: elapsed };
   }
 
   function loadTrack(index, offset = 0, autoplay = false) {
@@ -284,18 +319,39 @@
     }
   }
 
-  function getLivePosition() {
-    if (!durationsReady || totalDuration <= 0 || !Number.isFinite(startedAt)) return null;
-    const elapsed = Math.max(0, (Date.now() - startedAt) / 1000);
-    let position = elapsed % totalDuration;
-    for (let i = 0; i < tracks.length; i += 1) {
-      const duration = tracks[i].duration;
-      if (position < duration || i === tracks.length - 1) {
-        return { index: i, offset: Math.min(position, Math.max(0, duration - 0.1)) };
+  function positionInTrackOrder(position, indices) {
+    for (let i = 0; i < indices.length; i += 1) {
+      const index = indices[i];
+      const duration = tracks[index]?.duration;
+      if (!(duration > 0)) return null;
+      if (position < duration || i === indices.length - 1) {
+        return { index, offset: Math.min(position, Math.max(0, duration - 0.1)) };
       }
       position -= duration;
     }
-    return { index: 0, offset: 0 };
+    return null;
+  }
+
+  function getLivePosition() {
+    if (!durationsReady || totalDuration <= 0 || !Number.isFinite(startedAt)) return null;
+    const elapsed = Math.max(0, (Date.now() - startedAt) / 1000);
+    const normalIndices = tracks.map((_, index) => index);
+    const reverseIndices = getScheduleReverseIndices();
+
+    if (reverseIndices?.length) {
+      const reverseDuration = reverseIndices.reduce((sum, index) => sum + tracks[index].duration, 0);
+      if (elapsed < reverseDuration) {
+        return positionInTrackOrder(elapsed, reverseIndices);
+      }
+
+      const normalStartFile = broadcastSchedule.normalStartFile;
+      const normalStartIndex = Math.max(0, tracks.findIndex(track => track.file === normalStartFile));
+      const normalPhaseOffset = tracks.slice(0, normalStartIndex).reduce((sum, track) => sum + track.duration, 0);
+      const normalPosition = (normalPhaseOffset + (elapsed - reverseDuration)) % totalDuration;
+      return positionInTrackOrder(normalPosition, normalIndices);
+    }
+
+    return positionInTrackOrder(elapsed % totalDuration, normalIndices);
   }
 
   function syncToBroadcastClock() {
@@ -339,7 +395,10 @@
     } else {
       startupMuted = true;
       audio.muted = true;
-      if (!audio.src && tracks[0]) loadTrack(0, provisionalFirstTrackOffset(), false);
+      if (!audio.src) {
+        const provisional = getProvisionalStart();
+        loadTrack(provisional.index, provisional.offset, false);
+      }
     }
 
     const p = audio.play();
@@ -360,6 +419,11 @@
 
   function goToNextTrack() {
     if (!tracks.length) return;
+    const live = getLivePosition();
+    if (live) {
+      loadTrack(live.index, live.offset, wantsPlayback);
+      return;
+    }
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     loadTrack(nextIndex, 0, wantsPlayback);
   }
@@ -449,18 +513,16 @@
       const data = await response.json();
       if (!data || !Array.isArray(data.files) || !data.files.length) throw new Error('invalid library');
 
-      const oldFile = tracks[currentTrackIndex]?.file;
       library = data;
       buildTracks(library);
-      const sameIndex = tracks.findIndex(track => track.file === oldFile);
-      currentTrackIndex = sameIndex >= 0 ? sameIndex : 0;
+      const provisional = getProvisionalStart();
+      currentTrackIndex = provisional.index;
 
-      if (!wantsPlayback && tracks[currentTrackIndex]) {
-        const offset = currentTrackIndex === 0 ? provisionalFirstTrackOffset() : 0;
-        loadTrack(currentTrackIndex, offset, false);
+      if (!wantsPlayback && tracks[provisional.index]) {
+        loadTrack(provisional.index, provisional.offset, false);
       }
     } catch (error) {
-      console.warn('CRAP RADIO: library fetch failed; built-in 017,001-016 rotation remains active.', error);
+      console.warn('CRAP RADIO: library fetch failed; built-in reverse-once schedule remains active.', error);
     }
 
     probeDurationsInBackground();
@@ -501,7 +563,8 @@
   });
 
   buildTracks(library);
-  if (tracks[0]) loadTrack(0, provisionalFirstTrackOffset(), false);
+  const provisional = getProvisionalStart();
+  if (tracks[provisional.index]) loadTrack(provisional.index, provisional.offset, false);
   setupMobileMediaSession();
   refreshLibrary();
 
