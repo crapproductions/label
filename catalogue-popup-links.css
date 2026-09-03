@@ -99,6 +99,29 @@
   pointer-events: none !important;
 }
 
+/* CRAP012 COVER PATCH */
+#crap012 .catalogue-cover {
+  position: relative !important;
+  background-color: #fff !important;
+}
+
+#crap012 .catalogue-cover iframe {
+  display: none !important;
+}
+
+#crap012 .catalogue-cover::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  z-index: 3 !important;
+  background-image: url("https://f4.bcbits.com/img/a0148977780_10.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  pointer-events: none !important;
+}
+
 /* CATALOGUE MENU ORDER IMAGE PATCH */
 .image-nav a[href="mail-order.html"] img[src="assets/ui/mail-order.svg"] {
   content: url("assets/ui/order.png") !important;
