@@ -24,7 +24,7 @@
       line-height: 0;
     }
 
-    .home-main-image {
+    .home-main-media {
       display: block;
       width: min(1000px, 88vh, calc(100vw - var(--sidebar-w) - 80px));
       max-width: 100%;
@@ -32,13 +32,13 @@
     }
 
     @media (max-width: 1320px) {
-      .home-main-image {
+      .home-main-media {
         width: min(860px, 84vh, calc(100vw - var(--sidebar-w) - 55px));
       }
     }
 
     @media (max-width: 680px) {
-      .home-main-image {
+      .home-main-media {
         width: min(calc(100vw - 44px), 440px);
         margin-left: auto;
         margin-right: auto;
@@ -76,8 +76,8 @@
 </aside>
 
 <main class="main main-home">
-  <a class="home-main-link" href="catalogue.html#crap011" aria-label="Open Dam Pipe — Grimy State Of Mind">
-    <img class="home-main-image" src="assets/catalogue/crap011-grimy-state-of-mind.jpg?v=20260810b" alt="Dam Pipe — Grimy State Of Mind cover" loading="eager">
+  <a class="home-main-link" href="catalogue.html" aria-label="Go to catalogue">
+    <video class="home-main-media" src="assets/ui/main-video.mp4?v=20260904a" autoplay muted loop playsinline preload="auto"></video>
   </a>
 </main>
 <script src="radio.js?v=20260903c" defer></script>
