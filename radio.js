@@ -1,13 +1,13 @@
 (() => {
   if (document.getElementById('crap-radio-player')) return;
 
-  const LIBRARY_URL = 'radio-library.json?v=20260901a';
+  const LIBRARY_URL = 'radio-library.json?v=20260903b';
   const STATS_HEARTBEAT_URL = 'https://crap-radio-stats.crapproductions66.workers.dev/heartbeat';
   const STATS_INTERVAL_MS = 30000;
 
   const FALLBACK_LIBRARY = {
     transmissionStartedAt: '2026-08-21T10:30:00+09:00',
-    startedAt: '2026-09-01T16:39:00+09:00',
+    startedAt: '2026-09-03T14:30:59+09:00',
     baseUrl: 'https://pub-50928f7943944bf2a7d79fd745830758.r2.dev/wide-radio/',
     files: [
       'CRAP-RADIO-001.mp3',
@@ -166,7 +166,14 @@
   const sidebar = document.querySelector('.sidebar');
   (sidebar || document.body).appendChild(player);
 
-  let library = { ...FALLBACK_LIBRARY, files: [...FALLBACK_LIBRARY.files], schedule: { ...FALLBACK_LIBRARY.schedule, reverseFiles: [...FALLBACK_LIBRARY.schedule.reverseFiles] } };
+  let library = {
+    ...FALLBACK_LIBRARY,
+    files: [...FALLBACK_LIBRARY.files],
+    schedule: {
+      ...FALLBACK_LIBRARY.schedule,
+      reverseFiles: [...FALLBACK_LIBRARY.schedule.reverseFiles]
+    }
+  };
   let tracks = [];
   let broadcastSchedule = library.schedule;
   let currentTrackIndex = 0;
@@ -176,6 +183,7 @@
   let wantsPlayback = false;
   let switchingTrack = false;
   let startupMuted = false;
+  let sequentialReverseActive = true;
   let statsHeartbeatTimer = null;
 
   function createStatsSessionId() {
@@ -208,6 +216,7 @@
     broadcastSchedule = nextLibrary.schedule || null;
     const parsedStart = Date.parse(nextLibrary.startedAt || FALLBACK_LIBRARY.startedAt);
     if (Number.isFinite(parsedStart)) startedAt = parsedStart;
+    sequentialReverseActive = broadcastSchedule?.mode === 'reverse-once-then-normal';
   }
 
   function getCurrentMixId() {
@@ -273,6 +282,12 @@
     if (!reverseFiles.length) return null;
     const indices = reverseFiles.map(file => tracks.findIndex(track => track.file === file));
     return indices.every(index => index >= 0) ? indices : null;
+  }
+
+  function getNormalStartIndex() {
+    const file = broadcastSchedule?.normalStartFile;
+    const index = file ? tracks.findIndex(track => track.file === file) : -1;
+    return index >= 0 ? index : 0;
   }
 
   function getProvisionalStart() {
@@ -341,16 +356,18 @@
     if (reverseIndices?.length) {
       const reverseDuration = reverseIndices.reduce((sum, index) => sum + tracks[index].duration, 0);
       if (elapsed < reverseDuration) {
+        sequentialReverseActive = true;
         return positionInTrackOrder(elapsed, reverseIndices);
       }
 
-      const normalStartFile = broadcastSchedule.normalStartFile;
-      const normalStartIndex = Math.max(0, tracks.findIndex(track => track.file === normalStartFile));
+      sequentialReverseActive = false;
+      const normalStartIndex = getNormalStartIndex();
       const normalPhaseOffset = tracks.slice(0, normalStartIndex).reduce((sum, track) => sum + track.duration, 0);
       const normalPosition = (normalPhaseOffset + (elapsed - reverseDuration)) % totalDuration;
       return positionInTrackOrder(normalPosition, normalIndices);
     }
 
+    sequentialReverseActive = false;
     return positionInTrackOrder(elapsed % totalDuration, normalIndices);
   }
 
@@ -417,6 +434,24 @@
     setPlayingUI(false);
   }
 
+  function getSequentialFallbackNextIndex() {
+    const reverseIndices = getScheduleReverseIndices();
+
+    if (sequentialReverseActive && reverseIndices?.length) {
+      const reversePosition = reverseIndices.indexOf(currentTrackIndex);
+      if (reversePosition >= 0 && reversePosition < reverseIndices.length - 1) {
+        return reverseIndices[reversePosition + 1];
+      }
+      if (reversePosition === reverseIndices.length - 1) {
+        sequentialReverseActive = false;
+        return getNormalStartIndex();
+      }
+      return reverseIndices[0];
+    }
+
+    return (currentTrackIndex + 1) % tracks.length;
+  }
+
   function goToNextTrack() {
     if (!tracks.length) return;
     const live = getLivePosition();
@@ -424,8 +459,7 @@
       loadTrack(live.index, live.offset, wantsPlayback);
       return;
     }
-    const nextIndex = (currentTrackIndex + 1) % tracks.length;
-    loadTrack(nextIndex, 0, wantsPlayback);
+    loadTrack(getSequentialFallbackNextIndex(), 0, wantsPlayback);
   }
 
   function recoverBackgroundPlayback() {
@@ -487,7 +521,7 @@
     if (localTracks.length !== tracks.length) return;
 
     if (results.some(result => result.status !== 'fulfilled')) {
-      console.warn('CRAP RADIO: live-clock sync unavailable; sequential playback remains active.');
+      console.warn('CRAP RADIO: live-clock sync unavailable; schedule-aware sequential playback remains active.');
       if (startupMuted) {
         startupMuted = false;
         audio.muted = false;
