@@ -46,8 +46,7 @@
 
     .transmission-figure {
       display: block;
-      width: min(400px, 74vw, calc(100svh - 180px));
-      max-width: 100%;
+      width: calc(72px * 13 / 3);
       height: auto;
       flex: 0 1 auto;
       object-fit: contain;
@@ -129,6 +128,12 @@
       55%, 100% { opacity: .18; }
     }
 
+    @media (max-width: 920px) {
+      .transmission-figure {
+        width: calc(64px * 13 / 3);
+      }
+    }
+
     @media (max-width: 680px) {
       body {
         gap: 10px;
@@ -136,7 +141,7 @@
       }
 
       .transmission-figure {
-        width: min(320px, 82vw, calc(100svh - 150px));
+        width: calc(62px * 13 / 3);
       }
 
       .transmission-console {
@@ -172,7 +177,7 @@
   </style>
 </head>
 <body>
-  <img class="transmission-figure" src="assets/ui/transmission-figure.webp?v=20260824b" alt="" aria-hidden="true">
+  <img class="transmission-figure" src="assets/ui/transmission-faster-crap.webp?v=20260904a" alt="" aria-hidden="true">
 
   <div class="transmission-console" id="transmission-console">
     <div class="transmission-status" aria-label="CRAP RADIO transmission status">
