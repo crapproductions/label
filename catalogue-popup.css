@@ -85,7 +85,7 @@
   }
 
   .release-modal-note {
-    display: none !important;
+    display: block !important;
   }
 
   .release-modal-credits {
@@ -199,7 +199,7 @@
   }
 
   .release-modal-note {
-    display: none !important;
+    display: block !important;
   }
 
   .release-modal-credits {
