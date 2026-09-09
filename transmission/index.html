@@ -49,6 +49,10 @@
       background: #222 url("transmission/background.webp?v=20260910-sample") center / cover no-repeat;
     }
 
+    .transmission-mobile-bg {
+      display: none;
+    }
+
     .transmission-console {
       --status-height: clamp(23px, 1.35vw, 51.84px);
       display: flex;
@@ -174,20 +178,35 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #222;
       }
 
       body::before {
-        background-color: #222;
-        background-image: url("transmission/mobile-background.webp?v=20260910b");
-        background-position: center center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        display: none;
+      }
+
+      .transmission-mobile-bg {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        object-fit: cover;
+        object-position: center center;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+        user-select: none;
       }
 
       .transmission-stage {
         --player-height: 62px;
         --figure-gap: 10px;
         --panel-padding: 16px;
+        position: relative;
+        z-index: 1;
         width: 301px;
         max-width: calc(100vw - 20px);
         margin: 0;
@@ -247,6 +266,8 @@
   </style>
 </head>
 <body>
+  <img class="transmission-mobile-bg" src="/transmission/mobile-background.webp?v=20260910c" alt="" aria-hidden="true">
+
   <div class="transmission-stage">
     <img class="transmission-figure" src="assets/ui/transmission-faster-crap.webp?v=20260910b" alt="" aria-hidden="true">
     <div class="transmission-console" id="transmission-console">
