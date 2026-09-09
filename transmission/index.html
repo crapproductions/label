@@ -46,12 +46,11 @@
       position: fixed;
       inset: 0;
       z-index: -1;
-      background: #222 url("transmission/background.webp?v=20260910a") center / cover no-repeat;
+      background: #222 url("transmission/background.webp?v=20260910-sample") center / cover no-repeat;
     }
 
     .transmission-console {
-      --player-height: 72px;
-      --status-height: 23px;
+      --status-height: clamp(23px, 1.35vw, 51.84px);
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -59,14 +58,16 @@
       box-sizing: border-box;
       gap: 3px;
       background: #fff;
-      padding: var(--panel-padding);
     }
 
     .transmission-stage {
-      --player-height: 72px;
-      --figure-gap: 14px;
-      --panel-padding: 24px;
+      --player-height: clamp(72px, 4.25vw, 163.2px);
+      --figure-gap: clamp(14px, .8vw, 30.72px);
+      --panel-padding: clamp(24px, 1.4vw, 53.76px);
       width: calc(var(--player-height) * 13 / 3 + 2 * var(--panel-padding));
+      box-sizing: border-box;
+      padding: var(--panel-padding);
+      background: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,7 +100,7 @@
       background: #000;
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 8.5px;
+      font-size: clamp(8.5px, .5vw, 19.2px);
       font-weight: 400;
       line-height: 1;
       letter-spacing: .09em;
