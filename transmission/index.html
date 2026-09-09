@@ -160,19 +160,63 @@
     }
 
     @media (max-width: 680px) {
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       body::before {
-        background: #222 url("transmission/mobile-background.webp?v=20260910a") center / cover no-repeat;
+        background-color: #222;
+        background-image: url("transmission/mobile-background.webp?v=20260910b");
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
 
       .transmission-stage {
-        --player-height: min(62px, calc((100vw - 56px) * 3 / 13));
+        --player-height: 62px;
         --figure-gap: 10px;
         --panel-padding: 16px;
+        width: 301px;
+        max-width: calc(100vw - 20px);
+        margin: 0;
+        padding: var(--panel-padding);
+        box-sizing: border-box;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--figure-gap);
+      }
+
+      .transmission-figure,
+      .transmission-console {
+        width: 269px;
+        max-width: 100%;
       }
 
       .transmission-console {
-        --player-height: min(62px, calc((100vw - 56px) * 3 / 13));
+        --player-height: 62px;
         --status-height: 20px;
+      }
+
+      .transmission-console #crap-radio-player {
+        --crap-radio-height: 62px;
+        width: 269px;
+        max-width: 100%;
+        margin: 0 !important;
       }
 
       .transmission-status {
