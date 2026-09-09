@@ -33,42 +33,46 @@
 
     body {
       min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
       box-sizing: border-box;
-      padding: clamp(28px, 6vh, 64px) 18px 18px;
-      overflow: hidden;
+      padding: 12px;
+      isolation: isolate;
     }
 
-    .transmission-figure {
-      display: block;
-      width: calc(72px * 13 / 3);
-      height: auto;
-      flex: 0 1 auto;
-      object-fit: contain;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: #222 url("transmission/background.webp?v=20260910a") center / cover no-repeat;
     }
 
     .transmission-console {
+      --player-height: 72px;
+      --status-height: 23px;
+      --panel-padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      width: max-content;
-      max-width: 100%;
+      width: calc(var(--player-height) * 13 / 3);
       gap: 3px;
-      flex: 0 0 auto;
+      background: #fff;
+      /* Balance the status row below so the player itself sits at screen center. */
+      padding: calc(var(--panel-padding) + var(--status-height) + 3px)
+        var(--panel-padding) var(--panel-padding);
     }
 
     .transmission-console #crap-radio-player {
+      --crap-radio-height: var(--player-height);
+      width: 100%;
       margin: 0 !important;
       flex: 0 0 auto;
     }
 
     .transmission-status {
-      height: 23px;
+      height: var(--status-height);
       width: 100%;
       display: flex;
       align-items: center;
@@ -129,27 +133,19 @@
     }
 
     @media (max-width: 920px) {
-      .transmission-figure {
-        width: calc(64px * 13 / 3);
+      .transmission-console {
+        --player-height: 64px;
       }
     }
 
     @media (max-width: 680px) {
-      body {
-        gap: 10px;
-        padding-top: clamp(22px, 5vh, 44px);
-      }
-
-      .transmission-figure {
-        width: calc(62px * 13 / 3);
-      }
-
       .transmission-console {
-        gap: 3px;
+        --player-height: min(62px, calc((100vw - 56px) * 3 / 13));
+        --status-height: 20px;
+        --panel-padding: 16px;
       }
 
       .transmission-status {
-        height: 20px;
         padding: 0 7px;
         gap: 8px;
         font-size: 7.5px;
@@ -177,8 +173,6 @@
   </style>
 </head>
 <body>
-  <img class="transmission-figure" src="assets/ui/transmission-faster-crap.webp?v=20260904a" alt="" aria-hidden="true">
-
   <div class="transmission-console" id="transmission-console">
     <div class="transmission-status" aria-label="CRAP RADIO transmission status">
       <div class="transmission-on-air">
