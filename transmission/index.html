@@ -64,6 +64,23 @@
         var(--panel-padding) var(--panel-padding);
     }
 
+    .transmission-stage {
+      --player-height: 72px;
+      --figure-gap: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--figure-gap);
+      padding-bottom: calc(var(--player-height) * 13 / 3 + var(--figure-gap));
+    }
+
+    .transmission-figure {
+      display: block;
+      width: calc(var(--player-height) * 13 / 3);
+      height: auto;
+      object-fit: contain;
+    }
+
     .transmission-console #crap-radio-player {
       --crap-radio-height: var(--player-height);
       width: 100%;
@@ -133,12 +150,21 @@
     }
 
     @media (max-width: 920px) {
+      .transmission-stage {
+        --player-height: 64px;
+      }
+
       .transmission-console {
         --player-height: 64px;
       }
     }
 
     @media (max-width: 680px) {
+      .transmission-stage {
+        --player-height: min(62px, calc((100vw - 56px) * 3 / 13));
+        --figure-gap: 10px;
+      }
+
       .transmission-console {
         --player-height: min(62px, calc((100vw - 56px) * 3 / 13));
         --status-height: 20px;
@@ -170,18 +196,26 @@
         min-width: 53px;
       }
     }
+    @media (max-height: 900px) {
+      .transmission-stage {
+        padding-bottom: 0;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="transmission-console" id="transmission-console">
-    <div class="transmission-status" aria-label="CRAP RADIO transmission status">
-      <div class="transmission-on-air">
-        <span class="transmission-live-dot" aria-hidden="true"></span>
-        <span>ON AIR</span>
-      </div>
-      <div class="transmission-time-group">
-        <span>TIME TRANSMITTED</span>
-        <span class="transmission-time-value" id="transmission-time-value">000:00:00</span>
+  <div class="transmission-stage">
+    <img class="transmission-figure" src="assets/ui/transmission-faster-crap.webp?v=20260910b" alt="" aria-hidden="true">
+    <div class="transmission-console" id="transmission-console">
+      <div class="transmission-status" aria-label="CRAP RADIO transmission status">
+        <div class="transmission-on-air">
+          <span class="transmission-live-dot" aria-hidden="true"></span>
+          <span>ON AIR</span>
+        </div>
+        <div class="transmission-time-group">
+          <span>TIME TRANSMITTED</span>
+          <span class="transmission-time-value" id="transmission-time-value">000:00:00</span>
+        </div>
       </div>
     </div>
   </div>
