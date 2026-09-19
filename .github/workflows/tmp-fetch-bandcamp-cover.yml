@@ -8,12 +8,30 @@ jobs:
   fetch-cover:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Bandcamp oEmbed
+      - name: Fetch Bandcamp page
         shell: bash
         run: |
           set -e
           URL='https://wholesome2069.bandcamp.com/album/stash-2'
-          echo "BC_OEMBED_BEGIN"
-          curl -L --fail --silent --show-error --get             --data-urlencode "url=$URL"             'https://oembed.bandcamp.com/oembed'
-          echo
-          echo "BC_OEMBED_END"
+          curl -L --fail --silent --show-error -A 'Mozilla/5.0' "$URL" -o /tmp/page.html
+          echo "BC_OG_IMAGE_BEGIN"
+          python - <<'PY'
+          import re, html
+          s=open('/tmp/page.html',encoding='utf-8',errors='ignore').read()
+          pats=[
+              r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)',
+              r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']'
+          ]
+          for p in pats:
+              m=re.search(p,s,re.I)
+              if m:
+                  print(html.unescape(m.group(1)))
+                  break
+          else:
+              print("NO_OG_IMAGE")
+          print("BC_PAGE_PROPERTIES")
+          m=re.search(r'<meta[^>]+name=["\']bc-page-properties["\'][^>]+content=["\']([^"\']+)',s,re.I)
+          if m:
+              print(html.unescape(m.group(1)))
+          PY
+          echo "BC_OG_IMAGE_END"
