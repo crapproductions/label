@@ -8,10 +8,10 @@ jobs:
   fetch-cover:
     runs-on: ubuntu-latest
     steps:
-      - name: Resolve artwork
+      - name: Read Bandcamp feed
         shell: bash
         run: |
-          URL='https://bandcamp.com/api/mobile/24/tralbum_details?band_id=1&tralbum_type=a&tralbum_id=3323220293'
+          URL='https://wholesome2069.bandcamp.com/feed'
           echo "RESULT_BEGIN"
           curl -L --silent --show-error -A 'Mozilla/5.0' "$URL" || true
           echo
