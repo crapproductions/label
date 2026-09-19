@@ -8,27 +8,12 @@ jobs:
   fetch-cover:
     runs-on: ubuntu-latest
     steps:
-      - name: Read embed artwork
+      - name: Resolve artwork
         shell: bash
         run: |
-          URL='https://bandcamp.com/EmbeddedPlayer/album=3323220293/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/'
-          curl -L --silent --show-error -A 'Mozilla/5.0' "$URL" -o /tmp/embed.html || true
-          python - <<'PY'
-          import re, html
-          s=html.unescape(open('/tmp/embed.html',encoding='utf-8',errors='ignore').read())
-          print("MATCHES_BEGIN")
-          pats=[
-            r'https?://[^"\'<> ]*bcbits\.com/[^"\'<> ]+',
-            r'["\']art_id["\']\s*[:=]\s*["\']?(\d+)',
-            r'albumArt[^\n]{0,300}',
-            r'artwork[^\n]{0,300}'
-          ]
-          out=[]
-          for p in pats:
-              for m in re.finditer(p,s,re.I):
-                  v=m.group(1) if m.lastindex else m.group(0)
-                  if v not in out: out.append(v)
-          for v in out[:100]: print(v)
-          print("MATCHES_END")
-          PY
+          URL='https://bandcamp.com/api/mobile/24/tralbum_details?band_id=1&tralbum_type=a&tralbum_id=3323220293'
+          echo "RESULT_BEGIN"
+          curl -L --silent --show-error -A 'Mozilla/5.0' "$URL" || true
+          echo
+          echo "RESULT_END"
           exit 0
