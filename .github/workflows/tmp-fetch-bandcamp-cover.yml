@@ -1,0 +1,19 @@
+name: Temporary Bandcamp cover lookup
+on:
+  push:
+    paths:
+      - ".github/workflows/tmp-fetch-bandcamp-cover.yml"
+
+jobs:
+  fetch-cover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Bandcamp oEmbed
+        shell: bash
+        run: |
+          set -e
+          URL='https://wholesome2069.bandcamp.com/album/stash-2'
+          echo "BC_OEMBED_BEGIN"
+          curl -L --fail --silent --show-error --get             --data-urlencode "url=$URL"             'https://oembed.bandcamp.com/oembed'
+          echo
+          echo "BC_OEMBED_END"
