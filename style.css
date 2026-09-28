@@ -1450,7 +1450,7 @@ a:hover {
 
 .report-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(4, 1fr) !important;
   gap: 0 !important;
   align-items: start !important;
   background: transparent !important;
