@@ -1,0 +1,156 @@
+name: Optimize REPORT images
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_number:
+        description: "First REPORT number to optimize"
+        required: true
+        default: "1"
+      end_number:
+        description: "Last REPORT number to optimize"
+        required: true
+        default: "999"
+      max_long_edge:
+        description: "Maximum long edge in pixels"
+        required: true
+        default: "1800"
+      quality:
+        description: "JPEG quality (1-95)"
+        required: true
+        default: "82"
+      dry_run:
+        description: "Preview only; do not commit changes"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Optimize selected REPORT images
+        env:
+          START_NUMBER: ${{ inputs.start_number }}
+          END_NUMBER: ${{ inputs.end_number }}
+          MAX_LONG_EDGE: ${{ inputs.max_long_edge }}
+          JPEG_QUALITY: ${{ inputs.quality }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          from PIL import Image, ImageOps
+
+          root = Path("assets/reports")
+          start = int(os.environ["START_NUMBER"])
+          end = int(os.environ["END_NUMBER"])
+          max_edge = int(os.environ["MAX_LONG_EDGE"])
+          quality = int(os.environ["JPEG_QUALITY"])
+
+          pattern = re.compile(r"report-(\d+)\.jpg$", re.I)
+          selected = []
+
+          for path in sorted(root.glob("report-*.jpg")):
+              match = pattern.search(path.name)
+              if not match:
+                  continue
+              number = int(match.group(1))
+              if start <= number <= end:
+                  selected.append((number, path))
+
+          if not selected:
+              raise SystemExit(f"No REPORT images found in range {start}-{end}")
+
+          total_before = 0
+          total_after = 0
+          changed = 0
+          skipped = 0
+
+          for number, path in selected:
+              before = path.stat().st_size
+              total_before += before
+              temp = path.with_suffix(".optimized.jpg")
+
+              with Image.open(path) as image:
+                  image = ImageOps.exif_transpose(image)
+
+                  if image.mode != "RGB":
+                      image = image.convert("RGB")
+
+                  image.thumbnail((max_edge, max_edge), Image.Resampling.LANCZOS)
+
+                  image.save(
+                      temp,
+                      format="JPEG",
+                      quality=quality,
+                      optimize=True,
+                      progressive=True,
+                      subsampling=2,
+                  )
+
+              after = temp.stat().st_size
+
+              # Never replace an image with a larger optimized file.
+              if after < before:
+                  temp.replace(path)
+                  changed += 1
+                  total_after += after
+                  print(
+                      f"{path.name}: {before/1024:.0f} KB -> {after/1024:.0f} KB "
+                      f"({after/before*100:.1f}%)"
+                  )
+              else:
+                  temp.unlink(missing_ok=True)
+                  skipped += 1
+                  total_after += before
+                  print(f"{path.name}: kept original ({before/1024:.0f} KB)")
+
+          saved = total_before - total_after
+          print("")
+          print(f"Files checked: {len(selected)}")
+          print(f"Files changed: {changed}")
+          print(f"Files kept:    {skipped}")
+          print(f"Before: {total_before/1024/1024:.1f} MB")
+          print(f"After:  {total_after/1024/1024:.1f} MB")
+          print(f"Saved:  {saved/1024/1024:.1f} MB ({saved/total_before*100:.1f}%)")
+          PY
+
+      - name: Show changed files
+        run: |
+          git status --short
+          git diff --stat
+
+      - name: Commit optimized images
+        if: ${{ !inputs.dry_run }}
+        env:
+          START_NUMBER: ${{ inputs.start_number }}
+          END_NUMBER: ${{ inputs.end_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- assets/reports; then
+            echo "No image changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/reports
+          git commit -m "Optimize REPORT images ${START_NUMBER}-${END_NUMBER}"
+          git push
